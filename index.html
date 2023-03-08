@@ -53,13 +53,14 @@
                             </a>
                             <h3> התחברות</h3>
                         </div>
+                        <form action="login.php" method="post">
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                            <label for="floatingInput"> אימייל</label>
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" >
+                            <label for="email"> אימייל</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                            <label for="floatingPassword">סיסמה</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                            <label for="password">סיסמה</label>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="form-check">
@@ -68,8 +69,9 @@
                             </div>
                             <a href="forgotPass.html">שכחתי סיסמה </a>
                         </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4" onclick="location.href='home.html'">התחברות</button>
+                        <button class="btn btn-primary py-3 w-100 mb-4">התחברות</button>
                         <p class="text-center mb-0">אין לכם חשבון?<a href="signup.html"> הרשמה</a></p>
+                    </form>
                     </div>
                 </div>
             </div>

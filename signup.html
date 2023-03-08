@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 
-<head>
+<head dir="rtl">
     <meta charset="utf-8">
     <title>DASHMIN - Bootstrap Admin Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -31,8 +31,8 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
+<body >
+    <div class="container-xxl position-relative bg-white d-flex p-0" >
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -43,27 +43,32 @@
 
 
         <!-- Sign Up Start -->
-        <div class="container-fluid">
+        <div class="container-fluid" >
             <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
+                        <form action="processSignup.php" method="post">
+                        <div class="d-flex align-items-center justify-content-between mb-3" >
                             <a href="index.html" class="">
                                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BuildTech</h3>
                             </a>
                             <h3> הרשמה</h3>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingText" placeholder="jhondoe">
-                            <label for="floatingText">שם משתמש</label>
+                            <input type="text" class="form-control" id="userName" name="userName" placeholder="jhondoe">
+                            <label for="userName">שם משתמש</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                            <label for="floatingInput"> אימייל</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                            <label for="email"> אימייל</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <input type="password" class="form-control" id="floatingPassword" name="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">סיסמה</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="passwordConfirmation" name="passwordConfirmation" placeholder="Password">
+                            <label for="passwordConfirmation">אימות סיסמה</label>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="form-check">
@@ -72,8 +77,9 @@
                             </div>
                             <a href="forgotPass.html">שכחתי סיסמה </a>
                         </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4"> הרשמה</button>
+                        <button class="btn btn-primary py-3 w-100 mb-4"> הרשמה</button>
                         <p class="text-center mb-0">יש לכם חשבון קיים? <a href="index.html"> התחברות</a></p>
+                        </form>
                     </div>
                 </div>
             </div>
