@@ -1,3 +1,39 @@
+<?php 
+ $conn = require __DIR__ . "/database.php";
+
+ $sql = "SELECT * FROM project";
+
+ $result = $conn->query($sql);
+    
+
+
+
+ if(isset($_POST["submit"])){
+    $projectName = $_POST['projectName'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+
+   
+    $stmt = $conn->prepare("insert into exception(projectName, description, price) values(?, ?, ?)");
+    $stmt->bind_param("ssd", $projectName, $description, $price);
+
+
+ 
+    $execval = $stmt->execute();
+    if($execval){
+        echo "Adding successfully...";
+    } else {
+        die($conn->error . " " . $conn->errno);
+    }
+    echo $execval;
+    $stmt->close();
+    $conn->close();
+
+ }
+   
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,10 +107,10 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="addEmployee.html" class="dropdown-item">עובד</a>
-                            <a href="addClient.html" class="dropdown-item active">לקוח</a>
+                            <a href="addClient.html" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.html" class="dropdown-item">פרויקט</a>
-                            <a href="addException.html" class="dropdown-item">חריגה</a>
+                            <a href="addException.html" class="dropdown-item active">חריגה</a>
                             
                         </div>
                     </div>
@@ -95,6 +131,7 @@
             </nav>
         </div>
         <!-- Sidebar End -->
+
 
 
         <!-- Content Start -->
@@ -148,56 +185,42 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-      
 
 
             <div class="col-sm-12 col-xl-6">
+            <form method="post">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת לקוח</h6>
-                    <form action="addClient.php" method="post">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="fullName" name="fullName"
-                            placeholder="">
-                        <label for="fullName">שם מלא</label>
+                    <h6 class="mb-4">הוספת חריגה</h6>
+                    <form>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="projectName" name="projectName"
+                                aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <?php 
+                                            foreach($result as $row)
+                                            {
+                                                echo '<option value="'.$row["name"].'">'.$row["name"].'</option>';
+                                            }
+                                ?>
+                            </select>
+                            <label for="projectName">פרויקט</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder=""
+                                id="description" name ="description" style="height: 150px;"></textarea>
+                            <label for="description">תיאור חריגה</label>
+                        </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₪</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="מחיר" id="price" name="price">    
+                        <span class="input-group-text">.00</span>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="address" name="address"
-                            placeholder="">
-                        <label for="address">כתובת</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="id" name="id"
-                            placeholder="">
-                        <label for="id">ת"ז/ח.פ</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gender" name="gender"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option value="1">זכר</option>
-                            <option value="2">נקבה</option>
-                        </select>
-                        <label for="gender">מין</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                            placeholder="">
-                        <label for="phoneNumber">מס' טלפון</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phoneNumber2" name="phoneNumber2"
-                            placeholder="">
-                        <label for="phoneNumber2">מס' טלפון נוסף</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email" name="email"
-                            placeholder="">
-                        <label for="email">אימייל</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">הוסף</button>
+                    <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
                     </form>
                 </div>
+                </form>
             </div>
+
 
 
             <!-- Footer Start -->
