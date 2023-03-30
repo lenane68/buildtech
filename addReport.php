@@ -1,3 +1,46 @@
+<?php 
+ $conn = require __DIR__ . "/database.php";
+
+ $sql = "SELECT * FROM car";
+
+ $result = $conn->query($sql);
+    
+
+
+
+ if(isset($_POST["submit"])){
+    $reportNumber = $_POST['reportNumber'];
+    $carNumber = $_POST['carNumber'];
+    $reportDate = $_POST['reportDate'];
+    if(isset($_POST['paid'])){
+        $paid =true;
+    }  else  
+        $paid =false;
+    $price = $_POST['price'];
+    $notes = $_POST['notes'];
+
+
+   
+    $stmt = $conn->prepare("insert into report(reportNumber, carNumber, reportDate, paid, price, notes) values(?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssids", $reportNumber, $carNumber, $reportDate, $paid, $price, $notes);
+
+
+ 
+    $execval = $stmt->execute();
+    if($execval){
+        echo "Adding successfully...";
+    } else {
+        die($conn->error . " " . $conn->errno);
+    }
+    echo $execval;
+    $stmt->close();
+    $conn->close();
+
+ }
+   
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,11 +113,11 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="addEmployee.html" class="dropdown-item active">עובד</a>
+                            <a href="addEmployee.html" class="dropdown-item">עובד</a>
                             <a href="addClient.html" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.html" class="dropdown-item">פרויקט</a>
-                            <a href="addException.html" class="dropdown-item">חריגה</a>
+                            <a href="addException.html" class="dropdown-item active">חריגה</a>
                             
                         </div>
                     </div>
@@ -97,10 +140,11 @@
         <!-- Sidebar End -->
 
 
+
         <!-- Content Start -->
         <div class="content">
-              <!-- Navbar Start -->
-              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+             <!-- Navbar Start -->
+             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -151,77 +195,56 @@
 
 
             <div class="col-sm-12 col-xl-6">
+            <form method="post">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת רכב</h6>
-                    <form action="addVehicle.php" method="post">
+                    <h6 class="mb-4">הוספת דו"ח</h6>
+                    <form>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="number" name="number"
-                                placeholder="">
-                            <label for="number">מספר</label>
+                              <input type="text" class="form-control" id="reportNumber" name="reportNumber"
+                                    placeholder="name@example.com"  onchange="myFunction(event)">
+                                <label for="reportNumber">מס' דו"ח</label>
                         </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="type" name="type"
-                            placeholder="">
-                        <label for="type">סוג</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="year" name="year"
-                            placeholder="">
-                        <label for="year">שנה</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="color" name="color"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option >אדום</option>
-                            <option >ברונז</option>
-                            <option >כחול</option>
-                            <option >ירוק</option>
-                            <option >כסף</option>
-                            <option >כתום</option>
-                            <option >לבן</option>
-                            <option >צהוב</option>
-                            <option >שחור</option>
-          
-                        </select>
-                        <label for="color">צבע</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="fuelType" name="fuelType"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option >בנזין 95</option>
-                            <option >סולר</option>
-                        </select>
-                        <label for="fuelType">סוג דלק</label>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="carNumber" name="carNumber"
+                                aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <?php 
+                                            foreach($result as $row)
+                                            {
+                                                echo '<option value="'.$row["number"].'">'.$row["number"].'</option>';
+                                            }
+                                ?>
+                            </select>
+                            <label for="carNumber">מס' רכב</label>
                         </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="testFinishDate" name="testFinishDate"
-                            placeholder="">
-                        <label for="testFinishDate">תאריך סיום טסט</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="insuranceFinishDate" name="insuranceFinishDate"
-                            placeholder="">
-                        <label for="insuranceFinishDate">תאריך סיום ביטוח</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="careDate" name="careDate"
-                            placeholder="">
-                        <label for="careDate">תאריך הטיפול הבא</label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">רשיון</label>
-                        <input class="form-control" type="file" id="formFile">
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">ביטוח</label>
-                        <input class="form-control" type="file" id="formFile">
-                    </div>
-                    <button class="btn btn-primary">הוסף</button>
+                        <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="reportDate" name="reportDate"
+                                        placeholder="">
+                                    <label for="reportDate">תאריך הדוח</label>
+                        </div>
+                        <div class="input-group mb-3">
+                        <span class="input-group-text">₪</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="סכום הדוח" id="price" name="price">    
+                        <span class="input-group-text">.00</span>
+                         </div>
+                         <div class="form-check form-switch">
+                           <label class="form-check-label" for="paid">שולמה</label>
+                           <input class="form-check-input" type="checkbox" role="switch"
+                             id="paid" name="paid">
+                                        
+                         </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder=""
+                                id="notes" name ="notes" style="height: 150px;"></textarea>
+                            <label for="notes"> הערות</label>
+                        </div>
+                
+                    <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
                     </form>
                 </div>
+                </form>
             </div>
+
 
 
             <!-- Footer Start -->
