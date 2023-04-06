@@ -27,11 +27,12 @@
     $job = $_POST['job'];
     $startDate = $_POST['startDate'];
     $Gender = $_POST['Gender'];
+    $daySalary = $_POST['daySalary'];
 	
     $conn = require __DIR__ . "/database.php";
 
-    $stmt = $conn->prepare("insert into employee(fullName, Adress, phoneNumber, job, startDate, Gender) values(?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $fullName, $adress, $phoneNumber, $job, $startDate, $Gender);
+    $stmt = $conn->prepare("insert into employee(fullName, Adress, phoneNumber, job, startDate, Gender, salary) values(?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssd", $fullName, $adress, $phoneNumber, $job, $startDate, $Gender, $daySalary);
     $execval = $stmt->execute();
     if($execval){
         echo "Adding successfully...";

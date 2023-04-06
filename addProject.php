@@ -44,13 +44,138 @@
     $stmt->bind_param("ssssssiiii", $name, $address, $startDate, $finishDate, $clientName, $type, $floorsNum2, $roomsNum, $space, $cup);
 
 }
- 
+
+$execval = $stmt->execute();
+
+$file =$_FILES['file1'];
+$file2 =$_FILES['file2'];
+$file3 =$_FILES['file3'];
+$file4 =$_FILES['file4'];
+
+if(isset($_FILES['files'])){
+    $folder = "projectPrograms/";
+
+    $names = $_FILES['files']['name'];
+    $tmp_names = $_FILES['files']['tmp_name'];
+
+    $upload_data = array_combine($tmp_names, $names);
+
+    foreach($upload_data as $temp_folder => $file_name){
+        move_uploaded_file($temp_folder, $folder.$file_name);
+        
+    }
+
+}
+
+$fileName = $_FILES['file1']['name'];
+$fileTmpName = $_FILES['file1']['tmp_name'];
+$fileSize = $_FILES['file1']['size'];
+$fileError = $_FILES['file1']['error'];
+$fileType = $_FILES['file1']['type'];
+
+$fileName2 = $_FILES['file2']['name'];
+$fileTmpName2 = $_FILES['file2']['tmp_name'];
+$fileSize2 = $_FILES['file2']['size'];
+$fileError2 = $_FILES['file2']['error'];
+$fileType2 = $_FILES['file2']['type'];
+
+$fileName3 = $_FILES['file3']['name'];
+$fileTmpName3 = $_FILES['file3']['tmp_name'];
+$fileSize3 = $_FILES['file3']['size'];
+$fileError3 = $_FILES['file3']['error'];
+$fileType3 = $_FILES['file3']['type'];
+
+$fileName4 = $_FILES['file4']['name'];
+$fileTmpName4 = $_FILES['file4']['tmp_name'];
+$fileSize4 = $_FILES['file4']['size'];
+$fileError4 = $_FILES['file4']['error'];
+$fileType4 = $_FILES['file4']['type'];
+
+$fileExt = explode('.', $fileName);
+$fileActualExt = strtolower(end($fileExt));
+
+$fileExt2 = explode('.', $fileName2);
+$fileActualExt2 = strtolower(end($fileExt2));
+
+$fileExt3 = explode('.', $fileName3);
+$fileActualExt3 = strtolower(end($fileExt3));
+
+$fileExt4 = explode('.', $fileName4);
+$fileActualExt4 = strtolower(end($fileExt4));
+
+$allowed = array('pdf');
+
+
+if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed)) &&
+ (in_array($fileActualExt3, $allowed)) && (in_array($fileActualExt4, $allowed))) {
+    if(($fileError === 0) && ($fileError2 === 0) && ($fileError3 === 0) && ($fileError4 === 0)){
+        if(($fileSize < 1000000) && ($execval) && ($fileSize2 < 1000000) && ($fileSize3 < 1000000) && ($fileSize4 < 1000000)){
+            $fileNameNew = uniqid('', true).".".$fileActualExt;
+            $fileDestination = 'projectFiles/'.$fileNameNew;
+            move_uploaded_file($fileTmpName, $fileDestination);
+
+            $fileNameNew2 = uniqid('', true).".".$fileActualExt2;
+            $fileDestination2 = 'projectFiles/'.$fileNameNew2;
+            move_uploaded_file($fileTmpName2, $fileDestination2);
+
+            $fileNameNew3 = uniqid('', true).".".$fileActualExt3;
+            $fileDestination3 = 'projectFiles/'.$fileNameNew3;
+            move_uploaded_file($fileTmpName3, $fileDestination3);
+
+            $fileNameNew4 = uniqid('', true).".".$fileActualExt4;
+            $fileDestination4 = 'projectFiles/'.$fileNameNew4;
+            move_uploaded_file($fileTmpName4, $fileDestination4);
+
+            $category1 = "הצעת מחיר";
+            $category2 = "תמורה";
+            $category3 = "הסכם";
+            $category4 = "לוח זמנים";
+            
+
+            
+            $stmt2 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
+            $stmt2->bind_param("sssss", $fileNameNew, $fileType, $fileSize, $name, $category1);
+            $execval2 = $stmt2->execute();
+
+            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
+            $stmt3->bind_param("sssss", $fileNameNew2, $fileType2, $fileSize2, $name, $category2);
+            $execval3 = $stmt3->execute();
+
+            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
+            $stmt3->bind_param("sssss", $fileNameNew3, $fileType3, $fileSize3, $name, $category3);
+            $execval4 = $stmt3->execute();
+
+            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
+            $stmt3->bind_param("sssss", $fileNameNew4, $fileType4, $fileSize4, $name, $category4);
+            $execval5 = $stmt3->execute();
+            
+            if(($execval2) && ($execval3) && ($execval4) && ($execval5)){
+                echo "Added successfully and Upload file success";
+            } else {
+                die($conn->error . " " . $conn->errno);   
+            }
+           
+        } else {
+            if(!($execval)){
+                die($conn->error . " " . $conn->errno);
+            } else 
+            echo "Your file is too big!";  
+        }
+    } else {
+        echo "There was an error uploading your file!";  
+    }
+} else {
+    echo "You can't upload files of this type!";
+}
+
+/*
  $execval = $stmt->execute();
  if($execval){
      echo "Adding successfully...";
  } else {
      die($conn->error . " " . $conn->errno);
- }
+ }*/
+
  echo $execval;
  $stmt->close();
  $conn->close();
@@ -213,7 +338,7 @@
 
 
             <div class="container-fluid pt-4 px-4">
-            <form method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
@@ -332,28 +457,25 @@
                             <h6 class="mb-4">העלאת קבצים</h6>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">הצעת מחיר</label>
-                                <input class="form-control" type="file" id="formFile">
+                                <input class="form-control" type="file" name="file1">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">תמורה </label>
-                                <input class="form-control" type="file" id="formFile">
+                                <input class="form-control" type="file" name="file2">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">הסכם </label>
-                                <input class="form-control" type="file" id="formFile">
+                                <input class="form-control" type="file" name="file3">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">לוח זמנים </label>
-                                <input class="form-control" type="file" id="formFile">
+                                <input class="form-control" type="file" name="file4">
                             </div>
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">תוכניות עבודה</label>
-                                <input class="form-control" type="file" id="formFileMultiple" multiple>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
-                            <div class="mb-3">
-                                <label for="formFileMultiple" class="form-label"> מסמכים אחרים</label>
-                                <input class="form-control" type="file" id="formFileMultiple" multiple>
-                            </div>                          
+                                          
                         </div>
                     </div>
           

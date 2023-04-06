@@ -1,4 +1,7 @@
-<?php
+<?php 
+
+if(isset($_POST['submit'])){
+
     if (empty($_POST["number"])) {
         die("number is required");
     }
@@ -24,30 +27,364 @@
     //$password_hash = password_hash($_POST["floatingPassword"], PASSWORD_DEFAULT);
 
     $number = $_POST['number'];
-	$type = $_POST['type'];
+    $type = $_POST['type'];
     $year = $_POST['year'];
     $color = $_POST['color'];
     $testFinishDate = $_POST['testFinishDate'];
     $insuranceFinishDate = $_POST['insuranceFinishDate'];
     $careDate = $_POST['careDate'];
     $fuelType = $_POST['fuelType'];
- 
-	
+
     $conn = require __DIR__ . "/database.php";
 
     $stmt = $conn->prepare("insert into car(number, type, year, color, testDate, insuranceDate, careDate, fuelType) values(?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssss", $number, $type, $year, $color, $testFinishDate, $insuranceFinishDate, $careDate, $fuelType);
     $execval = $stmt->execute();
-    if($execval){
-        echo "Adding successfully...";
+
+   
+     
+    $file =$_FILES['file'];
+    $file2 =$_FILES['file2'];
+
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileSize = $_FILES['file']['size'];
+    $fileError = $_FILES['file']['error'];
+    $fileType = $_FILES['file']['type'];
+
+    $fileName2 = $_FILES['file2']['name'];
+    $fileTmpName2 = $_FILES['file2']['tmp_name'];
+    $fileSize2 = $_FILES['file2']['size'];
+    $fileError2 = $_FILES['file2']['error'];
+    $fileType2 = $_FILES['file2']['type'];
+    
+    $fileExt = explode('.', $fileName);
+    $fileActualExt = strtolower(end($fileExt));
+
+    $fileExt2 = explode('.', $fileName2);
+    $fileActualExt2 = strtolower(end($fileExt2));
+
+    $allowed = array('pdf');
+
+
+    if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))) {
+        if(($fileError === 0) && ($fileError2 === 0)){
+            if(($fileSize < 1000000) && ($execval) && ($fileSize2 < 1000000)){
+                $fileNameNew = uniqid('', true).".".$fileActualExt;
+                $fileDestination = 'carFiles/'.$fileNameNew;
+                move_uploaded_file($fileTmpName, $fileDestination);
+
+                $fileNameNew2 = uniqid('', true).".".$fileActualExt2;
+                $fileDestination2 = 'carFiles/'.$fileNameNew2;
+                move_uploaded_file($fileTmpName2, $fileDestination2);
+
+                $category1 = "רישיון";
+                $category2 = "ביטוח";
+                
+                $stmt2 = $conn->prepare("insert into carfile(file_name, type, size, carNumber, category) values(?, ?, ?, ?, ?)");
+                $stmt2->bind_param("sssss", $fileNameNew, $fileType, $fileSize, $number, $category1);
+                $execval2 = $stmt2->execute();
+
+                $stmt3 = $conn->prepare("insert into carfile(file_name, type, size, carNumber, category) values(?, ?, ?, ?, ?)");
+                $stmt3->bind_param("sssss", $fileNameNew2, $fileType2, $fileSize2, $number, $category2);
+                $execval3 = $stmt3->execute();
+                
+                if(($execval2) && ($execval3)){
+                    echo "Added successfully and Upload file success";
+                } else {
+                    die($conn->error . " " . $conn->errno);   
+                }
+               
+            } else {
+                if(!($execval)){
+                    die($conn->error . " " . $conn->errno);
+                } else 
+                echo "Your file is too big!";  
+            }
+        } else {
+            echo "There was an error uploading your file!";  
+        }
     } else {
-        die($conn->error . " " . $conn->errno);
+        echo "You can't upload files of this type!";
     }
+
+
+
     echo $execval;
     $stmt->close();
     $conn->close();
 
-  
+}
+?>
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+         <!-- Sidebar Start -->
+         <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="index.html" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary">אבו רפיק גבארין</h3>
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">רפיק גבארין</h6>
+                        <span>מנהל ראשי</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="home.html" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
+                    <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
+                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
+                    <a href="inventory.html" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
+                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
+                    <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="addEmployee.html" class="dropdown-item active">עובד</a>
+                            <a href="addClient.html" class="dropdown-item">לקוח</a>
+                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
+                            <a href="addProject.html" class="dropdown-item">פרויקט</a>
+                            <a href="addException.html" class="dropdown-item">חריגה</a>
+                            
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="editEmployee.html" class="dropdown-item">עובד</a>
+                            <a href="editClient.html" class="dropdown-item">לקוח</a>
+                            <a href="editMaterial.html" class="dropdown-item">חומר</a>
+                            <a href="editProject.html" class="dropdown-item">פרויקט</a>
+                            <a href="editShift.html" class="dropdown-item">משמרת</a>
+                            <a href="editException.html" class="dropdown-item">חריגה</a>
+                        </div>
+                    </div>
+                   
+                    
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+              <!-- Navbar Start -->
+              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">התראות</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">נוסף עובד חדש</h6>
+                                <small>לפני 15 דקות</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">משמרת עובד נקלטה</h6>
+                                <small>לפני 20 דקות</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">הסיסמה שונתה</h6>
+                                <small>לפני 22 דקות</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">רפיק גבארין</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="profile.html" class="dropdown-item">הפרופיל שלי</a>
+                            <a href="index.html" class="dropdown-item">יציאה</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">הוספת רכב</h6>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="number" name="number"
+                                placeholder="">
+                            <label for="number">מספר</label>
+                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="type" name="type"
+                            placeholder="">
+                        <label for="type">סוג</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="year" name="year"
+                            placeholder="">
+                        <label for="year">שנה</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="color" name="color"
+                            aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <option >אדום</option>
+                            <option >ברונז</option>
+                            <option >כחול</option>
+                            <option >ירוק</option>
+                            <option >כסף</option>
+                            <option >כתום</option>
+                            <option >לבן</option>
+                            <option >צהוב</option>
+                            <option >שחור</option>
+          
+                        </select>
+                        <label for="color">צבע</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="fuelType" name="fuelType"
+                            aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <option >בנזין 95</option>
+                            <option >סולר</option>
+                        </select>
+                        <label for="fuelType">סוג דלק</label>
+                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="testFinishDate" name="testFinishDate"
+                            placeholder="">
+                        <label for="testFinishDate">תאריך סיום טסט</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="insuranceFinishDate" name="insuranceFinishDate"
+                            placeholder="">
+                        <label for="insuranceFinishDate">תאריך סיום ביטוח</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="careDate" name="careDate"
+                            placeholder="">
+                        <label for="careDate">תאריך הטיפול הבא</label>
+                    </div>
+                    <div class="form-group">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">רשיון</label>
+                        <input class="form-control" type="file" name="file">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="mb-3">
+                        <label for="file2" class="form-label">ביטוח</label>
+                        <input class="form-control" type="file" name="file2">
+                    </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit" name="submit">הוסף</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
