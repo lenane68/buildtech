@@ -46,3 +46,15 @@
                             </form>
                         </div>
                     </div>
+
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="job" id="job"
+                            aria-label="Floating label select example">
+                            <option id="job" selected>בחר/י</option>
+                            <option value="מנהל">מנהל</option>
+                            <option value="עובד">עובד</option>
+                            <option value="מזכירה">מזכירה</option>
+                        </select>
+                        <label for="job">תפקיד</label>
+                        </div>

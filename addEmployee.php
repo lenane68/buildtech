@@ -31,7 +31,7 @@
 	
     $conn = require __DIR__ . "/database.php";
 
-    $stmt = $conn->prepare("insert into employee(fullName, Adress, phoneNumber, job, startDate, Gender, salary) values(?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("insert into employee(fullName, Address, phoneNumber, job, startDate, Gender, salary) values(?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssd", $fullName, $adress, $phoneNumber, $job, $startDate, $Gender, $daySalary);
     $execval = $stmt->execute();
     if($execval){
