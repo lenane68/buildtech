@@ -273,7 +273,7 @@ if(isset($_POST['submit'])){
 
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת רכב</h6>
+                    <h6 class="mb-4">הוספת רכב/ כלי צמ"ה</h6>
                     <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="number" name="number"

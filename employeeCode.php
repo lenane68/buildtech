@@ -45,12 +45,10 @@ if(isset($_POST['update_employee']))
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $job = mysqli_real_escape_string($conn, $_POST['job']);
     $gender = mysqli_real_escape_string($conn, $_POST['gender']);
-    //$startDate = mysqli_real_escape_string($conn, $_POST['startDate']);
-    //$active = mysqli_real_escape_string($conn, $_POST['active']);
-    //$salary = mysqli_real_escape_string($conn, $_POST['salary']);
+    $startDate = mysqli_real_escape_string($conn, $_POST['startDate']);
+    $active = mysqli_real_escape_string($conn, $_POST['active']);
+    $salary = mysqli_real_escape_string($conn, $_POST['salary']);
 
-    //$salary_float_value = floatval($salary);
-    //$active1 = ($active == "checked" ? 1 : 0);
 
     if($name == NULL || $address == NULL || $job == NULL || $gender == NULL || $startDate == NULL)
     {
@@ -62,7 +60,7 @@ if(isset($_POST['update_employee']))
         return;
     }
 
-    $query = "UPDATE employee SET fullName='$name', Address='$address', phoneNumber='$phone', job='$job', startDate='2019-07-01', Gender='$gender', Active='FALSE', salary='500'
+    $query = "UPDATE employee SET fullName='$name', Address='$address', phoneNumber='$phone', job='$job', startDate='$startDate', Gender='$gender', Active='$active', salary='$salary'
                 WHERE id='$employee_id'";
     $query_run = mysqli_query($conn, $query);
 

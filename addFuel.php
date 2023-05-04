@@ -211,7 +211,7 @@
                         <div class="form-floating mb-3">
                               <input type="text" class="form-control" id="amount" name="amount"
                                     placeholder="name@example.com"  onchange="myFunction(event)">
-                                <label for="amount">הכמות</label>
+                                <label for="amount">הכמות בליטר</label>
                         </div> 
                         <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>

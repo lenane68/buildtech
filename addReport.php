@@ -228,7 +228,7 @@
                         <span class="input-group-text">.00</span>
                          </div>
                          <div class="form-check form-switch">
-                           <label class="form-check-label" for="paid">שולמה</label>
+                           <label class="form-check-label" for="paid">שולם</label>
                            <input class="form-check-input" type="checkbox" role="switch"
                              id="paid" name="paid">
                                         
