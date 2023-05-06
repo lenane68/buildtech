@@ -5,9 +5,10 @@ require_once('tcpdf.php');
 $conn = require __DIR__ . "/database.php";
 
 if(isset($_GET['pdf_report_generate'])) {
-    $projectName = $_GET['projectName'];
+    $carNumber = $_GET['carNumber'];
+    $fromDate = $_GET['fromDate'];
 
-    $select = "SELECT * FROM exception WHERE projectName = '$projectName'";
+    $select = "SELECT * FROM fuel WHERE carNumber = '$carNumber' AND fullDate >= '$fromDate'";
     $query = mysqli_query($conn, $select);
    
    
@@ -36,13 +37,13 @@ class PDF extends TCPDF
         $this->MultiCell(189, 3, 'aborafeekjbareen@gmail.com', 0,'R', 0,1, '', '', true);
         $this->SetFont('dejavusansb', 'B', 12);
         $this->Ln(12); //space
-        $this->Cell(189, 3, 'חריגים פרויקט',0,1,'C');
+        $this->Cell(189, 3, 'דו"ח בנזין לרכב',0,1,'C');
    
     }   
 
    public function Footer(){
         $this->setY(-148); //Position at 15 mm from bottom
-        $this->Ln(60);
+        $this->Ln(110);
         $this->SetFont('dejavusansb', 'B', 10);
         
         date_default_timezone_set("Asia/Tel_Aviv");
@@ -58,10 +59,10 @@ class PDF extends TCPDF
 
 
 
-        $this->Ln(65);
+        $this->Ln(15);
         $this->Cell(40,5,'הופק ב: '.$today, 0,0, 'R');
         $this->Cell(50,5,'', 0,0, 'R');
-        $this->Cell(5,5,'דו"ח חריגים פרויקט', 0,0, 'R');
+        $this->Cell(5,5,'דו"ח פרטי רכבים וצמ"ה', 0,0, 'R');
         $this->Cell(50,5,'', 0,0, 'R');
         $this->Cell(40, 5, 'דף '.$this->getAliasNumPage(). ' מתוך '.$this->getAliasNbPages(),
         0, false, 'R', 0, '', 0, false, 'T', 'M');
@@ -87,7 +88,7 @@ $pdf = new PDF('p', 'mm', 'A4', true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Nermin');
-$pdf->SetTitle('Exceptions Report');
+$pdf->SetTitle('דו"ח בנזין לרכב');
 $pdf->SetSubject('');
 $pdf->SetKeywords('');
 $pdf->setRTL(true);
@@ -143,24 +144,27 @@ $pdf->Ln(39);
 
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
 $pdf ->SetFont('dejavusans', 'B',10);
-$pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
+$pdf->MultiCell(189, 3, 'רכב מספר: '.$carNumber.' ', 0,'C', 0,1, '', '', true);
 $pdf->Ln(7);
 
 $pdf->SetFillColor(162, 191, 220);
 $pdf->Cell(20,5,'מס', 1,0,'C',1);
-$pdf->Cell(80,5,'תיאור חריגה', 1,0,'C',1);
+$pdf->Cell(30,5,'כמות', 1,0,'C',1);
 $pdf->Cell(30,5,'מחיר', 1,0,'C',1);
+$pdf->Cell(40,5,'תאריך מילוי', 1,0,'C',1);
 
 
 
 
 $i = 1; //no of page start
-$max = 10; //when s1 no == 6 go to next page
-$total = 0;
+$max = 12; //when s1 no == 6 go to next page
+$totalAmount = 0;
+$totalPrice = 0;
         while ($row = mysqli_fetch_array($query))
         {
-            $description = $row['description'];
+            $amount = $row['amount'];
             $price = $row['price'];
+            $fullDate = $row['fullDate'];
 
             if (($i%$max) == 0){
             $pdf->AddPage();
@@ -170,24 +174,27 @@ $total = 0;
             $pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
             $pdf->Ln(7);
             $pdf->SetFillColor(162, 191, 220);
-            $pdf->Cell(20,5,'מס', 1,0,'C',1);
-            $pdf->Cell(80,5,'תיאור חריגה', 1,0,'C',1);
+            $$pdf->Cell(20,5,'מס', 1,0,'C',1);
+            $pdf->Cell(30,5,'כמות', 1,0,'C',1);
             $pdf->Cell(30,5,'מחיר', 1,0,'C',1);
+            $pdf->Cell(40,5,' תאריך מילוי', 1,0,'C',1);
         }
 
         $pdf->Ln(6);
         $pdf->Cell(20,5, $i, 0,0,'C');
-        $pdf->Cell(80,5, $description, 0,0,'C');
+        $pdf->Cell(30,5, $amount, 0,0,'C');
         $pdf->Cell(30,5, $price.' ₪', 0,0,'C');
+        $pdf->Cell(40,5, $fullDate.' ₪', 0,0,'C');
+        
         $i++;
-        $total+=$price;
+        $totalAmount+=$amount;
+        $totalPrice+=$price;
     }
-    $totalTax = ($total * 0.17) + $total;
-    $pdf->Ln(25);
+    $pdf->Ln(120);
     $pdf ->SetFont('dejavusans', 'I',10);
-    $pdf->Cell(180, 8, 'סה"כ חריגים: '.$total.' ₪',0,1,'R',0);
+    $pdf->Cell(180, 8, 'סה"כ כמות דלק: '.$totalAmount.' ליטר',0,1,'R',0);
     $pdf ->SetFont('dejavusans', 'B',10);
-    $pdf->Cell(180, 8, 'כולל מע"מ: '.$totalTax.' ₪',0,1,'R',0);
+    $pdf->Cell(180, 8, 'סה"כ סכום דלק: '.$totalPrice.' ₪',0,1,'R',0);
 }
 // Close and output PDF document
 $pdf->Output('example_001.pdf', 'I');

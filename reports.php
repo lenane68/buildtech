@@ -4,7 +4,13 @@
 
  $sqli = "SELECT * FROM project";
 
+ $sqli2 = "SELECT * FROM employee";
+
+ $sqli3 = "SELECT * FROM car";
+
  $result = $con->query($sqli);
+ $result2 = $con->query($sqli2);
+ $result3 = $con->query($sqli3);
 
 ?>
 
@@ -188,6 +194,7 @@
                                 <tr class="table-light">
                                     <td> אתר</td>
                                     <td> ימי עבודה באתר מסוים</td>
+                                    
                                     <td>
                                         <label>
                                         מתאריך:
@@ -208,16 +215,32 @@
                                                 </label>  
                                     </td>
 
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary">הצג</button>
                                     </td>
+                            
                                </tr>
+                               
                                <tr  class="table-light">
                                     <td> רכב</td>
-                                    <td>בנזין לרכב מסוים</td>
+                                   
+                                    <td>פרטי רכבים וצמ"ה</td>
+                                    <form action="generatecarpdf.php" method="get" target="_blank">
+                                    <td>
+                                    </td>
+
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
+                                           </td>
+                                    </form>
+                                   
+                               </tr>
+                               <tr  class="table-light">
+                               <td></td>
+                               <td>בנזין לרכב מסוים</td>
+                               <form action="generatefuelpdf.php" method="get" target="_blank">
                                     <td>
                                     <label>
                                         מתאריך:
-                                        <input type="date" class="" id="" name=""
+                                        <input type="date" class="" id="fromDate" name="fromDate"
                                         placeholder="">
                                          </label>
                                         <br>
@@ -228,12 +251,17 @@
                                         aria-label="Floating label select example">
                                         <option selected>בחר/י</option>
                                         <?php 
+                                                    foreach($result3 as $row)
+                                                    {
+                                                        echo '<option value="'.$row["number"].'">'.$row["number"].'</option>';
+                                                    }
                                         ?>
                                     </select>  
                                                 </label>  
                                     </td>
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                            </td>
+                                                </form>
                                </tr>
                                <tr  class="table-light">
                                     <td></td>
@@ -300,6 +328,68 @@
                                     <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                            </td>
                                            </form>
+                               </tr>      
+                               <tr  class="table-light">
+                               <form action="generatepdf.php" method="get" target="_blank">
+                                    <td>עובדים</td>
+                                    <td>משכורות עובדים פעילים</td>
+                                    <td>
+                                       
+                                    </td>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
+                                           </td>
+                                           </form>
+                               </tr>
+                               <tr  class="table-light">
+                                    <td></td>
+                                    <td>ימי עבודה של עובד מסוים</td>
+                                    <td>
+                                        <form action="" method="get" targer="_blank">
+                                    <label>
+                                        מתאריך:
+                                        <input type="date" class="" id="frmDate" name="frmDate"
+                                        placeholder="">
+                                         </label>
+                                        <br>
+                                        <br>
+                                        <label>
+                                        שם עובד:
+                                        <select class="" id="employeeName" name="employeeName"
+                                        aria-label="Floating label select example">
+                                        <option selected>בחר/י</option>
+                                        <?php 
+                                                    foreach($result2 as $row)
+                                                    {
+                                                        echo '<option value="'.$row["fullName"].'">'.$row["fullName"].'</option>';
+                                                    }
+                                        ?>
+                                    </select>  
+                                                </label> 
+                                    </form> 
+                                    </td>
+                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                           </td>
+                               </tr>
+                               <tr class="table-light">
+                                    <td> צ'יקים</td>
+                                    <td> רשימת צ'יקים</td>
+                                    <td>
+                                        <label>
+                                        מתאריך:
+                                        <input type="date" class="" id="" name=""
+                                        placeholder="">
+                                         </label>
+                                        <br>
+                                        <br>
+                                        <label>
+                                        עד תאריך:
+                                        <input type="date" class="" id="" name=""
+                                        placeholder="">
+                                         </label>
+                                    </td>
+
+                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    </td>
                                </tr>                        
                         </tbody>
                     </table>
