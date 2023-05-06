@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: מאי 06, 2023 בזמן 07:57 AM
+-- Generation Time: מאי 06, 2023 בזמן 08:06 AM
 -- גרסת שרת: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -152,21 +152,12 @@ INSERT INTO `client` (`fullName`, `address`, `id`, `gender`, `phone`, `phone2`, 
 CREATE TABLE `employee` (
   `id` int(50) NOT NULL,
   `fullName` varchar(128) NOT NULL,
-  `Address` varchar(128) NOT NULL,
-  `phoneNumber` varchar(10) NOT NULL,
   `job` varchar(50) NOT NULL,
   `startDate` date NOT NULL,
   `Gender` varchar(20) NOT NULL,
   `Active` tinyint(1) NOT NULL DEFAULT 1,
   `salary` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- הוצאת מידע עבור טבלה `employee`
---
-
-INSERT INTO `employee` (`id`, `fullName`, `Address`, `phoneNumber`, `job`, `startDate`, `Gender`, `Active`, `salary`) VALUES
-(10, 'נרמין גבארין2', 'מעלה עירון', '0548050114', 'עובד', '2023-04-14', 'female', 1, 659);
 
 -- --------------------------------------------------------
 
