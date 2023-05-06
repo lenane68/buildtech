@@ -1,4 +1,4 @@
-tyyr<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -42,8 +42,8 @@ tyyr<!DOCTYPE html>
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3">
+          <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
@@ -60,11 +60,11 @@ tyyr<!DOCTYPE html>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="home.html" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
+                    <a href="home.html" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
                     <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
-                    <a href="inventory.html" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
+                    <a href="inventory.html" class="nav-item nav-link active"><i class="fa fa-cubes me-2 "></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
@@ -82,7 +82,7 @@ tyyr<!DOCTYPE html>
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="editEmployee.html" class="dropdown-item">עובד</a>
-                            <a href="editClient.html" class="dropdown-item active">לקוח</a>
+                            <a href="editClient.html" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.html" class="dropdown-item">חומר</a>
                             <a href="editProject.html" class="dropdown-item">פרויקט</a>
                             <a href="editShift.html" class="dropdown-item">משמרת</a>
@@ -149,96 +149,41 @@ tyyr<!DOCTYPE html>
             <!-- Navbar End -->
 
 
+            <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת לקוחות</h6>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">שם מלא</th>
-                                        <th scope="col">מס' טלפון</th>
-                                        <th scope="col">כתובת</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>משפחת ברזילי</td>
-                                        <td>הרצליה</td>
-                                        <td>0547909437</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>משפחת לב</td>
-                                        <td>זכרון יעקב</td>
-                                        <td>0554342312</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td> עומר שמאי</td>
-                                        <td>הרצליה</td>
-                                        <td>0557899898</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">עריכת לקוח</h6>
-                            <form>
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">שם מלא</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">כתובת</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">ת"ז/ח.פ</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="floatingSelect"
-                                    aria-label="Floating label select example">
-                                    <option selected>בחר/י</option>
-                                    <option value="1">זכר</option>
-                                    <option value="2">נקבה</option>
-                                </select>
-                                <label for="floatingSelect">מין</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">מס' טלפון</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">מס' טלפון נוסף</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id=""
-                                    placeholder="">
-                                <label for="">אימייל</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary">עדכון</button>
-                            <button type="submit" class="btn btn-primary">מחיקה</button>
-                            </form>
-                        </div>
-                    </div>
-        
-                </div>
-                </div>
+                <div class="row g-4" id="materials_inv">
+                <?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "buildtech (2)";
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
 
+$sql = "SELECT * FROM material";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result->fetch_assoc()) {
+   echo "<div class='col-sm-12 col-xl-6'>";
+   echo "Material: " . $row["name"]. "<br>Price: " . $row["price"]. "<br>Amount: " . $row["amount"]. "<br>Metrics: ". $row["metrics"]."<br>";
+   echo "</div";
+  }
+} else {
+  echo "";
+}
+$conn->close();
+?>
+                </div>
+            </div>
+            <!-- Table End -->
+                 
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
