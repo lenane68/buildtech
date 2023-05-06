@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: מאי 04, 2023 בזמן 01:25 PM
+-- Generation Time: מאי 06, 2023 בזמן 08:07 AM
 -- גרסת שרת: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -106,6 +106,19 @@ INSERT INTO `carfile` (`file_name`, `type`, `size`, `carNumber`, `category`) VAL
 -- --------------------------------------------------------
 
 --
+-- מבנה טבלה עבור טבלה `checks`
+--
+
+CREATE TABLE `checks` (
+  `id` int(11) NOT NULL,
+  `forName` varchar(50) NOT NULL,
+  `price` double NOT NULL,
+  `checkDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- מבנה טבלה עבור טבלה `client`
 --
 
@@ -139,21 +152,12 @@ INSERT INTO `client` (`fullName`, `address`, `id`, `gender`, `phone`, `phone2`, 
 CREATE TABLE `employee` (
   `id` int(50) NOT NULL,
   `fullName` varchar(128) NOT NULL,
-  `Address` varchar(128) NOT NULL,
-  `phoneNumber` varchar(10) NOT NULL,
   `job` varchar(50) NOT NULL,
   `startDate` date NOT NULL,
   `Gender` varchar(20) NOT NULL,
   `Active` tinyint(1) NOT NULL DEFAULT 1,
   `salary` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- הוצאת מידע עבור טבלה `employee`
---
-
-INSERT INTO `employee` (`id`, `fullName`, `Address`, `phoneNumber`, `job`, `startDate`, `Gender`, `Active`, `salary`) VALUES
-(10, 'נרמין גבארין2', 'מעלה עירון', '0548050114', 'עובד', '2023-04-14', 'female', 1, 659);
 
 -- --------------------------------------------------------
 
@@ -226,7 +230,8 @@ CREATE TABLE `fuel` (
 
 INSERT INTO `fuel` (`serialNumber`, `carNumber`, `amount`, `price`, `fullDate`) VALUES
 (1, '543215', 567.8, 66.6, '2023-03-29'),
-(2, '67657', 556, 20021, '2023-04-16');
+(2, '67657', 556, 20021, '2023-04-16'),
+(3, '200613', 55, 100, '2023-05-05');
 
 -- --------------------------------------------------------
 
@@ -393,6 +398,12 @@ ALTER TABLE `carfile`
   ADD UNIQUE KEY `file_name` (`file_name`);
 
 --
+-- אינדקסים לטבלה `checks`
+--
+ALTER TABLE `checks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- אינדקסים לטבלה `client`
 --
 ALTER TABLE `client`
@@ -467,12 +478,6 @@ ALTER TABLE `supplier`
 --
 
 --
--- AUTO_INCREMENT for table `employee`
---
-ALTER TABLE `employee`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
 -- AUTO_INCREMENT for table `exception`
 --
 ALTER TABLE `exception`
@@ -488,7 +493,7 @@ ALTER TABLE `fixing`
 -- AUTO_INCREMENT for table `fuel`
 --
 ALTER TABLE `fuel`
-  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `material`
