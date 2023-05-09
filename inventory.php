@@ -1,3 +1,14 @@
+<?php
+
+ $con = require __DIR__ . "/database.php";
+
+ $sqli = "SELECT * FROM material";
+
+ $result = $con->query($sqli);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +75,7 @@
                     <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
                     <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
-                    <a href="inventory.html" class="nav-item nav-link active"><i class="fa fa-cubes me-2 "></i>מחסן</a>
+                    <a href="inventory.php" class="nav-item nav-link active"><i class="fa fa-cubes me-2 "></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
@@ -151,34 +162,19 @@
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row g-4" id="materials_inv">
+                <div class="row g-4">
                 <?php
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "buildtech (2)";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT * FROM material";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-   echo "<div class='col-sm-12 col-xl-6'>";
-   echo "Material: " . $row["name"]. "<br>Price: " . $row["price"]. "<br>Amount: " . $row["amount"]. "<br>Metrics: ". $row["metrics"]."<br>";
-   echo "</div";
-  }
-} else {
-  echo "";
-}
-$conn->close();
+                 if ($result->num_rows > 0) {
+                       // output data of each row
+                       while($row = $result->fetch_assoc()) {
+                             echo "<div class='col-sm-12 col-xl-6'>";
+                            echo "Material: " . $row["name"]. "<br>Price: " . $row["price"]. "<br>Amount: " . $row["amount"]. "<br>Metrics: ". $row["metrics"]."<br>";
+                              echo "</div>";
+                           }
+                 } else {
+                          echo "";
+                     }
 ?>
                 </div>
             </div>
