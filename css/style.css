@@ -13,7 +13,6 @@
     z-index: 99;
 }
 
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -119,6 +118,7 @@
         margin-left: 0;
     }
 }
+
 
 
 

@@ -15,6 +15,22 @@
         $clientName = $row['clientName'];
 
     }
+
+    $query2 = "SELECT * FROM payments WHERE projectNumber='$id'";
+    $query_run = mysqli_query($conn, $query2);
+                         
+    $total=0;
+
+    if(mysqli_num_rows($query_run) > 0)
+    { 
+        foreach($query_run as $payment)
+        {
+            $total+=$payment["price"];
+        }
+    }
+
+
+ 
  
  ?>
 
@@ -28,6 +44,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+
+     <!-- Bootstrap CSS -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -50,9 +71,50 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
 </head>
 
 <body>
+     <!-- Payment Modal -->
+     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">דיווח על תשלום</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="insertPayment">
+                    <div class="modal-body">
+
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                        <input type="hidden" name="projectid" id="projectid" >
+
+                        <label for="">הסכום</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">₪</span>
+                            <input type="text" name="price" id="price" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">עבור</label>
+                            <textarea type="text" name="details" id="details" class="form-control" ></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">תאריך התשלום</label>
+                            <input type="date" name="paymentDate" id="paymentDate" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">דיווח</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -177,10 +239,12 @@
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
-                            <button type="submit" class="btn btn-primary" style="float: left;"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
+                        <form action="updateproject.php" method="get">
+                            <button type="submit" name="submit" class="btn btn-primary" style="float: left;"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
                             <h6 class="mb-4" id="name"></h6>
-                         
-                            <form>
+
+                            <input type="hidden" name="id" id="id" value="" ></input>
+                           
                                 <div class="col-lg-4 col-xlg-3 col-md-5">
                                     <div >
                                         <div class="mb-4">
@@ -191,23 +255,23 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">שם הפרויקט</label>
-                                    <input type="text" class="form-control" id="projectName"
+                                    <input type="text" class="form-control" id="projectName" name="projectName"
                                     value=""> 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">המזמין </label>
-                                    <input type="text" class="form-control" id="clientName"
+                                    <input type="text" class="form-control" id="clientName" name="clientName"
                                     value="" > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">כתובת </label>
-                                    <input type="text" class="form-control" id="address"
+                                    <input type="text" class="form-control" id="address" name="address"
                                     value=""> 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך התחלת הפרויקט</label>
-                                    <input type="date" class="form-control" id="startDate"
-                                        value="2023-01-01">
+                                    <input type="date" class="form-control" id="startDate" name="startDate"
+                                        value="">
     
                                 </div>
                                 
@@ -224,7 +288,7 @@
                             </div>
                             <canvas id="worldwide-sales" class="mb-3"></canvas>
 
-                            <div class="table-responsive table-fixed">
+                            <div class="">
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -265,7 +329,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="float: left;"> דיווח על תשלום </button>
+                            <button type="button" value="<?=$id?>" class="insertPaymentBtn btn btn-primary" style="float: left;"> דיווח על תשלום </button>
                         </div>
                     </div>
                     
@@ -306,7 +370,7 @@
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">הכנסות  </p>
-                                <h6 class="mb-0">540,000₪ </h6>
+                                <h6 id="penefit" class="mb-0"></h6>
                             </div>
                         </div>
                     </div>
@@ -350,16 +414,12 @@
     </div>
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
@@ -374,9 +434,61 @@
         document.getElementById("startDate").value = startDate;
         var clientName = "<?php echo $clientName; ?>";
         document.getElementById("clientName").value = clientName;
-       
-       
-       
+        var projectId = "<?php echo $id; ?>";
+        document.getElementById("id").value = projectId;
+        document.getElementById("projectid").value = projectId;
+
+        var penefit = "<?php echo $total; ?>";
+        $('#penefit').html(penefit);
+    </script>
+
+    <script>
+        $(document).on('click', '.insertPaymentBtn', function () {
+            
+            var projectid = $(this).val();
+            //alert(projectid);
+            $('#paymentModal').modal('show');
+        });
+
+        $(document).on('submit', '#insertPayment', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("insert_payment", true);
+
+            $.ajax({
+                type: "POST",
+                url: "insertPayment.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#paymentModal').modal('hide');
+                        $('#insertPayment')[0].reset();
+
+                        
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+
+
     </script>
 
 </body>
