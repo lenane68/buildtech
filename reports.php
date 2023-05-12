@@ -373,23 +373,25 @@
                                <tr class="table-light">
                                     <td> צ'יקים</td>
                                     <td> רשימת צ'יקים</td>
+                                    <form action="generatecheckspdf.php" method="get" target="_blank">
                                     <td>
                                         <label>
                                         מתאריך:
-                                        <input type="date" class="" id="" name=""
+                                        <input type="date" class="" id="frmDate" name="frmDate"
                                         placeholder="">
                                          </label>
                                         <br>
                                         <br>
                                         <label>
                                         עד תאריך:
-                                        <input type="date" class="" id="" name=""
+                                        <input type="date" class="" id="toDate" name="toDate"
                                         placeholder="">
                                          </label>
                                     </td>
 
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                     </td>
+                                                </form>
                                </tr>                        
                         </tbody>
                     </table>
