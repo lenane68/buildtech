@@ -19,6 +19,5 @@
         exit;
     }
    } else{
-    //echo "Invalid email";
+    echo "Invalid email";
    }
-   header("Location: home.html");
