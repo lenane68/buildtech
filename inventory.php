@@ -1,5 +1,16 @@
+<?php
+
+ $con = require __DIR__ . "/database.php";
+
+ $sqli = "SELECT * FROM material";
+
+ $result = $con->query($sqli);
+
+?>
+
+
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -42,7 +53,7 @@
         <!-- Spinner End -->
 
 
-        <!-- Sidebar Start -->
+          <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
@@ -61,10 +72,10 @@
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="home.html" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
-                    <a href="projectsTable.html" class="nav-item nav-link active"><i class="fa fa-map me-2"></i>פרויקטים</a>
+                    <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
                     <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
-                    <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
+                    <a href="inventory.php" class="nav-item nav-link active"><i class="fa fa-cubes me-2 "></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
@@ -95,7 +106,6 @@
             </nav>
         </div>
         <!-- Sidebar End -->
-
 
         <!-- Content Start -->
         <div class="content">
@@ -150,149 +160,26 @@
             <!-- Navbar End -->
 
 
-            <!-- Form Start -->
-            <div class="container-fluid pt-4 px-4" dir="rtl">
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <button type="submit" class="btn btn-primary" style="float: left;"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
-                            <h6 class="mb-4" >יפתח 10 </h6>
-                            <form>
-                                <div class="col-lg-4 col-xlg-3 col-md-5">
-                                    <div >
-                                        <div class="mb-4">
-                                            <div class="mb-3" style="text-align:center;"> <img src="img/2.jpg"  width="300" height="200" class="mb-3"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">שם הפרויקט</label>
-                                    <input type="text" class="form-control" id="floatingInput"
-                                    value="יפתח 10"> 
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">המזמין </label>
-                                    <input type="text" class="form-control" id="floatingInput"
-                                    value="משפחת ברזילי" > 
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">כתובת מייל </label>
-                                    <input type="email" class="form-control" id="floatingInput"
-                                    value="el_br@walla.com"> 
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">תאריך התחלת הפרויקט</label>
-                                    <input type="date" class="form-control" id=""
-                                        value="2023-01-01">
-    
-                                </div>
-                                
-                            </form>
-                        </div>
-                    </div>
-            
-                    
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-4">שלבי הפרויקט</label>
-                            <div class="d-flex align-items-center justify-content-between mb-4">                   
-                            </div>
-                            <canvas id="worldwide-sales" class="mb-3"></canvas>
+                <?php
 
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">שלב</th>
-                                            <th scope="col">אחוז</th>
-                                            <th scope="col">שולם</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>גמר הריסה, פינוי וגידור</td>
-                                            <td>5%</td>
-                                            <td>שולם</td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>גמר חומות</td>
-                                            <td>10%</td>
-                                            <td>שולם</td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>גמר פיתוח</td>
-                                            <td>12%</td>
-                                            <td>לא שולם</td>
-                                                                     </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button type="submit" class="btn btn-primary" style="float: left;"> דיווח על תשלום </button>
-                        </div>
-                    </div>
-                    
-                   
-
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-1">מיקום הפרויקט</label>
-                            <iframe class="position-relative rounded w-100 h-100"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54033.834063953196!2d34.7352910181604!3d32.174183504019545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d489a0b0c33af%3A0xa250f5e834eccc18!2sHerzliya%20Pituah%2C%20Herzliya%2C%20Israel!5e0!3m2!1sen!2sbd!4v1676656255401!5m2!1sen!2sbd" 
-                           
-                            tabindex="0"></iframe>
-                            
-                        </div>
-                     
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-4">קבצים מצורפים</label>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">הסכם</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">הצעת מחיר</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">לוח זמנים</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            
-                            
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">הכנסות  </p>
-                                <h6 class="mb-0">540,000₪ </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">הוצאות </p>
-                                <h6 class="mb-0">400,000₪ </h6>
-                            </div>
-                        </div>
-                    </div>
-                   
+                 if ($result->num_rows > 0) {
+                       // output data of each row
+                       while($row = $result->fetch_assoc()) {
+                             echo "<div class='col-sm-12 col-xl-6'>";
+                            echo "Material: " . $row["name"]. "<br>Price: " . $row["price"]. "<br>Amount: " . $row["amount"]. "<br>Metrics: ". $row["metrics"]."<br>";
+                              echo "</div>";
+                           }
+                 } else {
+                          echo "";
+                     }
+?>
                 </div>
             </div>
-            <!-- Form End -->
-
+            <!-- Table End -->
+                 
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
