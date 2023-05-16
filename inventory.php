@@ -10,7 +10,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html dir="rtl">
 
 <head>
     <meta charset="utf-8">
@@ -162,15 +162,21 @@
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
+                <h1>החומרים </h1>
                 <div class="row g-4">
                 <?php
 
                  if ($result->num_rows > 0) {
                        // output data of each row
                        while($row = $result->fetch_assoc()) {
-                             echo "<div class='col-sm-12 col-xl-6'>";
-                            echo "Material: " . $row["name"]. "<br>Price: " . $row["price"]. "<br>Amount: " . $row["amount"]. "<br>Metrics: ". $row["metrics"]."<br>";
-                              echo "</div>";
+                             echo "<div class='col-sm-12 col-xl-6'><div class='bg-light rounded d-flex align-items-center justify-content-between p-4'>";
+                            echo "<p class='mat_1'>" . $row["name"]. "<br>מחיר: " . $row["price"]. "₪<br>יחידה: ". $row["metrics"]."<br>כמות: <br>
+                            <button type='button' class='button hollow circle' data-quantity='minus' data-field='quantity'>
+                            <i class='fa fa-minus' aria-hidden='true'></i></button>
+                            <input class='input-group-field' type='number' name='quantity' value='". $row["amount"]."'>
+                            <button type='button' class='button hollow circle' data-quantity='plus' data-field='quantity' ><i class='fa fa-plus' aria-hidden='true'></i></button></p>";
+                            echo "";  
+                            echo "</div></div>";
                            }
                  } else {
                           echo "";
