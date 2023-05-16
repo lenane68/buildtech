@@ -174,8 +174,8 @@
 
 
          <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-light navbar-light">
+         <div class="sidebar pe-4 pb-3" >
+            <nav class="navbar bg-light navbar-light" >
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -191,33 +191,45 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="home.html" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
-                    <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
+                    <a href="home.php" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
+                    <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
                     <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
-                    <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
-                    <a href="inventory.html" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
+                    <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
+                    <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
-                    <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
+                    <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="addEmployee.html" class="dropdown-item">עובד</a>
+                        <a href="addEmployee.html" class="dropdown-item">עובד</a>
                             <a href="addClient.html" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item">חומר</a>
-                            <a href="addProject.html" class="dropdown-item">פרויקט</a>
-                            <a href="addException.html" class="dropdown-item">חריגה</a>
+                            <a href="addProject.php" class="dropdown-item">פרויקט</a>
+                            <a href="addException.php" class="dropdown-item">חריגה</a>
+                            <a href="addSupplier.html" class="dropdown-item">ספק</a>
+                            <a href="addVehicle.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
+                            <a href="" class="dropdown-item">צ'יק</a>
+                            <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
+                            <a href="addFuel.php" class="dropdown-item">דיווח בנזין</a>
+                            <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
                             
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="editEmployee.html" class="dropdown-item">עובד</a>
-                            <a href="editClient.html" class="dropdown-item active">לקוח</a>
-                            <a href="editMaterial.html" class="dropdown-item">חומר</a>
-                            <a href="editProject.html" class="dropdown-item">פרויקט</a>
-                            <a href="editShift.html" class="dropdown-item">משמרת</a>
-                            <a href="editException.html" class="dropdown-item">חריגה</a>
+                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editClient.php" class="dropdown-item">לקוח</a>
+                            <a href="editMaterial.php" class="dropdown-item">חומר</a>
+                            <a href="" class="dropdown-item">פרויקט</a>
+                            <a href="" class="dropdown-item">משמרת</a>
+                            <a href="editException.php" class="dropdown-item">חריגה</a>
+                            <a href="editSupplier.php" class="dropdown-item">ספק</a>
+                            <a href="editCar.php" class="dropdown-item active">רכב & ציוד צמ"ה</a>
+                            <a href="" class="dropdown-item">צ'יק</a>
+                            <a href="editReport.php" class="dropdown-item">דו"ח תנועה</a>
+                            <a href="editFuel.php" class="dropdown-item">דיווח בנזין</a>
+                            <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
                    
