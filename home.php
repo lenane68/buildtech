@@ -107,11 +107,11 @@
         var data = google.visualization.arrayToDataTable([
           ['חודש', 'הכנסות', 'הוצאות', 'רווח'],
           <?php
-            $query="select * FROM (select * from income UNION ALL select * from expense)";
+            $query="select month(date) as datem, sum(price) as price from income group by month(date)";
             $res=mysqli_query($conn,$query);
             while($data=mysqli_fetch_array($res)){
-              $month = date('F', strtotime($data['date']));
-              //$year=$data['id'];
+              //$month = date('F', strtotime($data['date']));
+              $month=$data['datem'];
               $sale=$data['price'];
               $expenses=$data['price'];
               $profit=$data['price'];
@@ -166,7 +166,7 @@
 </head>
 
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
+    <div class="container-xxl position-relative bg-white d-flex p-0" >
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -177,8 +177,8 @@
 
 
         <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-light navbar-light">
+        <div class="sidebar pe-4 pb-3" >
+            <nav class="navbar bg-light navbar-light" >
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -193,7 +193,7 @@
                         <span>מנהל ראשי</span>
                     </div>
                 </div>
-                <div class="navbar-nav w-100">
+                <div class="navbar-nav w-100" style="float:right;">
                     <a href="home.html" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
                     <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
@@ -334,8 +334,8 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">הכנסות, הוצאות ורווח</h6>
                                 <a href="">הצג הכל</a>
-                                <h6 class="mb-0">קצב גידול לקוחות</h6>
                             </div>
                           
                             <div id="barchart_material"></div>
@@ -344,8 +344,8 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a href="">הצג הכל</a>
                                 <h6 class="mb-0"> קצב גידול הכנסות</h6>
+                                <a href="">הצג הכל</a>
                             </div>
                             <canvas id="salse-revenue"></canvas>
                         </div>
