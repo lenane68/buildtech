@@ -93,11 +93,48 @@
 
     }
 ?>
-
+<?php  $conn = require __DIR__ . "/database.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['חודש', 'הכנסות', 'הוצאות', 'רווח'],
+          <?php
+            $query="select * FROM (select * from income UNION ALL select * from expense)";
+            $res=mysqli_query($conn,$query);
+            while($data=mysqli_fetch_array($res)){
+              $month = date('F', strtotime($data['date']));
+              //$year=$data['id'];
+              $sale=$data['price'];
+              $expenses=$data['price'];
+              $profit=$data['price'];
+           ?>
+           ['<?php echo $month;?>',<?php echo $sale;?>,<?php echo $expenses;?>,<?php echo $profit;?>],   
+           <?php   
+            }
+           ?> 
+        ]);
+
+        var options = {
+          chart: {
+            title: '',
+            subtitle: 'הכנסות, הוצאות ורווח',
+          },
+          bars: 'vertical' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
     <meta charset="utf-8">
     <title>BuildTech</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -300,7 +337,8 @@
                                 <a href="">הצג הכל</a>
                                 <h6 class="mb-0">קצב גידול לקוחות</h6>
                             </div>
-                            <canvas id="worldwide-sales"></canvas>
+                          
+                            <div id="barchart_material"></div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">

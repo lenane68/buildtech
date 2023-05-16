@@ -20,12 +20,20 @@ if(isset($_POST['insert_payment']))
         echo json_encode($res);
         return;
     }
+    $category = 'פרויקטים';
+
+    $stmt2 = $conn->prepare("insert into income(price, date, details, category, projectId) values(?, ?, ?, ?, ?)");
+    $stmt2->bind_param("dsssi", $price, $paymentDate, $details, $category,  $projectid);
+
 
     $stmt = $conn->prepare("insert into payments(projectNumber, price, date, forWhat) values(?, ?, ?, ?)");
     $stmt->bind_param("idss", $projectid, $price, $paymentDate, $details);
 
+    $execval2 = $stmt2->execute();
     $execval = $stmt->execute();
-    if($execval)
+ 
+
+    if($execval && $execval2)
     {
         $res = [
             'status' => 200,
@@ -43,8 +51,10 @@ if(isset($_POST['insert_payment']))
         echo json_encode($res);
         return;
     }
+    echo $execval2;
     echo $execval;
     $stmt->close();
+    $stmt2->close();
     $conn->close();
     
 }

@@ -153,46 +153,170 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Single Line Chart</h6>
-                            <canvas id="line-chart"></canvas>
+                        <div dir="rtl" class="bg-light rounded h-100 p-4">
+                            <label class="mb-4" style="color: #5BB498; font-weight: bold;">תשלומים עתידיים</label>
+                            
+                            <div class="">
+                                <table class="table" dir="rtl">
+                                    <thead>
+                                        <tr  style="color: #5BB498;">
+                                            <th scope="col">עבור</th>
+                                            <th scope="col">פרויקט</th>
+                                            <th scope="col">סטטוס</th>
+                                            <th scope="col">סכום</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="color: black;">
+                                        <?php
+                                        $conn = require __DIR__ . "/database.php";
+                                        $query = "SELECT * FROM projectstep WHERE payment != 'שולם' AND (finish = 'נגמר' OR finish='בעבודה')";
+                                
+                                        $query_run = mysqli_query($conn, $query);
+                                
+                                       
+                                        if(mysqli_num_rows($query_run) > 0)
+                                        {
+                                            foreach($query_run as $step)
+                                            {
+                                                ?>
+                                                <tr>
+                                                         <td><?= $step["description"] ?> </td>
+                                                         <td><?= $step["projectId"] ?></td>
+                                                         <td><?= $step["payment"] ?></td>
+                                                         <td><?= $step["projectsPercent"] ?></td>
+                                                </tr>
+                                                <?php
+                                                    }
+                                                }
+                                            ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        
+                            <div dir="rtl" class="bg-light rounded h-100 p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                <label class="mb-4" style="color: #E45C67; font-weight: bold;">צ'יקים קרובים</label>
+                                <a href="reports.php">הצג הכל</a>
+                                </div>
+                                
+                                <div class="">
+                                    <table class="table" dir="rtl">
+                                        <thead>
+                                            <tr style="color: #E45C67;">
+                                                <th scope="col">עבור</th>
+                                                <th scope="col">תאריך</th>
+                                                <th scope="col">מס' צ'יק</th>
+                                                <th scope="col">סכום</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="color: black;">
+                                        <?php 
+                                            $conn = require __DIR__ . "/database.php";
+                                            $query = "SELECT * FROM checks WHERE `checkDate` >= NOW() - INTERVAL 1 DAY
+                                            AND `checkDate` < NOW() + INTERVAL 10 DAY ORDER BY checkDate";
+                                    
+                                            $query_run = mysqli_query($conn, $query);
+                                    
+                                      
+                                        if(mysqli_num_rows($query_run) > 0)
+                                        {
+                                            foreach($query_run as $check)
+                                            {
+                                              
+                                                ?>
+                                            
+                                                        <tr>
+                                                            <td><?= $check["forName"] ?> </td>
+                                                            <td><?= $check["checkDate"] ?></td>
+                                                            <td><?= $check["id"] ?></td>
+                                                            <td><?= $check["price"] ?></td>
+                                                          
+                                                        </tr>
+                                                        </tr>
+                                                <?php
+                                                
+                                                     }
+                                                    }
+                                                ?>
+                                                
+                                        </tbody>
+                                    </table>
+                                </div>
+                             </div>
+                    </div>
+                    <div class="bg-light text-center rounded p-4"> 
+                        <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
+                            <h6 class="mb-0">ריכוז הכנסות והוצאות</h6>
+                            <a href="">הצג הכל</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr class="text-dark">
+                                        <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
+                                        <th scope="col">עבור</th>
+                                        <th scope="col">טיפוס</th>
+                                        <th scope="col">פרויקט</th>
+                                        <th scope="col">תאריך</th>
+                                        <th scope="col">הכנסה</th>
+                                        <th scope="col">הוצאה</th>
+                                        <th scope="col">הערות</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            
+                                    <tr>
+                                   
+                                    </tr>
+                          
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Multiple Line Chart</h6>
-                            <canvas id="salse-revenue"></canvas>
+                            
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Single Bar Chart</h6>
-                            <canvas id="bar-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Multiple Bar Chart</h6>
-                            <canvas id="worldwide-sales"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Pie Chart</h6>
-                            <canvas id="pie-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">Doughnut Chart</h6>
-                            <canvas id="doughnut-chart"></canvas>
-                        </div>
+                        <div dir="rtl" class="bg-light rounded h-100 p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                            <label class="mb-4">חשבונות בנק</label>
+                          
+                            </div>
+                            
+                            <div class="">
+                                <table class="table" dir="rtl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">מס</th>
+                                           
+                                            <th scope="col">סניף</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+         
+                                        
+                                                    <tr>
+                                                        <th scope="row">one</th>
+                                                      
+                                                    </tr>
+
+                                            
+                                    </tbody>
+                                </table>
+                            </div>
+                         </div>
                     </div>
                 </div>
             </div>
             <!-- Chart End -->
 
-
+           
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
