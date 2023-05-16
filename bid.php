@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="rtl">
 
 <head>
     <meta charset="utf-8">
@@ -148,7 +148,84 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            
+            <h6 class="mb-4">חישוב שלד</h6>
+                <div class="bg-light rounded h-100 p-4">
+                    <form>
+                    <label for="batonclass">1. חישוב  בטון: מחיר לקוב 200 ש״ח</label>
+                        <div class="form-floating mb-3" id="batonclass">
+                        <select class="form-select" id="batonSelect"
+                                aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <option value="1">בטון מוכן</option>
+                                <option value="2">בטון מזוין</option>
+                                <option value="3">בטון דיקורטיבי</option>
+                            </select>
+                            <label for="batonSelect">סוג בטון</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="floatingInput"
+                                placeholder="">
+                            <label for="floatingInput">כמות קובים</label>
+                        </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₪</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <span class="input-group-text">.00</span>
+                    </div>
+                    </form>
+
+                    <form>
+                        <label for="barzelclass">2. חישוב  ברזל : מחיר לטון 999 ש״ח</label>
+                        <div class="form-floating mb-3" id="barzelclass">
+                        <select class="form-select" id="barzelSelect"
+                                aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <option value="1">ברזל 6 מ״מ</option>
+                                <option value="2">ברזל 8 מ״מ</option>
+                                <option value="3">ברזל 10 מ״מ</option>
+                            </select>
+                            <label for="barzelSelect">סוג ברזל</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="floatingInput"
+                                placeholder="">
+                            <label for="floatingInput">כמות טונים</label>
+                        </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₪</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <span class="input-group-text">.00</span>
+                    </div>
+                    </form>
+
+                    <form>
+                        <label for="blockclass">3. חישוב בלוק : מחיר לטון 29 ש״ח</label>
+                        <div class="form-floating mb-3" id="blockclass">
+                        <select class="form-select" id="blockSelect"
+                                aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <option value="1">בלוק אדום 22</option>
+                                <option value="2">בלוק שחור</option>
+                                <option value="3">בלוק פומיס 22</option>
+                                <option value="4">בלוק איטונג</option>
+                                <option value="5">בלוק אשבונד</option>
+                                <option value="6">בלוק תעלה</option>
+                            </select>
+                            <label for="blockSelect">סוג בלוק</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="floatingInput"
+                                placeholder="">
+                            <label for="floatingInput">כמות מטרים</label>
+                        </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₪</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <span class="input-group-text">.00</span>
+                    </div>
+                    </form>
+            </div>
+
           </div>
         <!-- Content End -->
      
