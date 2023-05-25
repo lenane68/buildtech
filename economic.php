@@ -8,6 +8,11 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+
+
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -29,9 +34,164 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        .btn-close.btn-close-left {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 2;
+  }
+  
+  .modal-header {
+    position: relative;
+  }
+  </style>
 </head>
 
+
 <body>
+        <!-- View bank account Modal -->
+        <div class="modal fade" id="bankViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" dir="rtl">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">הצגת חשבון בנק</h5>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body" id="dataModal">
+
+                            <div class="mb-3">
+                            <label for="">מספר חשבון</label>
+                            <p  id="view_accountNumber" class="form-control" ></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">מספר סניף</label>
+                                <p  id="view_branch" class="form-control" ></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">בנק</label>
+                                <p id="view_bank" class="form-control" ></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">בבעלות</label>
+                                <p id="view_owner" class="form-control" ></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">מספר זהב</label>
+                                <p  id="view_gold" class="form-control" ></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">כתובת</label>
+                                <p  id="view_address" class="form-control" ></p>
+                            </div>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                    <button type="button" id="copyButton" class="btn btn-info" data-bs-dismiss="modal">העתק</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Edit bank account Modal -->
+     <div class="modal fade" id="bankEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" dir="rtl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">עריכת חשבון בנק</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="updateBank">
+                    <div class="modal-body">
+
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                        <div class="mb-3">
+                        <label for="">מספר חשבון</label>
+                        <input type="text" name="accountNumber" id="accountNumber" class="form-control" >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">מספר סניף</label>
+                            <input type="text" name="branch" id="branch" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">בנק</label>
+                            <input type="text" name="bank" id="bank" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">בבעלות</label>
+                            <input type="text" name="owner" id="owner" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">מספר זהב</label>
+                            <input type="text" name="gold" id="gold" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">כתובת</label>
+                            <input type="text" name="address" id="address" class="form-control" />
+                        </div>
+                     
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">עדכן חשבון</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+         <!-- Add bank account Modal -->
+     <div class="modal fade" id="bankAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" dir="rtl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">הוספת חשבון בנק</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addBank">
+                    <div class="modal-body">
+
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                        <div class="mb-3">
+                        <label for="">מספר חשבון</label>
+                        <input type="text" name="accountNumber" id="accountNumber" class="form-control" >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">מספר סניף</label>
+                            <input type="text" name="branch" id="branch" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">בנק</label>
+                            <input type="text" name="bank" id="bank" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">בבעלות</label>
+                            <input type="text" name="owner" id="owner" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">מספר זהב</label>
+                            <input type="text" name="gold" id="gold" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">כתובת</label>
+                            <input type="text" name="address" id="address" class="form-control" />
+                        </div>
+                     
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">הוסף חשבון</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -290,35 +450,64 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            
-                        </div>
+                    <div class="bg-light rounded h-100 p-4 d-flex justify-content-center align-items-center position-relative">
+                        <button class="btn btn-primary rounded-circle p-4 mx-2" type="button">
+                        <i class="fas fa-plus fa-lg"></i>
+                        </button>
+                        <button class="btn btn-danger rounded-circle p-4 mx-2" type="button">
+                        <i class="fas fa-minus fa-lg"></i>
+                        </button>
                     </div>
+                    </div>
+
                     <div class="col-sm-12 col-xl-6">
                         <div dir="rtl" class="bg-light rounded h-100 p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                             <label class="mb-4">חשבונות בנק</label>
-                          
+                            <button class="addAccount btn btn-primary">הוספת חשבון</button>
                             </div>
                             
+                            
                             <div class="">
-                                <table class="table" dir="rtl">
+                                <table class="table" dir="rtl" id="myTable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">מס</th>
-                                           
+                                            <th scope="col">מס'</th>
                                             <th scope="col">סניף</th>
+                                            <th scope="col">בנק</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-         
-                                        
-                                                    <tr>
-                                                        <th scope="row">one</th>
-                                                      
-                                                    </tr>
+                                    <?php 
 
-                                            
+                                    $conn = require __DIR__ . "/database.php";
+                                    $query = "SELECT * FROM bankaccount";
+
+                                    $query_run = mysqli_query($conn, $query);
+
+
+                                    if(mysqli_num_rows($query_run) > 0)
+                                    {
+                                    foreach($query_run as $bank)
+                                    {
+
+                                        ?>
+                                    <tr>
+                                    
+                                    <td><?= $bank["accountNumber"] ?></td>
+                                    <td><?= $bank["branchNumber"] ?></td>
+                                    <td><?= $bank["bankName"] ?></td>
+                                    <td>
+                                            <button type="button" value="<?=$bank['accountNumber'];?>" class="viewBankBtn btn btn-info btn-sm">הצג</button>
+                                            <button type="button" value="<?=$bank['accountNumber'];?>" class="editBankBtn btn btn-success btn-sm">עדכון</button>
+                                            <button type="button" value="<?=$bank['accountNumber'];?>" class="deleteBankBtn btn btn-danger btn-sm">מחיקה</button>
+                                    </td>
+                                    </tr>
+                                    <?php
+                                    }
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -352,19 +541,229 @@
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+        $(document).on('click', '.editBankBtn', function () {
+            
+            var account_number = $(this).val();
+            //alert(account_number);
+
+            $.ajax({
+                type: "GET",
+                url: "bankcode.php?account_number=" + account_number,
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 404) {
+
+                        alert(res.message);
+                    }else if(res.status == 200){
+                        
+                    
+
+                    $('#accountNumber').val(res.data.accountNumber);
+                    $('#branch').val(res.data.branchNumber);
+                    $('#bank').val(res.data.bankName);
+                    $('#owner').val(res.data.owner);
+                    $('#gold').val(res.data.goldNumber);
+                    $('#address').val(res.data.address);
+                  
+                    $('#bankEditModal').modal('show');
+                    
+                    }
+                }
+            });
+              
+        });
+
+        $(document).on('submit', '#updateBank', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("update_bank", true);
+
+            $.ajax({
+                type: "POST",
+                url: "bankcode.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#bankEditModal').modal('hide');
+                        $('#updateBank')[0].reset();
+
+                        $('#myTable').load(location.href + " #myTable");
+
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+
+        $(document).on('click', '.viewBankBtn', function () {
+            var account_number = $(this).val();
+            $.ajax({
+            type: "GET",
+            url: "bankcode.php?account_number=" + account_number,
+            success: function (response) {
+
+            var res = jQuery.parseJSON(response);
+            if(res.status == 404) {
+
+                alert(res.message);
+            }else if(res.status == 200){
+
+                $('#view_accountNumber').text(res.data.accountNumber);
+                $('#view_branch').text(res.data.branchNumber);
+                $('#view_bank').text(res.data.bankName);
+                $('#view_owner').text(res.data.owner);
+                $('#view_gold').text(res.data.goldNumber);
+                $('#view_address').text(res.data.address);
+               
+
+                $('#bankViewModal').modal('show');
+                }
+            }
+         });
+
+         $(document).on('click', '.deleteBankBtn', function (e) {
+            e.preventDefault();
+
+            if(confirm('האם אתה בטוח שברצונך למחוק את הנתונים האלה?'))
+            {
+                var account_number = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: "bankcode.php",
+                    data: {
+                        'delete_account': true,
+                        'account_number': account_number
+                    },
+                    success: function (response) {
+
+                        var res = jQuery.parseJSON(response);
+                        if(res.status == 500) {
+
+                            alert(res.message);
+                        }else{
+                            alertify.set('notifier','position', 'top-right');
+                            alertify.success(res.message);
+
+                            $('#myTable').load(location.href + " #myTable");
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.addAccount', function () {
+            
+            //alert(projectid);
+            $('#bankAddModal').modal('show');
+        });
+
+        $(document).on('submit', '#addBank', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("add_account", true);
+
+            $.ajax({
+                type: "POST",
+                url: "addBank.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#bankAddModal').modal('hide');
+                        $('#addBank')[0].reset();
+
+                        $('#myTable').load(location.href + " #myTable");
+
+                        
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+       
+        </script>
+        <script>
+        // Get the button and all the data elements
+        const copyButton = document.getElementById('copyButton');
+        const dataElements = document.querySelectorAll('#dataModal p');
+
+        // Add click event listener to the button
+        copyButton.addEventListener('click', function() {
+        // Concatenate the content of all the data elements
+        let dataToCopy = '';
+        dataElements.forEach(function(dataElement) {
+            dataToCopy += dataElement.innerText + '\n';
+        });
+
+        // Create a new textarea element to hold the data temporarily
+        const textarea = document.createElement('textarea');
+        textarea.value = dataToCopy;
+
+        // Append the textarea to the document
+        document.body.appendChild(textarea);
+
+        // Select the content of the textarea
+        textarea.select();
+        textarea.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the selected text
+        document.execCommand('copy');
+
+        // Remove the textarea from the document
+        document.body.removeChild(textarea);
+
+        // Provide visual feedback or notify the user that the data has been copied
+        alert('Data copied!');
+        });
+        </script>
+
+
+
 </body>
 
 </html>
