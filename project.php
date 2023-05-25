@@ -347,17 +347,26 @@
                     
                    
 
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-1">מיקום הפרויקט</label>
-                            <iframe class="position-relative rounded w-100 h-100"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54033.834063953196!2d34.7352910181604!3d32.174183504019545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d489a0b0c33af%3A0xa250f5e834eccc18!2sHerzliya%20Pituah%2C%20Herzliya%2C%20Israel!5e0!3m2!1sen!2sbd!4v1676656255401!5m2!1sen!2sbd" 
-                           
-                            tabindex="0"></iframe>
+              
+                            <?php
+                                // Fetch the address from the database
+                                //$address = "רחוב שטורמן, הרצליה, ישראל"; // Replace with your code to fetch the address from MySQL
+
+                                // Construct the embedded map URL
+                                $mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&q=" . urlencode($address);
+
+                                // Output the HTML with the embedded map
+                                echo '<div class="col-sm-12 col-xl-6">
+                                        <div class="bg-light rounded h-100 p-4">
+                                            <label class="mb-1">מיקום הפרויקט</label>
+                                            <iframe class="position-relative rounded w-100 h-100"
+                                                src="' . $mapUrl . '"
+                                                tabindex="0"></iframe>
+                                        </div>
+                                    </div>';
+                                ?>
                             
-                        </div>
-                     
-                    </div>
+              
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
                             <label class="mb-4">קבצים מצורפים</label>
