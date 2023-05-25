@@ -429,16 +429,43 @@
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                       
-                            <div class="bg-light rounded h-100 p-4">
-                                <iframe class="position-relative rounded w-100 h-100"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3487739.32553939!2d32.83681830135883!3d31.386689395772862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1500492432a7c98b%3A0x6a6b422013352cba!2sIsrael!5e0!3m2!1sen!2sbd!4v1676362338089!5m2!1sen!2sbd" 
-                                frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
-                                tabindex="0"></iframe>
-                            </div>
-                    
+            <?php
+            // Fetch addresses from the database (Replace with your code to fetch addresses from MySQL)
+            // Query to fetch addresses from the database
+            $sql = "SELECT descr FROM data_location";
+            $result = $conn->query($sql);
+
+            // Check if there are any addresses
+            if ($result->num_rows > 0) {
+                $addresses = array();
+                
+                // Fetch addresses and add them to the array
+                while ($row = $result->fetch_assoc()) {
+                    $addresses[] = $row['descr'];
+                }
+            }
+
+            // Google Maps API key (Replace with your actual API key)
+            $apiKey = "AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0";
+
+            // Function to generate the embedded map URL with markers for all addresses
+            function generateMapUrl($addresses, $apiKey) {
+                $encodedAddresses = implode("|", array_map('rawurlencode', $addresses));
+                $mapUrl = "https://www.google.com/maps/embed/v1/search?key=$apiKey&q=$encodedAddresses";
+                return $mapUrl;
+            }
+
+            // Output the HTML with embedded map and markers
+            $mapUrl = generateMapUrl($addresses, $apiKey);
+            echo '<div class="col-sm-12 col-md-6 col-xl-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <iframe class="position-relative rounded w-100 h-100"
+                            src="' . $mapUrl . '"
+                            frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                            tabindex="0"></iframe>
                     </div>
+                </div>';
+            ?>
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
