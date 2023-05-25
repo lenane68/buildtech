@@ -12,6 +12,7 @@
     $name = $_POST['name'];
     $type = $_POST['type'];
     $floorsNum = $_POST['floorsNum'];
+
     if(isset($_POST['pool'])){
         $pool =true;
     }  else  
@@ -32,6 +33,12 @@
     $address = $_POST['address'];
     $finishDate = $_POST['finishDate'];
     $clientName = $_POST['clientName'];
+    // Construct the API request URL
+    $apiKey = 'AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0';
+    $latitude = $_POST['latitude'];
+    $longitude = $_POST['longitude'];
+    
+
 
    
 
@@ -45,7 +52,14 @@
 
 }
 
+$stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName) values(?, ?, ?, ?)");
+$stmt6->bind_param("sdds", $address, $latitude, $longitude, $name);
+
+
+
+
 $execval = $stmt->execute();
+$execval6 = $stmt6->execute();
 
 $file =$_FILES['file1'];
 $file2 =$_FILES['file2'];
@@ -109,7 +123,7 @@ $allowed = array('pdf');
 if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed)) &&
  (in_array($fileActualExt3, $allowed)) && (in_array($fileActualExt4, $allowed))) {
     if(($fileError === 0) && ($fileError2 === 0) && ($fileError3 === 0) && ($fileError4 === 0)){
-        if(($fileSize < 1000000) && ($execval) && ($fileSize2 < 1000000) && ($fileSize3 < 1000000) && ($fileSize4 < 1000000)){
+        if(($fileSize < 1000000) && ($execval) && ($execval6) && ($fileSize2 < 1000000) && ($fileSize3 < 1000000) && ($fileSize4 < 1000000)){
             $fileNameNew = uniqid('', true).".".$fileActualExt;
             $fileDestination = 'projectFiles/'.$fileNameNew;
             move_uploaded_file($fileTmpName, $fileDestination);
@@ -156,7 +170,7 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
             }
            
         } else {
-            if(!($execval)){
+            if(!($execval) || !($execval6)){
                 die($conn->error . " " . $conn->errno);
             } else 
             echo "Your file is too big!";  
@@ -215,6 +229,7 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&libraries=places"></script>
 </head>
 
 <body>
@@ -354,7 +369,7 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
-                            <div id="app">
+                            <div id="app" dir="rtl">
                                 <h6 class="required mb-3" for="id_type">סוג פרויקט</h6>
                               </div>
                               <select name="type" class="form-select mb-3" id="id_type" onchange="myFunction(event)"
@@ -414,7 +429,7 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
+                        <div class="bg-light rounded h-100 p-4" dir="rtl">
                             <h6 class="mb-4">הוספת פרויקט</h6>
                             <form>
                                 <div class="form-floating mb-3">
@@ -423,10 +438,21 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                                     <label for="name">שם פרויקט</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="address" name="address"
-                                        placeholder="name@example.com">
-                                    <label for="address">כתובת </label>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                    <input type="text" class="form-control" id="locationInput" name="address"
+                                        placeholder="כתובת">
+                                    </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary" onclick="geocode()">שמור</button>   
+                                    </div>
+                                </div>
+                                    <input type="hidden" id="latitude" name="latitude">
+                                    <input type="hidden" id="longitude" name="longitude">
+                                    
+                                   </div>
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="startDate" name="startDate"
                                         placeholder="">
@@ -462,6 +488,8 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                                 <option value="3">גמר מעטפת קומת קרקע</option>
                             </select>
                             <button type="submit" class="btn btn-primary">אישור</button>
+                            <br>
+                          
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
@@ -549,6 +577,43 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
         }
       }
     </script>
+    <script>
+    function initializeAutocomplete() {
+        var locationInput = document.getElementById('locationInput');
+        var autocomplete = new google.maps.places.Autocomplete(locationInput);
+        /*autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                // Handle invalid place selection
+                return;
+            }
+            // Retrieve the latitude and longitude of the selected place
+            var latitude = place.geometry.address.lat();
+            var longitude = place.geometry.address.lng();
+            // Assign the latitude and longitude values to hidden input fields or process them as needed
+            document.getElementById('latitudeInput').value = latitude;
+            document.getElementById('longitudeInput').value = longitude;
+        });*/
+    }
+    function geocode() {
+            var place = document.getElementById('locationInput').value;
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ address: place }, function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+                    document.getElementById('latitude').value = latitude;
+                    document.getElementById('longitude').value = longitude;
+                } else {
+                    alert('Geocoding failed. Please try again.');
+                }
+            });
+        }
+    // Call the initializeAutocomplete function when the page loads
+    google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
+    </script>
+
 
 </body>
 
