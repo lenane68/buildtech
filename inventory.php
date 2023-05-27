@@ -171,6 +171,57 @@
             </nav>
             <!-- Navbar End -->
 
+<!-- Edit Material Modal -->
+            <div class="modal fade" id="materialEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">עריכת חומר</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="updateMaterial">
+                    <div class="modal-body">
+
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                        <input type="hidden" name="material_id" id="material_id" >
+
+                        <div class="mb-3">
+                        <label for="">שם </label>
+                        <input type="text" name="materialName" id="materialName" class="form-control" >
+                        </div>
+
+                        <label for="">מחיר</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">₪</span>
+                            <input type="text" name="price" id="price" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="">כמות</label>
+                            <input type="number" name="amount" id="amount" class="form-control" />
+                        </div>
+                        <div class="form-floating mb-3">
+                        <select class="form-select" name="metrics" id="metrics"
+                            aria-label="Floating label select example">
+                            <option value="טון">טון</option>
+                            <option value="יחידה">יחידה</option>
+                            <option value="קוב">קוב</option>
+                            <option value="קילו">קילו</option>
+                            <option value="מטר אורך">מטר אורך</option>
+                            <option value="מטר ריבוע">מטר ריבוע</option>
+                        </select>
+                        <label for="metrics">מדדים</label>
+                    </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">עדכן חומר</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
@@ -181,14 +232,12 @@
                  if ($result->num_rows > 0) {
                        // output data of each row
                        while($row = $result->fetch_assoc()) {
-                             echo "<div class='col-sm-12 col-xl-6'><div class='bg-light rounded d-flex align-items-center justify-content-between p-4'>";
-                            echo "<p class='mat_1'>" . $row["name"]. "<br>מחיר: " . $row["price"]. "₪<br>יחידה: ". $row["metrics"]."<br>כמות: <br>
-                            <button type='button' class='button hollow circle' data-quantity='minus' data-field='quantity'>
-                            <i class='fa fa-minus' aria-hidden='true'></i></button>
-                            <input class='input-group-field' type='number' name='quantity' value='". $row["amount"]."'>
-                            <button type='button' class='button hollow circle' data-quantity='plus' data-field='quantity' ><i class='fa fa-plus' aria-hidden='true'></i></button></p>";
-                            echo "";  
-                            echo "</div></div>";
+                             echo "<form method = 'post'><div class='col-sm-12 col-xl-6'><div class='bg-light rounded d-flex justify-content-between p-4'>";
+                            echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"]. 
+                            "</div><div class='row mb-3'  style='font-size: 20px;'>מחיר : " . $row["price"]. "₪</div><div class='row mb-3' style='font-size: 20px;'>יחידה :". $row["metrics"].
+                            "</div><div class='row mb-3' style='font-size: 20px;'>כמות : ". $row["amount"]."</div><div class='row'>";
+                            echo "<button type='button' value='". $row["id"]."' class='editMaterialBtn btn btn-success btn-sm'>עדכון</button></div>";  
+                            echo "</div></div></form>";
                            }
                  } else {
                           echo "";
@@ -223,8 +272,10 @@
     </div>
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
@@ -235,6 +286,79 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+
+$(document).on('click', '.editMaterialBtn', function () {
+            
+            var material_id = $(this).val();
+            //alert(supplier_id);
+
+            $.ajax({
+                type: "GET",
+                url: "materialcode.php?material_id=" + material_id,
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 404) {
+
+                        alert(res.message);
+                    }else if(res.status == 200){
+                        
+                    
+                    $('#material_id').val(res.data.id);   
+                    $('#materialName').val(res.data.name);
+                    $('#price').val(res.data.price);
+                    $('#amount').val(res.data.amount);
+                    $('#metrics').val(res.data.metrics);
+                   
+
+                    $('#materialEditModal').modal('show');
+                    
+                    }
+                }
+            });
+              
+        });
+
+       $(document).on('submit', '#updateMaterial', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("update_material", true);
+
+            $.ajax({
+                type: "POST",
+                url: "materialcode.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#materialEditModal').modal('hide');
+                        $('#updateMaterial')[0].reset();
+
+                        $('#myTable').load(location.href + " #myTable");
+
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+        </script>
 </body>
 
 </html>
