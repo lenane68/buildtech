@@ -92,49 +92,150 @@
        
 
     }
+    // Query to retrieve incomes and order by date
+    $incomeQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM income GROUP BY month ORDER BY date ASC";
+    $incomeResult = $conn->query($incomeQuery);
+
+    // Check if the query was successful
+    if ($incomeResult) {
+        // Fetch rows from the result set
+        while ($incomeRow = $incomeResult->fetch_assoc()) {
+            $incomes[] = [
+                'date' => $incomeRow['month'],
+                'price' => $incomeRow['total_price']
+            ];
+        }
+
+        // Free the result set
+        $incomeResult->free();
+    } else {
+        // Handle error
+        echo 'Error executing query: ' . $conn->error;
+    }
+
+    // Query to retrieve expenses and order by date
+    $expenseQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM expense GROUP BY month ORDER BY date ASC";
+    $expenseResult = $conn->query($expenseQuery);
+
+    // Check if the query was successful
+    if ($expenseResult) {
+        // Fetch rows from the result set
+        while ($expenseRow = $expenseResult->fetch_assoc()) {
+            $expenses[] = [
+                'date' => $expenseRow['month'],
+                'price' => $expenseRow['total_price']
+            ];
+        }
+
+        // Free the result set
+        $expenseResult->free();
+    } else {
+        // Handle error
+        echo 'Error executing query: ' . $conn->error;
+    }
+
+            
+    // Prepare the data for the chart
+    $chartData = [];
+    
+    // Iterate over the incomes array and calculate the total income for each month
+    foreach ($incomes as $income) {
+        $date = date('Y-m', strtotime($income['date']));
+        $price = $income['price'];
+    
+        if (!isset($chartData[$date])) {
+            $chartData[$date] = ['income' => $price, 'expense' => 0];
+        } else {
+            $chartData[$date]['income'] += $price;
+        }
+    }
+    
+    // Iterate over the expenses array and calculate the total expense for each month
+    foreach ($expenses as $expense) {
+        $date = date('Y-m', strtotime($expense['date']));
+        $price = $expense['price'];
+    
+        if (!isset($chartData[$date])) {
+            $chartData[$date] = ['income' => 0, 'expense' => $price];
+        } else {
+            $chartData[$date]['expense'] += $price;
+        }
+    }
+    
+    // Calculate the revenue for each month
+    foreach ($chartData as &$data) {
+        $data['revenue'] = $data['income'] - $data['expense'];
+    }
+    
+    // Prepare the labels and data for the chart
+    $labels = [];
+    $incomeData = [];
+    $expenseData = [];
+    $revenueData = [];
+    
+    foreach ($chartData as $date => $data) {
+        $labels[] = date('F Y', strtotime($date));
+        $incomeData[] = $data['income'];
+        $expenseData[] = $data['expense'];
+        $revenueData[] = $data['revenue'];
+    }
+    
+    // Convert the data arrays to JSON format
+    $labelsJSON = json_encode($labels);
+    $incomeDataJSON = json_encode($incomeData);
+    $expenseDataJSON = json_encode($expenseData);
+    $revenueDataJSON = json_encode($revenueData);
+
+
+    // ...pie chart
+   // Prepare and execute the query to fetch income data from the "income" table
+    $query = "SELECT category, price FROM income";
+    $result = $conn->query($query);
+
+    // Fetch the income data from the result set
+    $incomeData = [];
+    while ($row = $result->fetch_assoc()) {
+        $incomeData[] = $row;
+    }
+
+    // Prepare the data for the pie chart
+    $categories = [];
+    $prices = [];
+
+    foreach ($incomeData as $row) {
+        $categories[] = $row['category'];
+        $prices[] = $row['price'];
+    }
+
+    // Generate the chart data in JSON format
+    $chartData = [
+        'labels' => $categories,
+        'datasets' => [
+            [
+                'data' => $prices,
+                'backgroundColor' => [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    // Add more colors as needed
+                ],
+            ],
+        ],
+    ];
+
+    // Encode the chart data as JSON
+    $jsonChartData = json_encode($chartData);
+    
+
+
 ?>
+
 <?php  $conn = require __DIR__ . "/database.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['חודש', 'הכנסות', 'הוצאות', 'רווח'],
-          <?php
-            $query="select month(date) as datem, sum(price) as price from income group by month(date)";
-            $res=mysqli_query($conn,$query);
-            while($data=mysqli_fetch_array($res)){
-              //$month = date('F', strtotime($data['date']));
-              $month=$data['datem'];
-              $sale=$data['price'];
-              $expenses=$data['price'];
-              $profit=$data['price'];
-           ?>
-           ['<?php echo $month;?>',<?php echo $sale;?>,<?php echo $expenses;?>,<?php echo $profit;?>],   
-           <?php   
-            }
-           ?> 
-        ]);
-
-        var options = {
-          chart: {
-            title: '',
-            subtitle: 'הכנסות, הוצאות ורווח',
-          },
-          bars: 'vertical' // Required for Material Bar Charts.
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="utf-8">
     <title>BuildTech</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -341,29 +442,31 @@
 
 
             <!-- Sales Chart Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4 text-end">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4">
+                        <div class="bg-light text-center rounded p-4" style="height: 350px;">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">הכנסות, הוצאות ורווח</h6>
                                 <a href="">הצג הכל</a>
+                                <h6 class="mb-0">הכנסות, הוצאות ורווח</h6>  
                             </div>
-                          
-                            <div id="barchart_material"></div>
+                            <canvas id="barChart"></canvas>
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4">
+                        <div class="bg-light text-center rounded p-4" style="height: 350px;">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0"> קצב גידול הכנסות</h6>
                                 <a href="">הצג הכל</a>
+                                <h6 class="mb-0">התפלגות הכנסה לפי קטגוריות</h6>
                             </div>
-                            <canvas id="salse-revenue"></canvas>
+                            <canvas id="incomeChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
             <!-- Sales Chart End -->
 
 
@@ -556,7 +659,6 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
@@ -604,6 +706,65 @@
             localStorage.setItem('scrollpos', window.scrollY);
         };
     </script>
+    
+    <script>
+    // Retrieve the data from PHP variables
+    var labels = <?php echo $labelsJSON; ?>;
+    var incomeData = <?php echo $incomeDataJSON; ?>;
+    var expenseData = <?php echo $expenseDataJSON; ?>;
+    var revenueData = <?php echo $revenueDataJSON; ?>;
+
+    // Create the bar chart using Chart.js
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'הכנסות',
+                data: incomeData,
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }, {
+                label: 'הוצאות',
+                data: expenseData,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }, {
+                label: 'רווח',
+                data: revenueData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    <script>
+        // Retrieve the chart data from PHP
+        var chartData = <?php echo $jsonChartData; ?>;
+
+        // Create the pie chart
+        var ctx = document.getElementById('incomeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+
 
 </body>
 
