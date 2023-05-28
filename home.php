@@ -580,52 +580,45 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
-                        <div class="h-100 bg-light rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-        
+                    <div class="h-100 bg-light rounded p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
                             <a href="">הצג הכל</a>
-                                <h6 class="mb-0">רשימת מטלות</h6>
-                            </div>
+                            <h6 class="mb-0">רשימת מטלות</h6>
+                        </div>
 
-                            <form action="" method="post">
+                        <form action="" method="post">
                             <div class="d-flex mb-2">
                                 <input class="form-control bg-transparent" type="text" placeholder="הזן משימה" name="description" id="description">
                                 <button type="submit" name="submit" class="btn btn-primary ms-2">הוספה</button>
                             </div>
-                            </form>
-                            <?php
-                                          $conn = require __DIR__ . "/database.php";
-                                          $query = "SELECT * FROM tasks WHERE done='0'";
-                                   
-                                          $query_run = mysqli_query($conn, $query);
-                                  
-                                 
-                                        if(mysqli_num_rows($query_run) > 0)
-                                        {
-                                            foreach($query_run as $task)
-                                            {
-                             
-                                                ?>
-                            <form method="post">
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <input type="hidden" name="id" id="id" value="<?= $task["id"];?>" ></input>
-                                            <span><?= $task["description"] ?></span>
-                                            <button type="submit" name="delete" class="btn btn-sm"><i class="fa fa-times"></i></button>     
+                        </form>
+
+                        <?php
+                        $conn = require __DIR__ . "/database.php";
+                        $query = "SELECT * FROM tasks WHERE done='0'";
+                        $query_run = mysqli_query($conn, $query);
+
+                        if (mysqli_num_rows($query_run) > 0) {
+                            foreach ($query_run as $task) {
+                                ?>
+                                <form method="post">
+                                    <div class="d-flex align-items-center border-bottom py-2">
+                                    <input class="form-check-input m-0" type="checkbox" onchange="toggleTaskLine(event, <?php echo $task["id"]; ?>)">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <input type="hidden" name="id" id="id" value="<?= $task["id"]; ?>">
+                                                <span id="taskDescription<?= $task["id"]; ?>"><?= $task["description"]; ?></span>
+                                                <button type="submit" name="delete" class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            </form>
-                            <?php
-                                            }
-                                        }
-                                        ?>
-                   
-                        </div>
-                       
+                                </form>
+                                <?php
+                            }
+                        }
+                        ?>
                     </div>
+                </div>
                 </div>
             </div>
             <!-- Widgets End -->
@@ -688,24 +681,9 @@
         var paragraph = document.getElementById("totalincomes");
         var text = document.createTextNode(" ₪");
         paragraph.appendChild(text);
-
- 
-        
-
-  
-
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) { 
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo(0, scrollpos);
-        });
-
-        window.onbeforeunload = function(e) {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
-    </script>
+    
     
     <script>
     // Retrieve the data from PHP variables
@@ -764,6 +742,42 @@
             }
         });
     </script>
+
+    <script>
+        // Retrieve the projects number from your data source
+        var totalexpenses = <?php echo $totalexpenses; ?>; // Replace with your actual projects number
+
+        // Format the number with commas
+        var formattedNumber = totalexpenses.toLocaleString();
+
+        // Set the formatted number as the content of the <h6> element
+        document.getElementById("totalexpenses").textContent = formattedNumber;
+    </script>
+
+    <script>
+        // Retrieve the projects number from your data source
+        var totalincomes = <?php echo $totalincomes; ?>; // Replace with your actual projects number
+
+        // Format the number with commas
+        var formattedNumber = totalincomes.toLocaleString();
+
+        // Set the formatted number as the content of the <h6> element
+        document.getElementById("totalincomes").textContent = formattedNumber;
+    </script>
+    <script>
+    function toggleTaskLine(event, taskId) {
+        var checkbox = event.target;
+        var taskDescription = document.getElementById("taskDescription" + taskId);
+        if (checkbox.checked) {
+            taskDescription.style.textDecoration = "line-through";
+        } else {
+            taskDescription.style.textDecoration = "none";
+        }
+    }
+    </script>
+
+
+
 
 
 </body>
