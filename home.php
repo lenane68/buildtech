@@ -494,17 +494,44 @@
                             <?php 
                                  $conn = require __DIR__ . "/database.php";
                                  $query = "SELECT * FROM project";
-                          
+
                                  $query_run = mysqli_query($conn, $query);
-                         
+                                
                                 $i=-1;
+
                                if(mysqli_num_rows($query_run) > 0)
                                {
                                    foreach($query_run as $project)
                                    {
+                                    $query2 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' AND finish = 'נגמר'";
+                                    $query3 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' ";
+          
+                                   $query_run2 = mysqli_query($conn, $query2);
+                                   $query_run3 = mysqli_query($conn, $query3);
+
+                                   $totalPayment = 0;
+
+                                   $totalpercent = 0;
+   
+                                   if(mysqli_num_rows($query_run2) > 0)
+                                   {
+                                       foreach($query_run2 as $projectstep)
+                                       {
+                                           $totalpercent+=$projectstep["projectsPercent"];
+                                       }
+                                   }
+
+                                   if(mysqli_num_rows($query_run3) > 0)
+                                   {
+                                       foreach($query_run3 as $projectstep)
+                                       {
+                                        $totalPayment += ($projectstep["paymentPercent"] / 100) * ($projectstep["projectsPercent"] / 100) * $project["totalPrice"];
+                                       }
+                                   }
+                                   $still = $project["totalPrice"] - $totalPayment;
                                     $i++;
                                     if ($i == 5) {
-                                        break;
+                                        //break;
                                       }
                                        ?>
                                 <tr>
@@ -512,8 +539,8 @@
                                     <td><?= $project["startDate"] ?> </td>
                                     <td><?= $project["clientName"] ?></td>
                                     <td><?= $project["address"] ?></td>
-                                    <td>30%</td>
-                                    <td>700,000₪</td>
+                                    <td><?= $totalpercent ?>%</td>
+                                    <td><?= number_format($still) ?></td>
                         
                                 </tr>
                                 <?php
@@ -589,7 +616,7 @@
                         <form action="" method="post">
                             <div class="d-flex mb-2">
                                 <input class="form-control bg-transparent" type="text" placeholder="הזן משימה" name="description" id="description">
-                                <button type="submit" name="submit" class="btn btn-primary ms-2">הוספה</button>
+                                <button type="submit" name="submit" class="btn btn-primary ms-2" onclick="submitForm(event)">הוספה</button>
                             </div>
                         </form>
 
