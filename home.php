@@ -540,7 +540,7 @@
                                     <td><?= $project["clientName"] ?></td>
                                     <td><?= $project["address"] ?></td>
                                     <td><?= $totalpercent ?>%</td>
-                                    <td><?= number_format($still) ?></td>
+                                    <td><?= number_format($still) ?>₪</td>
                         
                                 </tr>
                                 <?php
