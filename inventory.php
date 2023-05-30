@@ -232,12 +232,16 @@
                  if ($result->num_rows > 0) {
                        // output data of each row
                        while($row = $result->fetch_assoc()) {
-                             echo "<form method = 'post'><div class='col-sm-12 col-xl-6'><div class='bg-light rounded d-flex justify-content-between p-4'>";
-                            echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"]. 
-                            "</div><div class='row mb-3'  style='font-size: 20px;'>מחיר : " . $row["price"]. "₪</div><div class='row mb-3' style='font-size: 20px;'>יחידה :". $row["metrics"].
-                            "</div><div class='row mb-3' style='font-size: 20px;'>כמות : ". $row["amount"]."</div><div class='row'>";
+                             echo "<div class='col col-sm-12 col-xl-6'>";
+                             echo "<form method = 'post'>";
+                             echo "<div class='bg-light rounded d-flex justify-content-between p-4'>";
+                            echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"]."</div>";
+                            echo "<div class='row mb-3' ><img src='data:image/jpeg;base64,".base64_encode($row["img"])."' height='200px' width='200px'></div>"; 
+                            echo "<div class='row mb-3'  style='font-size: 20px;'>מחיר : " . $row["price"]. "₪</div>";
+                            echo "<div class='row mb-3' style='font-size: 20px;'>יחידה :". $row["metrics"]."</div>";
+                            echo "<div class='row mb-3' style='font-size: 20px;'>כמות : ". $row["amount"]."</div><div class='row'>";
                             echo "<button type='button' value='". $row["id"]."' class='editMaterialBtn btn btn-success btn-sm'>עדכון</button></div>";  
-                            echo "</div></div></form>";
+                            echo "</div></div></form></div>";
                            }
                  } else {
                           echo "";
@@ -273,7 +277,7 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
@@ -310,6 +314,7 @@ $(document).on('click', '.editMaterialBtn', function () {
                     $('#price').val(res.data.price);
                     $('#amount').val(res.data.amount);
                     $('#metrics').val(res.data.metrics);
+                    $('#img').val(res.data.img);
                    
 
                     $('#materialEditModal').modal('show');
