@@ -33,6 +33,8 @@
     $clientName = $_POST['clientName'];
     // Construct the API request URL
     $apiKey = 'AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0';
+    $latitude = 5.5;
+    $longitude = 4;
 
     
 
@@ -71,7 +73,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
          if (move_uploaded_file($uploadedFile1['tmp_name'], $filename1)) {
              $insertFile1Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename1')";
              mysqli_query($conn, $insertFile1Query);
-             echo 'File 1 uploaded successfully!<br>';
+            // echo 'File 1 uploaded successfully!<br>';
          } else {
              echo 'Error uploading file 1.<br>';
          }
@@ -90,7 +92,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
          if (move_uploaded_file($uploadedFile2['tmp_name'], $filename2)) {
              $insertFile2Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename2')";
              mysqli_query($conn, $insertFile2Query);
-             echo 'File 2 uploaded successfully!';
+             //echo 'File 2 uploaded successfully!';
          } else {
              echo 'Error uploading file 2.';
          }
@@ -109,7 +111,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
          if (move_uploaded_file($uploadedFile3['tmp_name'], $filename3)) {
              $insertFile3Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename3')";
              mysqli_query($conn, $insertFile3Query);
-             echo 'File 3 uploaded successfully!';
+             //echo 'File 3 uploaded successfully!';
          } else {
              echo 'Error uploading file 3.';
          }
@@ -130,7 +132,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
              mysqli_query($conn, $insertFile4Query);
              echo 'File 4 uploaded successfully!';
          } else {
-             echo 'Error uploading file 4.';
+            // echo 'Error uploading file 4.';
          }
      } else {
          echo 'Only PDF files are allowed for file 4.';
@@ -138,6 +140,10 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
     
     $execval = $stmt->execute();
     $execval6 = $stmt6->execute();
+  
+    $stmt->close();
+
+   
 
 /*
  $execval = $stmt->execute();
@@ -148,7 +154,6 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
  }*/
 
     echo $execval;
-    $stmt->close();
     $conn->close();
 
  }
@@ -324,122 +329,100 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
             <!-- Navbar End -->
 
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <div id="app" dir="rtl">
-                                <h6 class="required mb-3" for="id_type">סוג פרויקט</h6>
-                              </div>
-                              <select name="type" class="form-select mb-3" id="id_type" onchange="myFunction(event)"
-                                        aria-label="Floating label select example" id="type">
-                                        <option selected value="פרטי">פרטי</option>
-                                        <option value="ציבורי"> ציבורי</option>                                      
-                              </select>
-                              <fieldset>
-                                <div id="id_choice_1_container">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="floorsNum" name="floorsNum"
-                                            placeholder="name@example.com" onchange="myFunction(event)">
-                                        <label for="floorsNum">מס' קומות </label>
-                                    </div>
-                                  <div class="form-check form-switch">
-                                    <label class="form-check-label" for="pool">עם בריכה</label>
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="pool" name="pool">
-                                    
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <label class="form-check-label" for="basement">עם מרתף</label>
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="basement" name="basement">
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <label class="form-check-label" for="parking">עם חניה</label>
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="parking" name="parking">
-                                        
-                                        </div>
-                                </div>
-                              
-                                <div id="id_choice_2_container" style="display: none">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="floorsNum2" name="floorsNum2"
-                                            placeholder="name@example.com"  onchange="myFunction(event)">
-                                        <label for="floorsNum2">מס' קומות </label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="roomsNum" name="roomsNum"
-                                            placeholder="name@example.com"  onchange="myFunction(event)">
-                                        <label for="roomsNum">מס' חדרים </label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="space" name="space"
-                                            placeholder="name@example.com"  onchange="myFunction(event)">
-                                        <label for="space">שטחים </label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cup" name="cup"
-                                            placeholder="name@example.com"  onchange="myFunction(event)">
-                                        <label for="cup">קופים פיתוח</label>
-                                    </div>
-                                </div>
-                              </fieldset>
-                        </div>
-                    </div>
+               
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4" dir="rtl">
                             <h6 class="mb-4">הוספת פרויקט</h6>
                             <form>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="name@example.com">
+                                <label for="name" class="position-absolute top-0 end-0">שם פרויקט</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="text" class="form-control" id="locationInput" name="address" placeholder="כתובת">
+                                <label for="locationInput" class="position-absolute top-0 end-0">כתובת</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="date" class="form-control" id="startDate" name="startDate" placeholder="">
+                                <label for="startDate" class="position-absolute top-0 end-0">תאריך התחלה</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="date" class="form-control" id="finishDate" name="finishDate" placeholder="">
+                                <label for="finishDate" class="position-absolute top-0 end-0">תאריך סיום משוערך</label>
+                            </div>
                             <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="name@example.com">
-                                    <label for="name">שם פרויקט</label>
+                                <select class="form-select" id="clientName" name="clientName" aria-label="Floating label select example">
+                                    <option selected>בחר/י</option>
+                                    <?php 
+                                        foreach($result as $row)
+                                        {
+                                            echo '<option value="'.$row["fullName"].'">'.$row["fullName"].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                                <label for="clientName">לקוח</label>
+                            </div>
+
+                             
+                                <div id="app" dir="rtl">
+                                <h6 class="required mb-3" for="id_type">סוג פרויקט</h6>
                                 </div>
-                            <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="locationInput" name="address" placeholder="כתובת">
-                                    <label for="locationInput">כתובת</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="startDate" name="startDate"
-                                        placeholder="">
-                                    <label for="startDate">תאריך התחלה</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="finishDate" name="finishDate"
-                                        placeholder="">
-                                    <label for="finishDate">תאריך סיום משוערך</label>
-                                </div>
-                                <div class="form-floating mb-3" >
-                                    <select class="form-select" id="clientName" name="clientName"
-                                        aria-label="Floating label select example">
-                                        <option selected>בחר/י</option>
-                                        <?php 
-                                            foreach($result as $row)
-                                            {
-                                                echo '<option value="'.$row["fullName"].'">'.$row["fullName"].'</option>';
-                                            }
-                                        ?>
-                                    </select>
-                                    <label for="clientName">לקוח</label>
-                                </div>       
+                                <select name="type" class="form-select mb-3" id="id_type" onchange="myFunction(event)"
+                                    aria-label="Floating label select example" id="type">
+                                    <option selected value="פרטי">פרטי</option>
+                                    <option value="ציבורי">ציבורי</option>
+                                </select>
+                                <fieldset>
+                                    <div id="id_choice_1_container">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="floorsNum" name="floorsNum"
+                                                placeholder="name@example.com" onchange="myFunction(event)">
+                                            <label for="floorsNum" class="position-absolute top-0 end-0">מס' קומות</label>
+                                        </div>
+                                        <div class="form-check form-switch d-flex">
+                                            <label class="form-check-label me-2" for="pool">עם בריכה</label>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="pool" name="pool">
+                                        </div>
+                                        <div class="form-check form-switch d-flex">
+                                            <label class="form-check-label me-2" for="basement">עם מרתף</label>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="basement" name="basement">
+                                        </div>
+                                        <div class="form-check form-switch d-flex">
+                                            <label class="form-check-label me-2" for="parking">עם חניה</label>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="parking" name="parking">
+                                        </div>
+
+                                    </div>
+
+                                    <div id="id_choice_2_container" style="display: none">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="floorsNum2" name="floorsNum2"
+                                                placeholder="name@example.com" onchange="myFunction(event)">
+                                            <label for="floorsNum2" class="position-absolute top-0 end-0">מס' קומות</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="roomsNum" name="roomsNum"
+                                                placeholder="name@example.com" onchange="myFunction(event)">
+                                            <label for="roomsNum" class="position-absolute top-0 end-0">מס' חדרים</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="space" name="space" placeholder="name@example.com"
+                                                onchange="myFunction(event)">
+                                            <label for="space" class="position-absolute top-0 end-0">שטחים</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="cup" name="cup" placeholder="name@example.com"
+                                                onchange="myFunction(event)">
+                                            <label for="cup" class="position-absolute top-0 end-0">קופים פיתוח</label>
+                                        </div>
+                                    </div>
+                                </fieldset>  
                         </div>
                     </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">הוספת שלבים</h6>
-                            <select class="form-select mb-3" multiple aria-label="multiple select example">
-                                <option selected>שלבי עבודה</option>
-                                <option value="1">יציקת קורות קשר</option>
-                                <option value="2">יציקת ריצפה</option>
-                                <option value="3">גמר מעטפת קומת קרקע</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary">אישור</button>
-                            <br>
-                          
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
+                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4">העלאת קבצים</h6>
                             <div class="mb-3">
@@ -466,14 +449,15 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
                                           
                         </div>
                     </div>
-          
                 </div>
-                <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
+                <br>
+                <button type="submit" name="submit" id="submit" class="btn btn-primary float-start">הוסף</button>
                 </form>
             </div>
 
 
             <!-- Footer Start -->
+            <br>
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
@@ -561,6 +545,9 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
     // Call the initializeAutocomplete function when the page loads
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
     </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
 </body>
