@@ -29,9 +29,9 @@
         }
     }
 
-
- 
- 
+    // Retrieve associated files for the project from the database
+    $fileQuery = "SELECT * FROM files WHERE project_name = '$name'";
+    $fileResult = mysqli_query($conn, $fileQuery);
  ?>
 
 
@@ -71,6 +71,36 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style> 
+.file-panel {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.file-details {
+    flex-grow: 1;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.file-details a {
+    text-decoration: none;
+    color: #333;
+}
+
+.file-details a:hover {
+    text-decoration: underline;
+    color: #1EB6C1;
+}
+
+.file-icon {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+    </style>
 
 </head>
 
@@ -366,26 +396,32 @@
                                     </div>';
                                 ?>
                             
-              
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-4">קבצים מצורפים</label>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">הסכם</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">הצעת מחיר</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">לוח זמנים</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                            
-                            
-                        </div>
-                    </div>
+                            <div class="col-sm-12 col-xl-6">
+    <div class="bg-light rounded h-100 p-4">
+        <label class="mb-4">קבצים מצורפים</label>
+        <?php
+        if (mysqli_num_rows($fileResult) > 0) {
+            while ($file = mysqli_fetch_assoc($fileResult)) {
+                $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+                $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
+                echo '<div class="file-panel">';
+                echo '<div class="file-icon"><i class="' . $iconClass . ' fa-3x"></i></div>';
+                echo '<div class="file-details">';
+                echo '<p><a href="' . $file['filename'] . '">' . basename($file['filename']) . '</a></p>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo 'No files found for this project.';
+        }
+        ?>
+    </div>
+</div>
+
+
+
+
+
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-line fa-3x text-primary"></i>

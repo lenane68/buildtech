@@ -5,10 +5,8 @@
 
  $result = $conn->query($sql);
     
-
-
-
  if(isset($_POST["submit"])){
+
     $name = $_POST['name'];
     $type = $_POST['type'];
     $floorsNum = $_POST['floorsNum'];
@@ -35,8 +33,7 @@
     $clientName = $_POST['clientName'];
     // Construct the API request URL
     $apiKey = 'AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0';
-    $latitude = $_POST['latitude'];
-    $longitude = $_POST['longitude'];
+
     
 
 
@@ -53,134 +50,94 @@
 }
 
 $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName) values(?, ?, ?, ?)");
-$stmt6->bind_param("sdds", $address, $latitude, $longitude, $name);
+    $stmt6->bind_param("sdds", $address, $latitude, $longitude, $name);
 
+//Inserting the files 
+     // Get project details from the form
+     $uploadDirectory = 'projectPrograms/';
+ 
+     if (!file_exists($uploadDirectory)) {
+         mkdir($uploadDirectory, 0777, true);
+     }
+ 
+     // Handle the first uploaded file
+     $uploadedFile1 = $_FILES['pdfFile1'];
+     $filename1 = $uploadDirectory . basename($uploadedFile1['name']);
+     $fileExtension1 = strtolower(pathinfo($filename1, PATHINFO_EXTENSION));
+ 
+     // Check if the file is a PDF
+     if ($fileExtension1 === 'pdf') {
+         // Move the uploaded file to the specified directory
+         if (move_uploaded_file($uploadedFile1['tmp_name'], $filename1)) {
+             $insertFile1Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename1')";
+             mysqli_query($conn, $insertFile1Query);
+             echo 'File 1 uploaded successfully!<br>';
+         } else {
+             echo 'Error uploading file 1.<br>';
+         }
+     } else {
+         echo 'Only PDF files are allowed for file 1.<br>';
+     }
+ 
+     // Handle the second uploaded file
+     $uploadedFile2 = $_FILES['pdfFile2'];
+     $filename2 = $uploadDirectory . basename($uploadedFile2['name']);
+     $fileExtension2 = strtolower(pathinfo($filename2, PATHINFO_EXTENSION));
+ 
+     // Check if the file is a PDF
+     if ($fileExtension2 === 'pdf') {
+         // Move the uploaded file to the specified directory
+         if (move_uploaded_file($uploadedFile2['tmp_name'], $filename2)) {
+             $insertFile2Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename2')";
+             mysqli_query($conn, $insertFile2Query);
+             echo 'File 2 uploaded successfully!';
+         } else {
+             echo 'Error uploading file 2.';
+         }
+     } else {
+         echo 'Only PDF files are allowed for file 2.';
+     }
 
+     // Handle the third uploaded file
+     $uploadedFile3 = $_FILES['pdfFile3'];
+     $filename3 = $uploadDirectory . basename($uploadedFile3['name']);
+     $fileExtension3 = strtolower(pathinfo($filename3, PATHINFO_EXTENSION));
+ 
+     // Check if the file is a PDF
+     if ($fileExtension3 === 'pdf') {
+         // Move the uploaded file to the specified directory
+         if (move_uploaded_file($uploadedFile3['tmp_name'], $filename3)) {
+             $insertFile3Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename3')";
+             mysqli_query($conn, $insertFile3Query);
+             echo 'File 3 uploaded successfully!';
+         } else {
+             echo 'Error uploading file 3.';
+         }
+     } else {
+         echo 'Only PDF files are allowed for file 3.';
+     }
 
-
-$execval = $stmt->execute();
-$execval6 = $stmt6->execute();
-
-$file =$_FILES['file1'];
-$file2 =$_FILES['file2'];
-$file3 =$_FILES['file3'];
-$file4 =$_FILES['file4'];
-
-if(isset($_FILES['files'])){
-    $folder = "projectPrograms/";
-
-    $names = $_FILES['files']['name'];
-    $tmp_names = $_FILES['files']['tmp_name'];
-
-    $upload_data = array_combine($tmp_names, $names);
-
-    foreach($upload_data as $temp_folder => $file_name){
-        move_uploaded_file($temp_folder, $folder.$file_name);
-        
-    }
-
-}
-
-$fileName = $_FILES['file1']['name'];
-$fileTmpName = $_FILES['file1']['tmp_name'];
-$fileSize = $_FILES['file1']['size'];
-$fileError = $_FILES['file1']['error'];
-$fileType = $_FILES['file1']['type'];
-
-$fileName2 = $_FILES['file2']['name'];
-$fileTmpName2 = $_FILES['file2']['tmp_name'];
-$fileSize2 = $_FILES['file2']['size'];
-$fileError2 = $_FILES['file2']['error'];
-$fileType2 = $_FILES['file2']['type'];
-
-$fileName3 = $_FILES['file3']['name'];
-$fileTmpName3 = $_FILES['file3']['tmp_name'];
-$fileSize3 = $_FILES['file3']['size'];
-$fileError3 = $_FILES['file3']['error'];
-$fileType3 = $_FILES['file3']['type'];
-
-$fileName4 = $_FILES['file4']['name'];
-$fileTmpName4 = $_FILES['file4']['tmp_name'];
-$fileSize4 = $_FILES['file4']['size'];
-$fileError4 = $_FILES['file4']['error'];
-$fileType4 = $_FILES['file4']['type'];
-
-$fileExt = explode('.', $fileName);
-$fileActualExt = strtolower(end($fileExt));
-
-$fileExt2 = explode('.', $fileName2);
-$fileActualExt2 = strtolower(end($fileExt2));
-
-$fileExt3 = explode('.', $fileName3);
-$fileActualExt3 = strtolower(end($fileExt3));
-
-$fileExt4 = explode('.', $fileName4);
-$fileActualExt4 = strtolower(end($fileExt4));
-
-$allowed = array('pdf');
-
-
-if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed)) &&
- (in_array($fileActualExt3, $allowed)) && (in_array($fileActualExt4, $allowed))) {
-    if(($fileError === 0) && ($fileError2 === 0) && ($fileError3 === 0) && ($fileError4 === 0)){
-        if(($fileSize < 1000000) && ($execval) && ($execval6) && ($fileSize2 < 1000000) && ($fileSize3 < 1000000) && ($fileSize4 < 1000000)){
-            $fileNameNew = uniqid('', true).".".$fileActualExt;
-            $fileDestination = 'projectFiles/'.$fileNameNew;
-            move_uploaded_file($fileTmpName, $fileDestination);
-
-            $fileNameNew2 = uniqid('', true).".".$fileActualExt2;
-            $fileDestination2 = 'projectFiles/'.$fileNameNew2;
-            move_uploaded_file($fileTmpName2, $fileDestination2);
-
-            $fileNameNew3 = uniqid('', true).".".$fileActualExt3;
-            $fileDestination3 = 'projectFiles/'.$fileNameNew3;
-            move_uploaded_file($fileTmpName3, $fileDestination3);
-
-            $fileNameNew4 = uniqid('', true).".".$fileActualExt4;
-            $fileDestination4 = 'projectFiles/'.$fileNameNew4;
-            move_uploaded_file($fileTmpName4, $fileDestination4);
-
-            $category1 = "הצעת מחיר";
-            $category2 = "תמורה";
-            $category3 = "הסכם";
-            $category4 = "לוח זמנים";
-            
-
-            
-            $stmt2 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
-            $stmt2->bind_param("sssss", $fileNameNew, $fileType, $fileSize, $name, $category1);
-            $execval2 = $stmt2->execute();
-
-            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
-            $stmt3->bind_param("sssss", $fileNameNew2, $fileType2, $fileSize2, $name, $category2);
-            $execval3 = $stmt3->execute();
-
-            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
-            $stmt3->bind_param("sssss", $fileNameNew3, $fileType3, $fileSize3, $name, $category3);
-            $execval4 = $stmt3->execute();
-
-            $stmt3 = $conn->prepare("insert into projectfile(fileName, type, size, projectName, category) values(?, ?, ?, ?, ?)");
-            $stmt3->bind_param("sssss", $fileNameNew4, $fileType4, $fileSize4, $name, $category4);
-            $execval5 = $stmt3->execute();
-            
-            if(($execval2) && ($execval3) && ($execval4) && ($execval5)){
-                echo "Added successfully and Upload file success";
-            } else {
-                die($conn->error . " " . $conn->errno);   
-            }
-           
-        } else {
-            if(!($execval) || !($execval6)){
-                die($conn->error . " " . $conn->errno);
-            } else 
-            echo "Your file is too big!";  
-        }
-    } else {
-        echo "There was an error uploading your file!";  
-    }
-} else {
-    echo "You can't upload files of this type!";
-}
+     // Handle the fourth uploaded file
+     $uploadedFile4 = $_FILES['pdfFile4'];
+     $filename4 = $uploadDirectory . basename($uploadedFile4['name']);
+     $fileExtension4 = strtolower(pathinfo($filename4, PATHINFO_EXTENSION));
+ 
+     // Check if the file is a PDF
+     if ($fileExtension4 === 'pdf') {
+         // Move the uploaded file to the specified directory
+         if (move_uploaded_file($uploadedFile4['tmp_name'], $filename4)) {
+             $insertFile4Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename4')";
+             mysqli_query($conn, $insertFile4Query);
+             echo 'File 4 uploaded successfully!';
+         } else {
+             echo 'Error uploading file 4.';
+         }
+     } else {
+         echo 'Only PDF files are allowed for file 4.';
+     }
+    
+    $execval = $stmt->execute();
+    $execval6 = $stmt6->execute();
 
 /*
  $execval = $stmt->execute();
@@ -190,12 +147,15 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
      die($conn->error . " " . $conn->errno);
  }*/
 
- echo $execval;
- $stmt->close();
- $conn->close();
+    echo $execval;
+    $stmt->close();
+    $conn->close();
 
  }
-   
+
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -365,7 +325,7 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
 
 
             <div class="container-fluid pt-4 px-4">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
@@ -432,27 +392,14 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                         <div class="bg-light rounded h-100 p-4" dir="rtl">
                             <h6 class="mb-4">הוספת פרויקט</h6>
                             <form>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        placeholder="name@example.com">
+                            <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="name@example.com">
                                     <label for="name">שם פרויקט</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                    <input type="text" class="form-control" id="locationInput" name="address"
-                                        placeholder="כתובת">
-                                    </div>
+                            <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="locationInput" name="address" placeholder="כתובת">
+                                    <label for="locationInput">כתובת</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-primary" onclick="geocode()">שמור</button>   
-                                    </div>
-                                </div>
-                                    <input type="hidden" id="latitude" name="latitude">
-                                    <input type="hidden" id="longitude" name="longitude">
-                                    
-                                   </div>
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="startDate" name="startDate"
                                         placeholder="">
@@ -497,24 +444,25 @@ if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))
                             <h6 class="mb-4">העלאת קבצים</h6>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">הצעת מחיר</label>
-                                <input class="form-control" type="file" name="file1">
+                                <input class="form-control" type="file" name="pdfFile1" accept="application/pdf">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">תמורה </label>
-                                <input class="form-control" type="file" name="file2">
+                                <input class="form-control" type="file" name="pdfFile2"  accept="application/pdf">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">הסכם </label>
-                                <input class="form-control" type="file" name="file3">
+                                <input class="form-control" type="file" name="pdfFile3" accept="application/pdf">
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">לוח זמנים </label>
-                                <input class="form-control" type="file" name="file4">
+                                <input class="form-control" type="file" name="pdfFile4" accept="application/pdf">
                             </div>
+                            <!---------------
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">תוכניות עבודה</label>
                                 <input class="form-control" type="file" name="files[]" multiple>
-                            </div>
+                            </div>---->
                                           
                         </div>
                     </div>

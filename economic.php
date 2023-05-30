@@ -350,12 +350,21 @@
                                         {
                                             foreach($query_run as $step)
                                             {
-                                                ?>
+                                                $query2 = "SELECT * FROM project WHERE id='" . $step["projectId"] . "'";
+                                                $query_run2 = mysqli_query($conn, $query2);
+                                                if(mysqli_num_rows($query_run2) > 0){
+                                                    foreach($query_run2 as $project) {
+                                                        $projectName = $project["name"];
+                                                        $totalPrice = $project["totalPrice"];     
+                                                    }
+                                                }
+                                                $still = ((100 - $step["paymentPercent"]) / 100) * ($step["projectsPercent"] / 100) * $totalPrice;
+                                                 ?>
                                                 <tr>
                                                          <td><?= $step["description"] ?> </td>
-                                                         <td><?= $step["projectId"] ?></td>
+                                                         <td><?=  $projectName ?></td>
                                                          <td><?= $step["payment"] ?></td>
-                                                         <td><?= $step["projectsPercent"] ?></td>
+                                                         <td><?= number_format($still) ?>₪</td>
                                                 </tr>
                                                 <?php
                                                     }
@@ -405,7 +414,7 @@
                                                             <td><?= $check["forName"] ?> </td>
                                                             <td><?= $check["checkDate"] ?></td>
                                                             <td><?= $check["id"] ?></td>
-                                                            <td><?= $check["price"] ?></td>
+                                                            <td><?= number_format($check["price"]) ?>₪</td>
                                                           
                                                         </tr>
                                                         </tr>
@@ -420,35 +429,71 @@
                                 </div>
                              </div>
                     </div>
-                    <div class="bg-light text-center rounded p-4"> 
-                        <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-                            <h6 class="mb-0">ריכוז הכנסות והוצאות</h6>
-                            <a href="">הצג הכל</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
-                                <thead>
-                                    <tr class="text-dark">
-                                        <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
-                                        <th scope="col">עבור</th>
-                                        <th scope="col">טיפוס</th>
-                                        <th scope="col">פרויקט</th>
-                                        <th scope="col">תאריך</th>
-                                        <th scope="col">הכנסה</th>
-                                        <th scope="col">הוצאה</th>
-                                        <th scope="col">הערות</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            
-                                    <tr>
-                                   
-                                    </tr>
-                          
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <div class="bg-light text-center rounded p-4">
+    <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
+        <h6 class="mb-0">ריכוז הכנסות והוצאות</h6>
+        <a href="">הצג הכל</a>
+    </div>
+    <div class="table-responsive">
+        <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
+            <thead>
+                <tr class="text-dark">
+                    <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
+                    <th scope="col">עבור</th>
+                    <th scope="col">טיפוס</th>
+                    <th scope="col">פרויקט</th>
+                    <th scope="col">תאריך</th>
+                    <th scope="col">הכנסה</th>
+                    <th scope="col">הוצאה</th>
+                    <th scope="col">הערות</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $conn = require __DIR__ . "/database.php";
+                
+                // Fetch data from the income table
+                $incomeQuery = "SELECT * FROM income ORDER BY date";
+                $incomeResult = mysqli_query($conn, $incomeQuery);
+                
+                // Fetch data from the expense table
+                $expenseQuery = "SELECT * FROM expense ORDER BY date";
+                $expenseResult = mysqli_query($conn, $expenseQuery);
+                
+                // Loop through the income records
+                while ($income = mysqli_fetch_assoc($incomeResult)) {
+                    ?>
+                    <tr>
+                        <td><?= $income["details"] ?></td>
+                        <td><?= $income["category"] ?></td>
+                        <td><?= $income["projectId"] ?></td>
+                        <td><?= $income["date"] ?></td>
+                        <td><?= $income["price"] ?></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <?php
+                }
+                
+                // Loop through the expense records
+                while ($expense = mysqli_fetch_assoc($expenseResult)) {
+                    ?>
+                    <tr>
+                        <td><?= $expense["details"] ?></td>
+                        <td><?= $expense["category"] ?></td>
+                        <td><?= $expense["projectId"] ?></td>
+                        <td><?= $expense["date"] ?></td>
+                        <td></td>
+                        <td><?= $expense["price"] ?></td>
+                        <td></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
                     <div class="col-sm-12 col-xl-6">
                     <div class="bg-light rounded h-100 p-4 d-flex justify-content-center align-items-center position-relative">
                         <button class="btn btn-primary rounded-circle p-4 mx-2" type="button">
