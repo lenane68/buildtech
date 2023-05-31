@@ -326,7 +326,7 @@
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div dir="rtl" class="bg-light rounded h-100 p-4">
-                            <label class="mb-4" style="color: #5BB498; font-weight: bold;">תשלומים עתידיים</label>
+                            <label class="mb-4" style="color: #5BB498; font-weight: bold; font-size: 18px;">תשלומים עתידיים</label>
                             
                             <div class="">
                                 <table class="table" dir="rtl">
@@ -380,7 +380,7 @@
                         
                             <div dir="rtl" class="bg-light rounded h-100 p-4">
                                 <div class="d-flex align-items-center justify-content-between mb-4">
-                                <label class="mb-4" style="color: #E45C67; font-weight: bold;">צ'יקים קרובים</label>
+                                <label class="mb-4" style="color: #E45C67; font-weight: bold; font-size: 18px;">צ'יקים קרובים</label>
                                 <a href="reports.php">הצג הכל</a>
                                 </div>
                                 
@@ -431,84 +431,96 @@
                     </div>
                     <div class="bg-light text-center rounded p-4">
     <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-        <h6 class="mb-0">ריכוז הכנסות והוצאות</h6>
+        <h6 class="mb-0" style="color: #DE9670; font-weight: bold; font-size: 19px;">ריכוז הכנסות והוצאות</h6>
         <a href="">הצג הכל</a>
     </div>
-    <div class="table-responsive">
-        <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
-            <thead>
-                <tr class="text-dark">
-                    <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
-                    <th scope="col">עבור</th>
-                    <th scope="col">טיפוס</th>
-                    <th scope="col">פרויקט</th>
-                    <th scope="col">תאריך</th>
-                    <th scope="col">הכנסה</th>
-                    <th scope="col">הוצאה</th>
-                    <th scope="col">הערות</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $conn = require __DIR__ . "/database.php";
-                
-                // Fetch data from the income table
-                $incomeQuery = "SELECT * FROM income ORDER BY date";
-                $incomeResult = mysqli_query($conn, $incomeQuery);
-                
-                // Fetch data from the expense table
-                $expenseQuery = "SELECT * FROM expense ORDER BY date";
-                $expenseResult = mysqli_query($conn, $expenseQuery);
-                
-                // Loop through the income records
-                while ($income = mysqli_fetch_assoc($incomeResult)) {
-                    ?>
-                    <tr>
-                        <td><?= $income["details"] ?></td>
-                        <td><?= $income["category"] ?></td>
-                        <td><?= $income["projectId"] ?></td>
-                        <td><?= $income["date"] ?></td>
-                        <td><?= $income["price"] ?></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <?php
-                }
-                
-                // Loop through the expense records
-                while ($expense = mysqli_fetch_assoc($expenseResult)) {
-                    ?>
-                    <tr>
-                        <td><?= $expense["details"] ?></td>
-                        <td><?= $expense["category"] ?></td>
-                        <td><?= $expense["projectId"] ?></td>
-                        <td><?= $expense["date"] ?></td>
-                        <td></td>
-                        <td><?= $expense["price"] ?></td>
-                        <td></td>
-                    </tr>
-                    <?php
-                }
+    <div class="table-responsive" dir="rtl">
+    <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
+        <thead>
+            <tr class="text-white text-center" style="background-color: #0E2038;">
+                <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
+                <th scope="col">עבור</th>
+                <th scope="col">טיפוס</th>
+                <th scope="col">פרויקט</th>
+                <th scope="col">תאריך</th>
+                <th scope="col">הכנסה</th>
+                <th scope="col">הוצאה</th>
+                <th scope="col">הערות</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $conn = require __DIR__ . "/database.php";
+
+            // Fetch data from the income table
+            $incomeQuery = "SELECT * FROM income ORDER BY date";
+            $incomeResult = mysqli_query($conn, $incomeQuery);
+
+            // Fetch data from the expense table
+            $expenseQuery = "SELECT * FROM expense ORDER BY date";
+            $expenseResult = mysqli_query($conn, $expenseQuery);
+
+            // Loop through the income records
+            while ($income = mysqli_fetch_assoc($incomeResult)) {
+                $query2 = "SELECT * FROM project WHERE id='" . $income["projectId"] . "'";
+                $query_run2 = mysqli_query($conn, $query2);
+                $projectName ="";
+                if(mysqli_num_rows($query_run2) > 0){
+                    foreach($query_run2 as $project) {
+                        $projectName = $project["name"];                                   
+                        }
+                    }
                 ?>
-            </tbody>
-        </table>
+                <tr class="text-center" style="color: black">
+                    <td ><?= $income["details"] ?></td>
+                    <td ><?= $income["category"] ?></td>
+                    <td><?= $projectName ?></td>
+                    <td style="color: #010000; font-weight: bold;"> <?= date('d.m.Y', strtotime($income["date"])) ?></td>
+                    <td style="color: #32EF77;"> <?= number_format($income["price"]) ?></td>
+                    <td  style="color: #FE0C0C;">-</td>
+                    <td></td>
+                </tr>
+                <?php
+            }
+
+            // Loop through the expense records
+            while ($expense = mysqli_fetch_assoc($expenseResult)) {
+                ?>
+                <tr class="text-center" style="color: black">
+                    <td ><?= $expense["details"] ?></td>
+                    <td ><?= $expense["category"] ?></td>
+                    <td ></td>
+                    <td style="color: #010000; font-weight: bold;"> <?= date('d.m.Y', strtotime($expense["date"])) ?></td>
+                    <td style="color: #32EF77;">-</td>
+                    <td  style="color: #FE0C0C;"> <?= number_format($expense["price"]) ?></td>
+                    <td ></td>
+                </tr>
+                <?php
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="col-sm-12 col-xl-6">
+    <div class="bg-light rounded h-100 p-4 d-flex justify-content-center align-items-center position-relative">
+        <button class="btn btn-primary btn-lg px-4 py-3 mx-2" type="button">
+            <span class="button-label">הכנסה</span>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="btn btn-danger btn-lg px-4 py-3 mx-2" type="button">
+            <span class="button-label">הוצאה</span>
+            <i class="fas fa-arrow-down"></i>
+        </button>
     </div>
 </div>
-                    <div class="col-sm-12 col-xl-6">
-                    <div class="bg-light rounded h-100 p-4 d-flex justify-content-center align-items-center position-relative">
-                        <button class="btn btn-primary rounded-circle p-4 mx-2" type="button">
-                        <i class="fas fa-plus fa-lg"></i>
-                        </button>
-                        <button class="btn btn-danger rounded-circle p-4 mx-2" type="button">
-                        <i class="fas fa-minus fa-lg"></i>
-                        </button>
-                    </div>
-                    </div>
+
+
 
                     <div class="col-sm-12 col-xl-6">
                         <div dir="rtl" class="bg-light rounded h-100 p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                            <label class="mb-4">חשבונות בנק</label>
+                            <label class="mb-4" style="color: #397ED3; font-weight: bold; font-size: 19px;">חשבונות בנק</label>
                             <button class="addAccount btn btn-primary">הוספת חשבון</button>
                             </div>
                             
