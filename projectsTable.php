@@ -168,13 +168,13 @@
              <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="bg-light text-center rounded p-4" dir="rtl">
                     <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-                        <h5 class="mb-0" dir="rtl">פרויקטים</h5>
+                        <h5 class="mb-0" dir="rtl" style="color: black; font-weight: bold; font-size: 20px;">פרויקטים</h5>
                       
                     </div>
                     <div class="table-responsive" dir="rtl">
                         <table class="table text-start align-middle table-bordered table-hover mb-0" dir="rtl">
                             <thead>
-                                <tr class="text-dark">
+                                <tr class="text-white text-center" style="background-color: #2FA6D6;">
 
                                     <th scope="col">שם פרויקט</th>
                                     <th scope="col">תאריך התחלה</th>
@@ -188,7 +188,7 @@
                             <tbody>
                             <?php 
                                  $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM project";
+                                 $query = "SELECT * FROM project ORDER BY startDate DESC";
                           
                                  $query_run = mysqli_query($conn, $query);
                          
@@ -226,16 +226,16 @@
              
                     
                                        ?>
-                                <tr>
+                                <tr class="text-center" style="color: black">
                                     <form action="project.php" method="post" target="">
                                     <td> <?= $project["name"] ?> </td>
-                                    <td> <?= $project["startDate"] ?> </td>
+                                    <td> <?= date('d.m.Y', strtotime($project["startDate"])) ?></td>
                                     <td><?= $project["clientName"] ?> </td>
                                     <td><?= $project["address"] ?> </td>
                                     <td><?= $totalpercent ?>%</td>
                                     <td><?= number_format($still) ?>₪</td>
                                     <input type="hidden" name="id" id="id" value="<?=$project['id'];?>" ></input>
-                                    <td><button type="submit" value="" class="btn btn-sm btn-primary" name="project_generate">הצג</button></td>
+                                    <td><button type="submit" value="" class="btn btn-sm btn-primary border-0" name="project_generate" style="background-color:#6D7C78 ">הצג</button></td>
     
                                    </form>
                                 </tr>

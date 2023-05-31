@@ -443,27 +443,29 @@
 
             <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4 text-end">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4" style="height: 350px;">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a href="">הצג הכל</a>
-                                <h6 class="mb-0">הכנסות, הוצאות ורווח</h6>  
-                            </div>
-                            <canvas id="barChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4" style="height: 350px;">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a href="">הצג הכל</a>
-                                <h6 class="mb-0">התפלגות הכנסה לפי קטגוריות</h6>
-                            </div>
-                            <canvas id="incomeChart"></canvas>
-                        </div>
-                    </div>
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light text-center rounded p-4" style="height: 400px;">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a href="">הצג הכל</a>
+                    <h6 class="mb-0" style="font-weight: bold; font-size: 18px;">הכנסות, הוצאות ורווח</h6>  
                 </div>
+                <canvas id="barChart" style="height: 250px; width: 100%;"></canvas>
             </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light text-center rounded p-4" style="height: 400px;">
+                <div class="d-flex align-items-center justify-content-between mb-4" style="height: 5px;">
+                    <a href="">הצג הכל</a>
+                    <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הכנסה לפי קטגוריות</h6>
+                </div>
+                <canvas id="incomeChart" style="height: 100px; width: 50%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -474,13 +476,13 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-                        <h6 class="mb-0">פרויקטים אחרונים</h6>
+                        <h6 class="mb-0" style="font-weight: bold; font-size: 18px;">פרויקטים אחרונים</h6>
                         <a href="projectsTable.php">הצג הכל</a>
                     </div>
                     <div class="table-responsive">
                         <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-dark">
+                            <thead> 
+                                <tr class="text-white text-center" style="background-color: #2FA6D6;">
                                     <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
                                     <th scope="col">תאריך התחלה</th>
                                     <th scope="col">לקוח</th>
@@ -493,7 +495,7 @@
                             <tbody>
                             <?php 
                                  $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM project";
+                                 $query = "SELECT * FROM project ORDER BY startDate DESC";
 
                                  $query_run = mysqli_query($conn, $query);
                                 
@@ -531,12 +533,12 @@
                                    $still = $project["totalPrice"] - $totalPayment;
                                     $i++;
                                     if ($i == 5) {
-                                        //break;
+                                        break;
                                       }
                                        ?>
-                                <tr>
+                                <tr class="text-center" style="color: black">
                                     <!--<td><input class="form-check-input" type="checkbox"></td>-->
-                                    <td><?= $project["startDate"] ?> </td>
+                                    <td><?= date('d.m.Y', strtotime($project["startDate"])) ?> </td>
                                     <td><?= $project["clientName"] ?></td>
                                     <td><?= $project["address"] ?></td>
                                     <td><?= $totalpercent ?>%</td>

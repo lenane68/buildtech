@@ -16,7 +16,7 @@
 
     }
 
-    $query2 = "SELECT * FROM payments WHERE projectNumber='$id'";
+    $query2 = "SELECT * FROM income WHERE projectId='$id'";
     $query_run = mysqli_query($conn, $query2);
                          
     $total=0;
@@ -29,9 +29,67 @@
         }
     }
 
+    $query2 = "SELECT * FROM expense WHERE projectId='$id'";
+    $query_run = mysqli_query($conn, $query2);
+                         
+    $totalexpenses=0;
+
+    if(mysqli_num_rows($query_run) > 0)
+    { 
+        foreach($query_run as $payment)
+        {
+            $totalexpenses+=$payment["price"];
+        }
+    }
+
     // Retrieve associated files for the project from the database
     $fileQuery = "SELECT * FROM files WHERE project_name = '$name'";
     $fileResult = mysqli_query($conn, $fileQuery);
+
+
+     // Query to retrieve project steps data
+     // ...pie chart
+   // Prepare and execute the query to fetch income data from the "income" table
+  // Prepare and execute the query to fetch income data from the "projectstep" table
+    $query = "SELECT projectsPercent, finish FROM projectstep WHERE projectId = '$id'";
+    $result = $conn->query($query);
+
+    // Fetch the income data from the result set
+    $incomeData = [];
+    while ($row = $result->fetch_assoc()) {
+        $incomeData[] = $row;
+    }
+
+    // Prepare the data for the pie chart
+    $finishCount = 0;
+    $notFinishCount = 0;
+
+    foreach ($incomeData as $row) {
+        if ($row['finish'] === "נגמר") {
+            $finishCount += $row['projectsPercent'];
+        } else {
+            $notFinishCount += $row['projectsPercent'];
+        }
+    }
+
+    // Generate the chart data in JSON format
+    $chartData = [
+        'labels' => ['נגמר', 'לא נגמר'],
+        'datasets' => [
+            [
+                'data' => [$finishCount, $notFinishCount],
+                'backgroundColor' => [
+                    'rgba(75, 192, 192, 0.75)',
+                    'rgba(255, 99, 132, 0.75)',
+                    // Add more colors as needed
+                ],
+            ],
+        ],
+    ];
+
+    // Encode the chart data as JSON
+    $jsonChartData = json_encode($chartData);
+   
  ?>
 
 
@@ -39,6 +97,7 @@
 <html lang="en" >
 
 <head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="utf-8">
     <title>DASHMIN - Bootstrap Admin Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -72,6 +131,10 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
+   
+
+    
+ 
     <style> 
 .file-panel {
     display: flex;
@@ -99,19 +162,32 @@
     flex-shrink: 0;
     text-align: right;
 }
-
+.table-container {
+            overflow-y: auto;
+            max-height: 350px; /* Set the desired maximum height for the table */
+            direction: ltr; /* Set the text direction to right-to-left */
+        }
+        .table-container table {
+            direction: rtl; /* Set the table direction back to left-to-right */
+        }
+        .chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
     </style>
 
 </head>
 
 <body>
      <!-- Payment Modal -->
-     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">דיווח על תשלום</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="insertPayment">
                     <div class="modal-body">
@@ -127,8 +203,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="">עבור</label>
-                            <textarea type="text" name="details" id="details" class="form-control" ></textarea>
+                            <label for="">עבור % מהשלב</label>
+                            <input type="text" name="details" id="details" class="form-control" ></input>
                         </div>
 
                         <div class="mb-3">
@@ -282,8 +358,8 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
                         <form action="updateproject.php" method="get">
-                            <button type="submit" name="submit" class="btn btn-primary" style="float: left;"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
-                            <h6 class="mb-4" id="name"></h6>
+                            <button type="submit" name="submit" class="btn btn-primary border-0" style="float: left; background-color: rgba(54, 162, 235, 1);"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
+                            <h6 class="mb-4" id="name" style="color: black; font-size: 20px;"></h6>
 
                             <input type="hidden" name="id" id="id" value="" ></input>
                            
@@ -297,22 +373,22 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">שם הפרויקט</label>
-                                    <input type="text" class="form-control" id="projectName" name="projectName"
+                                    <input type="text" class="form-control" id="projectName" name="projectName"style="font-weight: bold; color: black;"
                                     value=""> 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">המזמין </label>
-                                    <input type="text" class="form-control" id="clientName" name="clientName"
+                                    <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;"
                                     value="" > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">כתובת </label>
-                                    <input type="text" class="form-control" id="address" name="address"
+                                    <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;"
                                     value=""> 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך התחלת הפרויקט</label>
-                                    <input type="date" class="form-control" id="startDate" name="startDate"
+                                    <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;"
                                         value="">
     
                                 </div>
@@ -321,64 +397,90 @@
                  
                         </div>
                     </div>
-            
+
                     
                     <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4">
-                            <label class="mb-4">שלבי הפרויקט</label>
-                            <div class="d-flex align-items-center justify-content-between mb-4">                   
-                            </div>
-                            <canvas id="worldwide-sales" class="mb-3"></canvas>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary" style="color: #E04050;"></i>
+                <div class="ms-3">
+                    <p class="mb-2">הכנסות</p>
+                    <h6 id="penefit" class="mb-0"></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">הוצאות</p>
+                    <h6 id="expenses" class="mb-0"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+        <br>
+        
+        <div class="bg-light rounded h-100 p-4">
+    <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
+    <div class="d-flex align-items-center justify-content-between mb-4"></div>
+   
+    <div class="chart-container" style="width: 300px; height: 250px; display: flex; justify-content: center; align-items: center;">
+        <canvas id="incomeChart"></canvas>
+    </div>
+    <br>
+    <br>
 
-                            <div class="">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">שלב</th>
-                                            <th scope="col">אחוז</th>
-                                            <th scope="col">שולם</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                                $i = 1;
-                                                $conn = require __DIR__ . "/database.php";
-                                                $query = "SELECT * FROM projectstep WHERE projectId='$id'";
-                                         
-                                                $query_run = mysqli_query($conn, $query);
 
-                                                if(mysqli_num_rows($query_run) > 0)
-                                                {
-                                                    foreach($query_run as $projectstep)
-                                                    {
-                                     
-                                                        ?>
-                                        
-                                                    <tr>
-                                                        <th scope="row"><?= $i ?></th>
-                                                        <td><?= $projectstep["description"] ?> </td>
-                                                        <td><?= $projectstep["projectsPercent"] ?>%</td>
-                                                        <td><?= $projectstep["payment"] ?></td>
-                                                    </tr>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr style="background-color: #95A29F;" class="text-white text-center">
+                        <th scope="col">#</th>
+                        <th scope="col">שלב</th>
+                        <th scope="col">אחוז</th>
+                        <th scope="col">שולם</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i = 1;
+                    $conn = require __DIR__ . "/database.php";
+                    $query = "SELECT * FROM projectstep WHERE projectId='$id'";
+                    $query_run = mysqli_query($conn, $query);
 
-                                                    <?php
-                                                    $i ++;
-                                                    }
-                                                }
-                                                ?>
-                                      
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button type="button" value="<?=$id?>" class="insertPaymentBtn btn btn-primary" style="float: left;"> דיווח על תשלום </button>
-                        </div>
-                    </div>
-                    
-                   
+                    if (mysqli_num_rows($query_run) > 0) {
+                        while ($projectstep = mysqli_fetch_assoc($query_run)) {
+                    ?>
+                            <tr>
+                                <th scope="row"><?= $i ?></th>
+                                <td><?= $projectstep["description"] ?></td>
+                                <td><?= $projectstep["projectsPercent"] ?>%</td>
+                                <td><?= $projectstep["payment"] ?></td>
+                                <td><button type="button" value="<?= $id ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button> </td>
+                            </tr>
+                    <?php
+                            $i++;
+                        }
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between">
+            <button type="button" value="<?= $id ?>" class="btn btn-primary border-0" style="background-color:  rgba(54, 162, 235, 1);">הוספת שלב/ים</button>
+            
+        </div>
+    </div>
+</div>
 
-              
-                            <?php
+                       
+
+                
+                                <?php
                                 // Fetch the address from the database
                                 //$address = "רחוב שטורמן, הרצליה, ישראל"; // Replace with your code to fetch the address from MySQL
 
@@ -386,61 +488,40 @@
                                 $mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&q=" . urlencode($address);
 
                                 // Output the HTML with the embedded map
-                                echo '<div class="col-sm-12 col-xl-6">
+                                echo '
+                                <div class="col-sm-12 col-xl-6">
                                         <div class="bg-light rounded h-100 p-4">
-                                            <label class="mb-1">מיקום הפרויקט</label>
-                                            <iframe class="position-relative rounded w-100 h-100"
+                                            <h3 class="mb-1" style="color: black;  font-size: 18px;">מיקום הפרויקט</h3>
+                                            <br>
+                                            <iframe class="position-relative rounded w-100" style="height: 300px;"
                                                 src="' . $mapUrl . '"
                                                 tabindex="0"></iframe>
                                         </div>
-                                    </div>';
+                                    </div>
+                                    ';
                                 ?>
-                            
+
                             <div class="col-sm-12 col-xl-6">
-    <div class="bg-light rounded h-100 p-4">
-        <label class="mb-4">קבצים מצורפים</label>
-        <?php
-        if (mysqli_num_rows($fileResult) > 0) {
-            while ($file = mysqli_fetch_assoc($fileResult)) {
-                $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
-                $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
-                echo '<div class="file-panel">';
-                echo '<div class="file-icon"><i class="' . $iconClass . ' fa-3x"></i></div>';
-                echo '<div class="file-details">';
-                echo '<p><a href="' . $file['filename'] . '">' . basename($file['filename']) . '</a></p>';
-                echo '</div>';
-                echo '</div>';
-            }
-        } else {
-            echo 'No files found for this project.';
-        }
-        ?>
-    </div>
-</div>
-
-
-
-
-
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">הכנסות  </p>
-                                <h6 id="penefit" class="mb-0"></h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">הוצאות </p>
-                                <h6 class="mb-0">400,000₪ </h6>
-                            </div>
-                        </div>
-                    </div>
-                   
+                                <div class="bg-light rounded h-100 p-4">
+                                    <h3 class="mb-4" style="color: black;  font-size: 18px;">קבצים מצורפים</h3>
+                                    <?php
+                                    if (mysqli_num_rows($fileResult) > 0) {
+                                        while ($file = mysqli_fetch_assoc($fileResult)) {
+                                            $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+                                            $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
+                                            echo '<div class="file-panel">';
+                                            echo '<div class="file-icon"><i class="' . $iconClass . ' fa-3x" style="color: red;"></i></div>';
+                                            echo '<div class="file-details">';
+                                            echo '<p><a href="' . $file['filename'] . '">' . basename($file['filename']) . '</a></p>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                        }
+                                    } else {
+                                        echo 'No files found for this project.';
+                                    }
+                                    ?>
+                                </div>
+                            </div>                   
                 </div>
             </div>
     
@@ -495,8 +576,7 @@
         document.getElementById("id").value = projectId;
         document.getElementById("projectid").value = projectId;
 
-        var penefit = "<?php echo $total; ?>";
-        $('#penefit').html(penefit);
+       
     </script>
 
     <script>
@@ -547,6 +627,45 @@
 
 
     </script>
+
+<script>
+    // Get the element by its ID
+    var penefitElement = document.getElementById("penefit");
+
+    // Set the number value
+    var number = "<?php echo $total; ?>"; // Replace with your actual number
+
+    // Add commas to the number and update the element content
+    penefitElement.textContent = Number(number).toLocaleString() + "₪" ;
+</script>
+
+<script>
+    // Get the element by its ID
+    var penefitElement = document.getElementById("expenses");
+
+    // Set the number value
+    var number = "<?php echo $totalexpenses; ?>"; // Replace with your actual number
+
+    // Add commas to the number and update the element content
+    penefitElement.textContent = Number(number).toLocaleString() + "₪" ;
+</script>
+
+<script>
+        // Retrieve the chart data from PHP
+        var chartData = <?php echo $jsonChartData; ?>;
+
+        // Create the pie chart
+        var ctx = document.getElementById('incomeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+
 
 </body>
 
