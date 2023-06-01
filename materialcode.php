@@ -44,8 +44,9 @@ if(isset($_POST['update_material']))
     $price = mysqli_real_escape_string($conn, $_POST['price']);
     $amount = mysqli_real_escape_string($conn, $_POST['amount']);
     $metrics = mysqli_real_escape_string($conn, $_POST['metrics']);
+    $img = mysqli_real_escape_string($conn,$_POST['img']);
    
-    if($name == NULL || $price == NULL || $amount == NULL || $metrics == NULL)
+    if($name == NULL || $price == NULL || $amount == NULL || $metrics == NULL|| $img== NULL)
     {
         $res = [
             'status' => 422,
