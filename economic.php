@@ -412,7 +412,7 @@
                                             
                                                         <tr>
                                                             <td><?= $check["forName"] ?> </td>
-                                                            <td><?= $check["checkDate"] ?></td>
+                                                            <td><?= date('d.m.Y', strtotime($check["checkDate"])) ?></td>
                                                             <td><?= $check["id"] ?></td>
                                                             <td><?= number_format($check["price"]) ?>₪</td>
                                                           
@@ -453,11 +453,11 @@
             $conn = require __DIR__ . "/database.php";
 
             // Fetch data from the income table
-            $incomeQuery = "SELECT * FROM income ORDER BY date";
+            $incomeQuery = "SELECT * FROM income ORDER BY date DESC";
             $incomeResult = mysqli_query($conn, $incomeQuery);
 
             // Fetch data from the expense table
-            $expenseQuery = "SELECT * FROM expense ORDER BY date";
+            $expenseQuery = "SELECT * FROM expense ORDER BY date DESC";
             $expenseResult = mysqli_query($conn, $expenseQuery);
 
             // Loop through the income records
@@ -476,7 +476,7 @@
                     <td ><?= $income["category"] ?></td>
                     <td><?= $projectName ?></td>
                     <td style="color: #010000; font-weight: bold;"> <?= date('d.m.Y', strtotime($income["date"])) ?></td>
-                    <td style="color: #32EF77;"> <?= number_format($income["price"]) ?></td>
+                    <td style="color: #217C45;"> <?= number_format($income["price"]) ?></td>
                     <td  style="color: #FE0C0C;">-</td>
                     <td></td>
                 </tr>
@@ -491,7 +491,7 @@
                     <td ><?= $expense["category"] ?></td>
                     <td ></td>
                     <td style="color: #010000; font-weight: bold;"> <?= date('d.m.Y', strtotime($expense["date"])) ?></td>
-                    <td style="color: #32EF77;">-</td>
+                    <td style="color: #217C45;">-</td>
                     <td  style="color: #FE0C0C;"> <?= number_format($expense["price"]) ?></td>
                     <td ></td>
                 </tr>

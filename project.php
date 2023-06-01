@@ -1,95 +1,93 @@
 <?php 
- $conn = require __DIR__ . "/database.php";
+$conn = require __DIR__ . "/database.php";
 
-    $id = $_POST['id'];
+$id = $_POST['id'];
 
-    $select = "SELECT * FROM project WHERE id = '$id'";
-    $query = mysqli_query($conn, $select);
-   
-    while ($row = mysqli_fetch_array($query))
-    {
-        $name = $row['name'];
-        $address = $row['address'];
-        $startDate = $row['startDate'];
-        $finishDate = $row['finishDate'];
-        $clientName = $row['clientName'];
+$select = "SELECT * FROM project WHERE id = '$id'";
+$query = mysqli_query($conn, $select);
 
+
+
+
+while ($row = mysqli_fetch_array($query)) {
+    $name = $row['name'];
+    $address = $row['address'];
+    $startDate = $row['startDate'];
+    $endDate = $row['finishDate'];
+    $finishDate = $row['finishDate'];
+    $clientName = $row['clientName'];
+}
+
+
+$query2 = "SELECT * FROM income WHERE projectId='$id'";
+$query_run = mysqli_query($conn, $query2);
+
+$total = 0;
+
+if (mysqli_num_rows($query_run) > 0) {
+    foreach ($query_run as $payment) {
+        $total += $payment["price"];
     }
+}
 
-    $query2 = "SELECT * FROM income WHERE projectId='$id'";
-    $query_run = mysqli_query($conn, $query2);
-                         
-    $total=0;
+$query2 = "SELECT * FROM expense WHERE projectId='$id'";
+$query_run = mysqli_query($conn, $query2);
 
-    if(mysqli_num_rows($query_run) > 0)
-    { 
-        foreach($query_run as $payment)
-        {
-            $total+=$payment["price"];
-        }
+$totalexpenses = 0;
+
+if (mysqli_num_rows($query_run) > 0) {
+    foreach ($query_run as $payment) {
+        $totalexpenses += $payment["price"];
     }
+}
 
-    $query2 = "SELECT * FROM expense WHERE projectId='$id'";
-    $query_run = mysqli_query($conn, $query2);
-                         
-    $totalexpenses=0;
+// Retrieve associated files for the project from the database
+$fileQuery = "SELECT * FROM files WHERE project_name = '$name'";
+$fileResult = mysqli_query($conn, $fileQuery);
 
-    if(mysqli_num_rows($query_run) > 0)
-    { 
-        foreach($query_run as $payment)
-        {
-            $totalexpenses+=$payment["price"];
-        }
+
+// Query to retrieve project steps data
+// ...pie chart
+// Prepare and execute the query to fetch income data from the "income" table
+$query = "SELECT projectsPercent, finish FROM projectstep WHERE projectId = '$id'";
+$result = mysqli_query($conn, $query);
+
+// Fetch the income data from the result set
+$incomeData = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $incomeData[] = $row;
+}
+
+// Prepare the data for the pie chart
+$finishCount = 0;
+$notFinishCount = 0;
+
+foreach ($incomeData as $row) {
+    if ($row['finish'] === "נגמר") {
+        $finishCount += $row['projectsPercent'];
+    } else {
+        $notFinishCount += $row['projectsPercent'];
     }
+}
 
-    // Retrieve associated files for the project from the database
-    $fileQuery = "SELECT * FROM files WHERE project_name = '$name'";
-    $fileResult = mysqli_query($conn, $fileQuery);
-
-
-     // Query to retrieve project steps data
-     // ...pie chart
-   // Prepare and execute the query to fetch income data from the "income" table
-  // Prepare and execute the query to fetch income data from the "projectstep" table
-    $query = "SELECT projectsPercent, finish FROM projectstep WHERE projectId = '$id'";
-    $result = $conn->query($query);
-
-    // Fetch the income data from the result set
-    $incomeData = [];
-    while ($row = $result->fetch_assoc()) {
-        $incomeData[] = $row;
-    }
-
-    // Prepare the data for the pie chart
-    $finishCount = 0;
-    $notFinishCount = 0;
-
-    foreach ($incomeData as $row) {
-        if ($row['finish'] === "נגמר") {
-            $finishCount += $row['projectsPercent'];
-        } else {
-            $notFinishCount += $row['projectsPercent'];
-        }
-    }
-
-    // Generate the chart data in JSON format
-    $chartData = [
-        'labels' => ['נגמר', 'לא נגמר'],
-        'datasets' => [
-            [
-                'data' => [$finishCount, $notFinishCount],
-                'backgroundColor' => [
-                    'rgba(75, 192, 192, 0.75)',
-                    'rgba(255, 99, 132, 0.75)',
-                    // Add more colors as needed
-                ],
+// Generate the chart data in JSON format
+$chartData = [
+    'labels' => ['נגמר', 'לא נגמר'],
+    'datasets' => [
+        [
+            'data' => [$finishCount, $notFinishCount],
+            'backgroundColor' => [
+                'rgba(54, 162, 235, 0.25)',
+                'rgba(54, 162, 235, 1)',
+                // Add more colors as needed
             ],
         ],
-    ];
+    ],
+];
 
-    // Encode the chart data as JSON
-    $jsonChartData = json_encode($chartData);
-   
+// Encode the chart data as JSON
+$jsonChartData = json_encode($chartData);
+
  ?>
 
 
@@ -98,7 +96,7 @@
 
 <head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>DASHMIN - Bootstrap Admin Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -131,7 +129,8 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
-   
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&libraries=places"></script>
+
 
     
  
@@ -175,6 +174,16 @@
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+}
+
+.my-div {
+    border-bottom: 8px solid #55BF96;
+    border-radius: 0.25rem;
+}
+
+.my-div2 {
+    border-bottom: 8px solid #E04050;
+    border-radius: 0.25rem;
 }
     </style>
 
@@ -374,23 +383,27 @@
                                 <div class="mb-3">
                                     <label for="" class="form-label">שם הפרויקט</label>
                                     <input type="text" class="form-control" id="projectName" name="projectName"style="font-weight: bold; color: black;"
-                                    value=""> 
+                                    > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">המזמין </label>
                                     <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;"
-                                    value="" > 
+                                     > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">כתובת </label>
                                     <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;"
-                                    value=""> 
+                                    > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך התחלת הפרויקט</label>
                                     <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;"
-                                        value="">
-    
+                                >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">תאריך סיום משוערך</label>
+                                    <input type="date" class="form-control" id="endDate" name="endDate" style="font-weight: bold; color: black;"
+                                >
                                 </div>
                                 
                             </form>
@@ -401,18 +414,18 @@
                     
                     <div class="col-sm-12 col-xl-6">
     <div class="row">
-        <div class="col-sm-6">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-line fa-3x text-primary" style="color: #E04050;"></i>
-                <div class="ms-3">
-                    <p class="mb-2">הכנסות</p>
-                    <h6 id="penefit" class="mb-0"></h6>
-                </div>
-            </div>
+    <div class="col-sm-6">
+    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
+        <i class="fa fa-chart-line fa-3x" style="color: #55BF96;"></i>
+        <div class="ms-3">
+            <p class="mb-2">הכנסות</p>
+            <h6 id="penefit" class="mb-0"></h6>
         </div>
+    </div>
+</div>
         <div class="col-sm-6">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div2">
+                <i class="fa fa-chart-bar fa-3x" style="color: #E04050;"></i>
                 <div class="ms-3">
                     <p class="mb-2">הוצאות</p>
                     <h6 id="expenses" class="mb-0"></h6>
@@ -425,7 +438,6 @@
         <div class="bg-light rounded h-100 p-4">
     <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
     <div class="d-flex align-items-center justify-content-between mb-4"></div>
-   
     <div class="chart-container" style="width: 300px; height: 250px; display: flex; justify-content: center; align-items: center;">
         <canvas id="incomeChart"></canvas>
     </div>
@@ -570,6 +582,8 @@
         document.getElementById("address").value = address;
         var startDate = "<?php echo $startDate; ?>";
         document.getElementById("startDate").value = startDate;
+        var endDate = "<?php echo $endDate; ?>";
+        document.getElementById("endDate").value = endDate;
         var clientName = "<?php echo $clientName; ?>";
         document.getElementById("clientName").value = clientName;
         var projectId = "<?php echo $id; ?>";
@@ -664,6 +678,16 @@
                 maintainAspectRatio: false
             }
         });
+    </script>
+
+<script>
+    function initializeAutocomplete() {
+        var locationInput = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(locationInput);
+    }
+  
+    // Call the initializeAutocomplete function when the page loads
+    google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
     </script>
 
 

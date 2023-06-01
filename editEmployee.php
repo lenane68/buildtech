@@ -33,12 +33,12 @@
 
 <body>
     <!-- View Employee Modal -->
-    <div class="modal fade" id="employeeViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="employeeViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">הצגת לקוח</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
 
@@ -47,14 +47,7 @@
                             <p  id="view_employeeName" class="form-control" ></p>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="">כתובת</label>
-                                <p  id="view_address" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">טלפון</label>
-                                <p  id="view_phone" class="form-control" ></p>
-                            </div>
+
                             <div class="mb-3">
                                 <label for="">תפקיד</label>
                                 <p id="view_job" class="form-control" ></p>
@@ -89,10 +82,10 @@
      <!-- Edit Employee Modal -->
      <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" dir="rtl">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת עובד</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateEmployee">
                     <div class="modal-body">
@@ -104,15 +97,6 @@
                         <div class="mb-3">
                         <label for="">שם מלא</label>
                         <input type="text" name="employeeName" id="employeeName" class="form-control" >
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="">כתובת</label>
-                            <input type="text" name="address" id="address" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="">טלפון</label>
-                            <input type="text" name="phone" id="phone" class="form-control" />
                         </div>
                         <div class="mb-3">
                             <label for="">תפקיד</label>
@@ -130,7 +114,7 @@
 
                         <div class="form-check form-switch mb-3">
                             <label class="form-check-label" for="">עדיין עובד</label>
-                            <input type="checkbox" name="active" id="active" class="form-check-input form-control" role="switch">
+                            <input type="checkbox" name="active" id="active" class="form-check-input form-control" role="switch" checked>
                         </div>
 
                         <div class="mb-3">
@@ -279,11 +263,11 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת עובדים</h6>
+                          <div class="bg-light rounded h-100 p-4" dir="rtl">
+                            <h5 class="mb-4">טבלת עובדים</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -450,8 +434,6 @@
             }else if(res.status == 200){
 
                 $('#view_employeeName').text(res.data.fullName);
-                $('#view_address').text(res.data.Address);
-                $('#view_phone').text(res.data.phoneNumber);
                 $('#view_job').text(res.data.job);
                 $('#view_startDate').text(res.data.startDate);
                 $('#view_gender').text(res.data.Gender);

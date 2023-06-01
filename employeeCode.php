@@ -35,23 +35,17 @@ if(isset($_GET['employee_id']))
 
 }
 
-if(isset($_POST['update_employee']))
-{
-    
-    $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+if (isset($_POST['update_employee'])) {
 
+    $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
     $name = mysqli_real_escape_string($conn, $_POST['employeeName']);
-    $address = mysqli_real_escape_string($conn, $_POST['address']);
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $job = mysqli_real_escape_string($conn, $_POST['job']);
     $gender = mysqli_real_escape_string($conn, $_POST['gender']);
     $startDate = mysqli_real_escape_string($conn, $_POST['startDate']);
-    $active = mysqli_real_escape_string($conn, $_POST['active']);
+    $active = isset($_POST['active']) ? 1 : 0; // Check if the checkbox is checked
     $salary = mysqli_real_escape_string($conn, $_POST['salary']);
 
-
-    if($name == NULL || $address == NULL || $job == NULL || $gender == NULL || $startDate == NULL)
-    {
+    if (empty($name) || empty($salary) || empty($startDate)) {
         $res = [
             'status' => 422,
             'message' => 'שדה חובה ריק'
@@ -60,21 +54,18 @@ if(isset($_POST['update_employee']))
         return;
     }
 
-    $query = "UPDATE employee SET fullName='$name', Address='$address', phoneNumber='$phone', job='$job', startDate='$startDate', Gender='$gender', Active='$active', salary='$salary'
+    $query = "UPDATE employee SET fullName='$name', job='$job', startDate='$startDate', Gender='$job', startDate='$startDate', Gender='$gender', Active='$active', salary='$salary'
                 WHERE id='$employee_id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'העובד עודכן בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'העובד לא עודכן'
@@ -95,7 +86,7 @@ if(isset($_POST['delete_employee']))
     {
         $res = [
             'status' => 200,
-            'message' => 'הלקוח נמחק בהצלחה'
+            'message' => 'העובד נמחק בהצלחה'
         ];
         echo json_encode($res);
         return;
@@ -104,7 +95,7 @@ if(isset($_POST['delete_employee']))
     {
         $res = [
             'status' => 500,
-            'message' => 'הלקוח לא נמחק'
+            'message' => 'העובד לא נמחק'
         ];
         echo json_encode($res);
         return;

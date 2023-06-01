@@ -2,12 +2,6 @@
     if (empty($_POST["fullName"])) {
         die("fullName is required");
     }
-    if (empty($_POST["adress"])) {
-        die("adress is required");
-    }
-    if (empty($_POST["phoneNumber"])) {
-        die("phoneNumber is required");
-    }
     if (empty($_POST["job"])) {
         die("job is required");
     }
@@ -22,8 +16,6 @@
     //$password_hash = password_hash($_POST["floatingPassword"], PASSWORD_DEFAULT);
 
     $fullName = $_POST['fullName'];
-	$adress = $_POST['adress'];
-    $phoneNumber = $_POST['phoneNumber'];
     $job = $_POST['job'];
     $startDate = $_POST['startDate'];
     $Gender = $_POST['Gender'];
@@ -31,8 +23,8 @@
 	
     $conn = require __DIR__ . "/database.php";
 
-    $stmt = $conn->prepare("insert into employee(fullName, Address, phoneNumber, job, startDate, Gender, salary) values(?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssd", $fullName, $adress, $phoneNumber, $job, $startDate, $Gender, $daySalary);
+    $stmt = $conn->prepare("insert into employee(fullName, job, startDate, Gender, salary) values(?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssd", $fullName, $job, $startDate, $Gender, $daySalary);
     $execval = $stmt->execute();
     if($execval){
         echo "Adding successfully...";
