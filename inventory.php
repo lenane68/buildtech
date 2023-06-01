@@ -10,7 +10,7 @@
 
 
 <!DOCTYPE html>
-<html dir="rtl">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -224,7 +224,7 @@
         </div>
 
             <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <h1>החומרים </h1>
                 <div class="row g-4">
                 <?php
@@ -232,8 +232,8 @@
                  if ($result->num_rows > 0) {
                        // output data of each row
                        while($row = $result->fetch_assoc()) {
-                             echo "<div class='col col-sm-12 col-xl-6'>";
-                             echo "<form method = 'post'>";
+                             echo "<div class='col col-sm-12 col-xl-6' >";
+                             echo "<form method = 'post' >";
                              echo "<div class='bg-light rounded d-flex justify-content-between p-4'>";
                             echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"]."</div>";
                             echo "<div class='row mb-3' ><img src='data:image/jpeg;base64,".base64_encode($row["img"])."' height='200px' width='200px'></div>"; 
@@ -287,14 +287,14 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
     <script>
+    $(document).on('click', '.editMaterialBtn', function () {
 
-$(document).on('click', '.editMaterialBtn', function () {
-            
             var material_id = $(this).val();
             //alert(supplier_id);
 
@@ -315,8 +315,6 @@ $(document).on('click', '.editMaterialBtn', function () {
                     $('#amount').val(res.data.amount);
                     $('#metrics').val(res.data.metrics);
                     $('#img').val(res.data.img);
-                   
-
                     $('#materialEditModal').modal('show');
                     
                     }
