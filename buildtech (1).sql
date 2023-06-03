@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: יוני 01, 2023 בזמן 02:53 PM
--- גרסת שרת: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Host: localhost
+-- Generation Time: Jun 03, 2023 at 09:45 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `account`
+-- Table structure for table `account`
 --
 
 CREATE TABLE `account` (
@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `account`
+-- Dumping data for table `account`
 --
 
 INSERT INTO `account` (`userName`, `email`, `password`) VALUES
@@ -49,7 +49,7 @@ INSERT INTO `account` (`userName`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `bankaccount`
+-- Table structure for table `bankaccount`
 --
 
 CREATE TABLE `bankaccount` (
@@ -62,7 +62,7 @@ CREATE TABLE `bankaccount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `bankaccount`
+-- Dumping data for table `bankaccount`
 --
 
 INSERT INTO `bankaccount` (`accountNumber`, `branchNumber`, `bankName`, `owner`, `goldNumber`, `address`) VALUES
@@ -71,7 +71,7 @@ INSERT INTO `bankaccount` (`accountNumber`, `branchNumber`, `bankName`, `owner`,
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `car`
+-- Table structure for table `car`
 --
 
 CREATE TABLE `car` (
@@ -86,26 +86,27 @@ CREATE TABLE `car` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `car`
+-- Dumping data for table `car`
 --
 
 INSERT INTO `car` (`number`, `type`, `year`, `color`, `testDate`, `insuranceDate`, `careDate`, `fuelType`) VALUES
-('200613', 'מחפר זחלי זעיר - גי.סי.בי במפורד', 2022, 'צהוב', '2024-02-13', '2023-04-29', '2023-04-29', 'סולר'),
-('2397266', 'יונדאי קוריאה', 2008, 'אפור מטל', '2023-03-05', '2023-03-05', '2023-03-05', 'בנזין'),
-('25201401', 'איסוזו תאילנד', 2018, 'אפור מטל', '2023-01-28', '2023-04-29', '2023-04-29', 'דיזל'),
-('4845338', 'פולקסווגן מכסי', 2016, 'כסף מטלי', '2022-09-13', '2023-04-29', '2023-04-29', 'בנזין'),
-('5998334', 'קרייזלר מכסיקו', 2015, 'לבן', '2022-07-25', '2023-04-29', '2023-04-29', 'דיזל טורבו'),
-('61537001', 'WRANGLER UNLIM', 2019, 'לבן', '2024-04-13', '2024-04-13', '2023-04-26', 'בנזין'),
-('63273801', 'אאודי', 2019, 'לבן', '2023-01-26', '2023-04-29', '2023-04-29', 'בנזין'),
-('67565302', 'ב מ וו ארה״ב', 2021, 'שחור מטלי', '2022-12-26', '2023-04-29', '2023-04-29', 'בנזין'),
-('80347801', 'מרכבי נוע בעמ', 2019, 'אפור', '2023-05-28', '2023-05-28', '2023-04-29', '--'),
-('9348352', 'פולקסווגן גרמנ', 2014, 'אפור כהה', '2023-01-14', '2023-04-29', '2023-04-29', 'דיזל טורבו'),
-('96286', ' מחפר זחלי זעיר - טרקס', 2010, 'לבן', '2023-07-03', '2023-07-03', '2023-04-29', 'סולר');
+('200613', 'מחפר זחלי זעיר - גי.סי.בי במפורד', '2022', 'צהוב', '2024-02-13', '2023-04-29', '2023-04-29', 'סולר'),
+('2397266', 'יונדאי קוריאה', '2008', 'אפור מטל', '2023-03-05', '2023-03-05', '2023-03-05', 'בנזין'),
+('25201401', 'איסוזו תאילנד', '2018', 'אפור מטל', '2023-01-28', '2023-04-29', '2023-04-29', 'דיזל'),
+('4845338', 'פולקסווגן מכסי', '2016', 'כסף מטלי', '2022-09-13', '2023-04-29', '2023-04-29', 'בנזין'),
+('5998334', 'קרייזלר מכסיקו', '2015', 'לבן', '2022-07-25', '2023-04-29', '2023-04-29', 'דיזל טורבו'),
+('61537001', 'WRANGLER UNLIM', '2019', 'לבן', '2024-04-13', '2024-04-13', '2023-04-26', 'בנזין'),
+('63273801', 'אאודי', '2019', 'לבן', '2023-01-26', '2023-04-29', '2023-04-29', 'בנזין'),
+('67565302', 'ב מ וו ארה״ב', '2021', 'לבן', '2022-12-26', '2023-04-29', '2023-04-29', 'בנזין 95'),
+('7690709', 'יחלח', '1987', 'אדום', '2023-06-01', '2023-06-01', '2023-06-01', 'סולר'),
+('80347801', 'מרכבי נוע בעמ', '2019', 'אפור', '2023-05-28', '2023-05-28', '2023-04-29', '--'),
+('9348352', 'פולקסווגן גרמנ', '2014', 'אפור כהה', '2023-01-14', '2023-04-29', '2023-04-29', 'דיזל טורבו'),
+('96286', ' מחפר זחלי זעיר - טרקס', '2010', 'לבן', '2023-07-03', '2023-07-03', '2023-04-29', 'סולר');
 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `carfile`
+-- Table structure for table `carfile`
 --
 
 CREATE TABLE `carfile` (
@@ -117,7 +118,7 @@ CREATE TABLE `carfile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `carfile`
+-- Dumping data for table `carfile`
 --
 
 INSERT INTO `carfile` (`file_name`, `type`, `size`, `carNumber`, `category`) VALUES
@@ -128,7 +129,7 @@ INSERT INTO `carfile` (`file_name`, `type`, `size`, `carNumber`, `category`) VAL
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `checks`
+-- Table structure for table `checks`
 --
 
 CREATE TABLE `checks` (
@@ -139,7 +140,7 @@ CREATE TABLE `checks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `checks`
+-- Dumping data for table `checks`
 --
 
 INSERT INTO `checks` (`id`, `forName`, `price`, `checkDate`) VALUES
@@ -165,7 +166,7 @@ INSERT INTO `checks` (`id`, `forName`, `price`, `checkDate`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `client`
+-- Table structure for table `client`
 --
 
 CREATE TABLE `client` (
@@ -179,11 +180,11 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `client`
+-- Dumping data for table `client`
 --
 
 INSERT INTO `client` (`fullName`, `address`, `id`, `gender`, `phone`, `phone2`, `email`) VALUES
-('שחר טייק', 'אורי בר און 28 אריאל', '31542129', 'זכר', '0522994208', '', ''),
+('שחר טייק', 'אורי בר און 28 אריאל', '31542129', 'זכר', '0522994208', '-', '-'),
 ('עומר שמאי כהן', 'רחוב שטורמן 10 הרצליה', '37213097', 'זכר', '', '', ''),
 ('מודל הנדסה בע\"מ', 'עילוט', '511669830', '', '', '', ''),
 ('פרוגקט פרו בע״מ', 'רחוב האורגים 27 אשדוד', '514867563', 'זכר', '088521444', '', 'jobs@projectpro.co.il'),
@@ -192,7 +193,7 @@ INSERT INTO `client` (`fullName`, `address`, `id`, `gender`, `phone`, `phone2`, 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `data_location`
+-- Table structure for table `data_location`
 --
 
 CREATE TABLE `data_location` (
@@ -204,19 +205,20 @@ CREATE TABLE `data_location` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `data_location`
+-- Dumping data for table `data_location`
 --
 
 INSERT INTO `data_location` (`id`, `descr`, `lat`, `lon`, `projectName`) VALUES
 (13, 'רחוב האורגים 27, אשדוד, ישראל', 31.796640, 34.643181, 'פרוגקט פרו בע\"מ '),
 (14, 'רחוב שטורמן, הרצליה, ישראל', 32.170139, 34.834648, 'אחווה 6'),
 (15, 'הרצליה פיתוח, הרצליה, ישראל', 32.166965, 34.834435, 'יפתח 10'),
-(26, 'כפר סבא, ישראל', 5.500000, 4.000000, 'בי\"ס יסודי כפר סבא- שלב ב');
+(26, 'כפר סבא, ישראל', 5.500000, 4.000000, 'בי\"ס יסודי כפר סבא- שלב ב'),
+(27, 'מלךלצ', 5.500000, 4.000000, 'ךלצךת');
 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `employee`
+-- Table structure for table `employee`
 --
 
 CREATE TABLE `employee` (
@@ -230,7 +232,7 @@ CREATE TABLE `employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `employee`
+-- Dumping data for table `employee`
 --
 
 INSERT INTO `employee` (`id`, `fullName`, `job`, `startDate`, `Gender`, `Active`, `salary`) VALUES
@@ -268,7 +270,7 @@ INSERT INTO `employee` (`id`, `fullName`, `job`, `startDate`, `Gender`, `Active`
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `exception`
+-- Table structure for table `exception`
 --
 
 CREATE TABLE `exception` (
@@ -279,7 +281,7 @@ CREATE TABLE `exception` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `exception`
+-- Dumping data for table `exception`
 --
 
 INSERT INTO `exception` (`id`, `projectName`, `description`, `price`) VALUES
@@ -298,7 +300,7 @@ INSERT INTO `exception` (`id`, `projectName`, `description`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `expense`
+-- Table structure for table `expense`
 --
 
 CREATE TABLE `expense` (
@@ -311,24 +313,26 @@ CREATE TABLE `expense` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `expense`
+-- Dumping data for table `expense`
 --
 
 INSERT INTO `expense` (`id`, `price`, `date`, `details`, `category`, `projectId`) VALUES
-(4, 23000, '2023-05-30', 'חומרים', 'ספקים', 0),
-(5, 47000, '2023-05-30', 'עץ', 'ספקים', 0),
-(6, 84000, '2023-05-20', 'בטון ', 'ספקים', 0),
-(7, 15500, '2023-05-10', 'קרמיקה', 'ספקים', 0),
-(8, 2340, '2023-05-20', 'בישן שירותים ניידים', 'ספקים', 0),
-(9, 7343, '2023-05-20', 'תחנת דלק', 'רכבים', 0),
-(10, 50000, '2023-04-30', 'עץ', 'ספקים', 0),
-(11, 23000, '2023-04-30', 'עבודה על בריכה', 'קבלני משני', 0),
-(12, 35000, '2023-04-25', 'בטון המחלף', 'ספקים', 0);
+(4, 23000, '2023-05-30', 'חומרים', 'ספקים', 21),
+(5, 47000, '2023-05-30', 'עץ', 'ספקים', 63),
+(6, 84000, '2023-05-20', 'בטון ', 'ספקים', 21),
+(7, 15500, '2023-05-10', 'קרמיקה', 'ספקים', 20),
+(8, 2340, '2023-05-20', 'בישן שירותים ניידים', 'ספקים', 19),
+(9, 7343, '2023-05-20', 'תחנת דלק', 'רכבים', 19),
+(10, 50000, '2023-04-30', 'עץ', 'ספקים', 20),
+(11, 23000, '2023-04-30', 'עבודה על בריכה', 'קבלני משני', 63),
+(12, 35000, '2023-04-25', 'בטון המחלף', 'ספקים', 19),
+(13, 18992, '2023-06-02', 'סולר', '', 0),
+(14, 168000, '2023-06-02', 'משכורות עובדים', '', 0);
 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `files`
+-- Table structure for table `files`
 --
 
 CREATE TABLE `files` (
@@ -338,7 +342,7 @@ CREATE TABLE `files` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `files`
+-- Dumping data for table `files`
 --
 
 INSERT INTO `files` (`id`, `project_name`, `filename`) VALUES
@@ -355,7 +359,7 @@ INSERT INTO `files` (`id`, `project_name`, `filename`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `fixing`
+-- Table structure for table `fixing`
 --
 
 CREATE TABLE `fixing` (
@@ -367,16 +371,16 @@ CREATE TABLE `fixing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `fixing`
+-- Dumping data for table `fixing`
 --
 
 INSERT INTO `fixing` (`serialNumber`, `carNumber`, `price`, `fixingDetails`, `fixingDate`) VALUES
-(1, '3478', 100, 'יש הרבה הערות לכתוב לצורך בדיקה', '2023-03-29');
+(1, '2397266', 100, 'יש הרבה הערות לכתוב לצורך בדיקה', '2023-03-29');
 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `fuel`
+-- Table structure for table `fuel`
 --
 
 CREATE TABLE `fuel` (
@@ -388,7 +392,7 @@ CREATE TABLE `fuel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `fuel`
+-- Dumping data for table `fuel`
 --
 
 INSERT INTO `fuel` (`serialNumber`, `carNumber`, `amount`, `price`, `fullDate`) VALUES
@@ -399,7 +403,7 @@ INSERT INTO `fuel` (`serialNumber`, `carNumber`, `amount`, `price`, `fullDate`) 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `income`
+-- Table structure for table `income`
 --
 
 CREATE TABLE `income` (
@@ -412,25 +416,26 @@ CREATE TABLE `income` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `income`
+-- Dumping data for table `income`
 --
 
 INSERT INTO `income` (`id`, `price`, `date`, `details`, `category`, `projectId`) VALUES
 (21, 117000, '2023-05-08', 'עבור עבודות בנייה אחווה 6', 'פרויקטים', 20),
-(22, 8190, '2023-05-12', 'ניהול עבודה אזור תעשייה סג\' 2000', 'פרויקטים', 0),
+(22, 8190, '2023-05-12', 'ניהול עבודה אזור תעשייה סג\' 2000', 'פרויקטים', 63),
 (23, 175000, '2023-05-30', 'ע\"ח התקדמות בפרויקט', 'פרויקטים', 21),
 (24, 181818, '2023-04-01', 'נחאש בלאל ואחיו', 'פרויקטים', 0),
 (25, 350035, '2023-04-01', 'נחאש בלאל ואחיו', 'פרויקטים', 0),
 (26, 175000, '2023-04-05', 'גמר מעטפת קומת קרקע', 'פרויקטים', 21),
 (27, 100737, '2023-04-06', 'גמר קירות קומה א', 'פרויקטים', 20),
 (28, 87700, '2023-04-23', 'חלק משלב גמר יציקת גג ומעקות', 'פרויקטים', 21),
-(29, 4914, '2023-04-14', 'עבודות עפר', 'פרויקטים', 0),
-(30, 4329, '2023-06-01', 'הובלה בחודש מרץ', '', 0);
+(29, 4914, '2023-04-14', 'עבודות עפר', 'פרויקטים', 19),
+(30, 4329, '2023-06-01', 'הובלה בחודש מרץ', '', 0),
+(31, 280000, '2023-06-02', 'בניית בריכה', '', 0);
 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `markers`
+-- Table structure for table `markers`
 --
 
 CREATE TABLE `markers` (
@@ -443,7 +448,7 @@ CREATE TABLE `markers` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `markers`
+-- Dumping data for table `markers`
 --
 
 INSERT INTO `markers` (`id`, `name`, `address`, `lat`, `lng`, `type`) VALUES
@@ -459,7 +464,7 @@ INSERT INTO `markers` (`id`, `name`, `address`, `lat`, `lng`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `markers1`
+-- Table structure for table `markers1`
 --
 
 CREATE TABLE `markers1` (
@@ -471,7 +476,7 @@ CREATE TABLE `markers1` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `markers1`
+-- Dumping data for table `markers1`
 --
 
 INSERT INTO `markers1` (`id`, `projectNumber`, `address`, `lat`, `lng`) VALUES
@@ -482,7 +487,7 @@ INSERT INTO `markers1` (`id`, `projectNumber`, `address`, `lat`, `lng`) VALUES
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `material`
+-- Table structure for table `material`
 --
 
 CREATE TABLE `material` (
@@ -495,7 +500,7 @@ CREATE TABLE `material` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `material`
+-- Dumping data for table `material`
 --
 
 INSERT INTO `material` (`id`, `name`, `price`, `amount`, `metrics`, `img`) VALUES
@@ -525,7 +530,7 @@ INSERT INTO `material` (`id`, `name`, `price`, `amount`, `metrics`, `img`) VALUE
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `payments`
+-- Table structure for table `payments`
 --
 
 CREATE TABLE `payments` (
@@ -538,7 +543,7 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `payments`
+-- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`serialNumber`, `projectNumber`, `price`, `date`, `forWhat`, `isBill`) VALUES
@@ -554,7 +559,7 @@ INSERT INTO `payments` (`serialNumber`, `projectNumber`, `price`, `date`, `forWh
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `project`
+-- Table structure for table `project`
 --
 
 CREATE TABLE `project` (
@@ -576,7 +581,7 @@ CREATE TABLE `project` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `project`
+-- Dumping data for table `project`
 --
 
 INSERT INTO `project` (`id`, `name`, `address`, `startDate`, `finishDate`, `clientName`, `type`, `floorsNum`, `pool`, `basement`, `parking`, `roomsNum`, `space`, `cup`, `totalPrice`) VALUES
@@ -588,7 +593,7 @@ INSERT INTO `project` (`id`, `name`, `address`, `startDate`, `finishDate`, `clie
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `projectstep`
+-- Table structure for table `projectstep`
 --
 
 CREATE TABLE `projectstep` (
@@ -602,7 +607,7 @@ CREATE TABLE `projectstep` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `projectstep`
+-- Dumping data for table `projectstep`
 --
 
 INSERT INTO `projectstep` (`id`, `projectId`, `projectsPercent`, `description`, `payment`, `finish`, `paymentPercent`) VALUES
@@ -643,7 +648,7 @@ INSERT INTO `projectstep` (`id`, `projectId`, `projectsPercent`, `description`, 
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `report`
+-- Table structure for table `report`
 --
 
 CREATE TABLE `report` (
@@ -656,7 +661,7 @@ CREATE TABLE `report` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `report`
+-- Dumping data for table `report`
 --
 
 INSERT INTO `report` (`reportNumber`, `carNumber`, `reportDate`, `price`, `paid`, `notes`) VALUES
@@ -666,7 +671,7 @@ INSERT INTO `report` (`reportNumber`, `carNumber`, `reportDate`, `price`, `paid`
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `supplier`
+-- Table structure for table `supplier`
 --
 
 CREATE TABLE `supplier` (
@@ -680,7 +685,7 @@ CREATE TABLE `supplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `supplier`
+-- Dumping data for table `supplier`
 --
 
 INSERT INTO `supplier` (`serialNumber`, `name`, `address`, `id`, `email`, `phone`, `phone2`) VALUES
@@ -689,7 +694,7 @@ INSERT INTO `supplier` (`serialNumber`, `name`, `address`, `id`, `email`, `phone
 -- --------------------------------------------------------
 
 --
--- מבנה טבלה עבור טבלה `tasks`
+-- Table structure for table `tasks`
 --
 
 CREATE TABLE `tasks` (
@@ -700,7 +705,7 @@ CREATE TABLE `tasks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- הוצאת מידע עבור טבלה `tasks`
+-- Dumping data for table `tasks`
 --
 
 INSERT INTO `tasks` (`id`, `date`, `description`, `done`) VALUES
@@ -734,52 +739,52 @@ INSERT INTO `tasks` (`id`, `date`, `description`, `done`) VALUES
 --
 
 --
--- אינדקסים לטבלה `account`
+-- Indexes for table `account`
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`userName`),
   ADD UNIQUE KEY `UNIQUE` (`email`);
 
 --
--- אינדקסים לטבלה `bankaccount`
+-- Indexes for table `bankaccount`
 --
 ALTER TABLE `bankaccount`
   ADD PRIMARY KEY (`accountNumber`);
 
 --
--- אינדקסים לטבלה `car`
+-- Indexes for table `car`
 --
 ALTER TABLE `car`
   ADD PRIMARY KEY (`number`);
 
 --
--- אינדקסים לטבלה `carfile`
+-- Indexes for table `carfile`
 --
 ALTER TABLE `carfile`
   ADD PRIMARY KEY (`carNumber`,`category`),
   ADD UNIQUE KEY `file_name` (`file_name`);
 
 --
--- אינדקסים לטבלה `checks`
+-- Indexes for table `checks`
 --
 ALTER TABLE `checks`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `client`
+-- Indexes for table `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `fullName` (`fullName`);
 
 --
--- אינדקסים לטבלה `data_location`
+-- Indexes for table `data_location`
 --
 ALTER TABLE `data_location`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `employee`
+-- Indexes for table `employee`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`id`),
@@ -787,92 +792,92 @@ ALTER TABLE `employee`
   ADD UNIQUE KEY `fullName_2` (`fullName`);
 
 --
--- אינדקסים לטבלה `exception`
+-- Indexes for table `exception`
 --
 ALTER TABLE `exception`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `expense`
+-- Indexes for table `expense`
 --
 ALTER TABLE `expense`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `files`
+-- Indexes for table `files`
 --
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `fixing`
+-- Indexes for table `fixing`
 --
 ALTER TABLE `fixing`
   ADD PRIMARY KEY (`serialNumber`);
 
 --
--- אינדקסים לטבלה `fuel`
+-- Indexes for table `fuel`
 --
 ALTER TABLE `fuel`
   ADD PRIMARY KEY (`serialNumber`);
 
 --
--- אינדקסים לטבלה `income`
+-- Indexes for table `income`
 --
 ALTER TABLE `income`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `markers`
+-- Indexes for table `markers`
 --
 ALTER TABLE `markers`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `markers1`
+-- Indexes for table `markers1`
 --
 ALTER TABLE `markers1`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `material`
+-- Indexes for table `material`
 --
 ALTER TABLE `material`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `payments`
+-- Indexes for table `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`serialNumber`);
 
 --
--- אינדקסים לטבלה `project`
+-- Indexes for table `project`
 --
 ALTER TABLE `project`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- אינדקסים לטבלה `projectstep`
+-- Indexes for table `projectstep`
 --
 ALTER TABLE `projectstep`
   ADD PRIMARY KEY (`id`);
 
 --
--- אינדקסים לטבלה `report`
+-- Indexes for table `report`
 --
 ALTER TABLE `report`
   ADD PRIMARY KEY (`reportNumber`);
 
 --
--- אינדקסים לטבלה `supplier`
+-- Indexes for table `supplier`
 --
 ALTER TABLE `supplier`
   ADD PRIMARY KEY (`serialNumber`);
 
 --
--- אינדקסים לטבלה `tasks`
+-- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
   ADD PRIMARY KEY (`id`);
@@ -885,25 +890,25 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT for table `data_location`
 --
 ALTER TABLE `data_location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `exception`
 --
 ALTER TABLE `exception`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `files`
@@ -915,19 +920,19 @@ ALTER TABLE `files`
 -- AUTO_INCREMENT for table `fixing`
 --
 ALTER TABLE `fixing`
-  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `fuel`
 --
 ALTER TABLE `fuel`
-  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `income`
 --
 ALTER TABLE `income`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `markers`
@@ -969,7 +974,7 @@ ALTER TABLE `projectstep`
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `serialNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tasks`
