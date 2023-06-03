@@ -14,7 +14,7 @@
         }
     }
 
-    $query2 = "SELECT * FROM employee";
+    $query2 = "SELECT * FROM employee WHERE Active = 1";
     $query_run2 = mysqli_query($conn, $query2);
                          
     $totalEmployee=0;
@@ -189,43 +189,51 @@
 
     // ...pie chart
    // Prepare and execute the query to fetch income data from the "income" table
-    $query = "SELECT category, price FROM income";
-    $result = $conn->query($query);
+  // Prepare and execute the query to fetch expense data from the "expense" table
+$query = "SELECT category, SUM(price) AS total_price FROM expense GROUP BY category";
+$result = $conn->query($query);
 
-    // Fetch the income data from the result set
-    $incomeData = [];
-    while ($row = $result->fetch_assoc()) {
-        $incomeData[] = $row;
-    }
+// Fetch the expense data from the result set
+$expenseData = [];
+while ($row = $result->fetch_assoc()) {
+    $expenseData[] = $row;
+}
 
-    // Prepare the data for the pie chart
-    $categories = [];
-    $prices = [];
-
-    foreach ($incomeData as $row) {
-        $categories[] = $row['category'];
-        $prices[] = $row['price'];
-    }
-
-    // Generate the chart data in JSON format
-    $chartData = [
-        'labels' => $categories,
-        'datasets' => [
-            [
-                'data' => $prices,
-                'backgroundColor' => [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    // Add more colors as needed
-                ],
-            ],
-        ],
-    ];
-
-    // Encode the chart data as JSON
-    $jsonChartData = json_encode($chartData);
+// Prepare the data for the pie chart
+$categories = [];
+$prices = [];
+$colors = [
     
+   
+    'rgba(255, 206, 86, 0.6)',
+    'rgba(75, 192, 192, 0.6)',
+    'rgba(255, 99, 132, 0.6)',
+    'rgba(153, 102, 255, 0.6)',
+    'rgba(255, 159, 64, 0.6)',
+    'rgba(54, 162, 235, 0.6)',
+    // Add more colors as needed
+];
+
+foreach ($expenseData as $index => $row) {
+    $categories[] = $row['category'];
+    $prices[] = $row['total_price'];
+    $colors[] = $colors[$index % count($colors)]; // Assign unique color to each category
+}
+
+// Generate the chart data in JSON format
+$chartData = [
+    'labels' => $categories,
+    'datasets' => [
+        [
+            'data' => $prices,
+            'backgroundColor' => $colors,
+        ],
+    ],
+];
+
+// Encode the chart data as JSON
+$jsonChartData = json_encode($chartData);
+
 
 
 ?>
@@ -402,7 +410,7 @@
                 <div class="row g-4">
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <i class="fa fa-building fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">מס' פרויקטים </p>
                                 <h6 id="projectsNumber" class="mb-0"></h6>
@@ -411,16 +419,16 @@
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <i class="fa fa-briefcase fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">מס' עובדים</p>
+                                <p class="mb-2">עובדים פעילים</p>
                                 <h6 id="totalEmployee" class="mb-0"></h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">הוצאות החודש</p>
                                 <h6 id="totalexpenses" class="mb-0"></h6>
@@ -429,7 +437,7 @@
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">הכנסות החודש</p>
                                 <h6 id="totalincomes" class="mb-0"></h6>
@@ -457,7 +465,7 @@
             <div class="bg-light text-center rounded p-4" style="height: 400px;">
                 <div class="d-flex align-items-center justify-content-between mb-4" style="height: 5px;">
                     <a href="">הצג הכל</a>
-                    <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הכנסה לפי קטגוריות</h6>
+                    <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הוצאה לפי קטגוריות</h6>
                 </div>
                 <canvas id="incomeChart" style="height: 100px; width: 50%;"></canvas>
             </div>

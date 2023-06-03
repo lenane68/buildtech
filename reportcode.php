@@ -39,11 +39,10 @@ if(isset($_POST['update_report']))
 {
     $reportNumber = mysqli_real_escape_string($conn, $_POST['reportNumber']);
 
-   
     $carNumber = mysqli_real_escape_string($conn, $_POST['carNumber']);
     $reportDate = mysqli_real_escape_string($conn, $_POST['reportDate']);
     $price = mysqli_real_escape_string($conn, $_POST['price']);
-    //$paid = mysqli_real_escape_string($conn, $_POST['paid']);
+    $paid = isset($_POST['paid']) ? 1 : 0;
     $notes = mysqli_real_escape_string($conn, $_POST['notes']);
   
     if($carNumber == NULL || $reportDate == NULL || $price == NULL)
@@ -56,7 +55,7 @@ if(isset($_POST['update_report']))
         return;
     }
 
-    $query = "UPDATE report SET carNumber='$carNumber', reportDate='$reportDate', price='$price', paid='0', $notes='$notes'
+    $query = "UPDATE report SET carNumber='$carNumber', reportDate='$reportDate', price='$price', paid='$paid', notes='$notes'
                 WHERE reportNumber='$reportNumber'";
     $query_run = mysqli_query($conn, $query);
 
@@ -79,6 +78,8 @@ if(isset($_POST['update_report']))
         return;
     }
 }
+
+
 
 if(isset($_POST['delete_report']))
 {

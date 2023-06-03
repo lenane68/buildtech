@@ -169,58 +169,45 @@
 
 
             <div class="col-sm-12 col-xl-6">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת עובד</h6>
+                <div class="bg-light rounded h-100 p-4" dir="rtl">
+                    <h5 class="mb-4">הוספת עובד</h5>
                     <form action="addEmployee.php" method="post">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="fullName" name="fullName"
-                            placeholder="">
-                        <label for="fullName">שם מלא</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="address" name="adress"
-                            placeholder="">
-                        <label for="address">כתובת</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                            placeholder="">
-                        <label for="phoneNumber">מספר טלפון</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="job" name="job"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option value="מנהל">מנהל</option>
-                            <option value="עובד">עובד</option>
-                            <option value="מזכירה">מזכירה</option>
-                        </select>
-                        <label for="job">תפקיד</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="daySalary" name="daySalary"
-                            placeholder="">
-                        <label for="daySalary">משכורת ליום</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="startDate" name="startDate"
-                            placeholder="">
-                        <label for="startDate">תאריך התחלת עבודה</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="Gender" name="Gender"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option value="זכר">זכר</option>
-                            <option value="נקבה">נקבה</option>
-                        </select>
-                        <label for="Gender">מין</label>
-                    </div>
-                
-                    <button class="btn btn-primary">הוסף</button>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="">
+                            <label for="fullName">שם מלא</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="job" name="job" aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <option value="מנהל">מנהל</option>
+                                <option value="עובד">עובד</option>
+                                <option value="מזכירה">מזכירה</option>
+                            </select>
+                            <label for="job">תפקיד</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="daySalary" name="daySalary" placeholder="">
+                            <label for="daySalary">משכורת ליום</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="startDate" name="startDate" placeholder="">
+                            <label for="startDate">תאריך התחלת עבודה</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="Gender" name="Gender" aria-label="Floating label select example">
+                                <option selected>בחר/י</option>
+                                <option value="זכר">זכר</option>
+                                <option value="נקבה">נקבה</option>
+                            </select>
+                            <label for="Gender">מין</label>
+                        </div>
+                        
+                        <button class="btn btn-primary">הוסף</button>
                     </form>
                 </div>
             </div>
+            
 
 
             <!-- Footer Start -->

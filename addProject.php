@@ -30,6 +30,7 @@
     $startDate = $_POST['startDate'];
     $address = $_POST['address'];
     $finishDate = $_POST['finishDate'];
+    $price = $_POST['price'];
     $clientName = $_POST['clientName'];
     // Construct the API request URL
     $apiKey = 'AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0';
@@ -42,12 +43,12 @@
    
 
  if (empty($_POST["floorsNum2"])) { //פרטי
-    $stmt = $conn->prepare("insert into project(name, address, startDate, finishDate, clientName, type, floorsNum, pool, basement, parking) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssiiii", $name, $address, $startDate, $finishDate, $clientName, $type, $floorsNum, $pool, $basement, $parking);
+    $stmt = $conn->prepare("insert into project(name, address, startDate, finishDate, clientName, type, floorsNum, pool, basement, parking, totalPrice) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssiiiid", $name, $address, $startDate, $finishDate, $clientName, $type, $floorsNum, $pool, $basement, $parking, $price);
 
 } else{ //ציבורי 
-    $stmt = $conn->prepare("insert into project(name, address, startDate, finishDate, clientName, type, floorsNum, roomsNum, space, cup) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssiiii", $name, $address, $startDate, $finishDate, $clientName, $type, $floorsNum2, $roomsNum, $space, $cup);
+    $stmt = $conn->prepare("insert into project(name, address, startDate, finishDate, clientName, type, floorsNum, roomsNum, space, cup, totalPrice) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssiiiid", $name, $address, $startDate, $finishDate, $clientName, $type, $floorsNum2, $roomsNum, $space, $cup, $price);
 
 }
 
@@ -352,6 +353,13 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
                             <div class="form-floating mb-3 position-relative">
                                 <input type="date" class="form-control" id="finishDate" name="finishDate" placeholder="">
                                 <label for="finishDate" class="position-absolute top-0 end-0">תאריך סיום משוערך</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                            <div class="input-group">
+                                <span class="input-group-text">₪</span>
+                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="price" name="price" placeholder="תמורה">
+                                <span class="input-group-text">.00</span>
+                            </div>
                             </div>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="clientName" name="clientName" aria-label="Floating label select example">
