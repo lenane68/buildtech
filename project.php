@@ -88,6 +88,8 @@ $chartData = [
 // Encode the chart data as JSON
 $jsonChartData = json_encode($chartData);
 
+
+
  ?>
 
 
@@ -185,11 +187,81 @@ $jsonChartData = json_encode($chartData);
     border-bottom: 8px solid #E04050;
     border-radius: 0.25rem;
 }
+
+.button-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap as needed */
+}
     </style>
 
 </head>
 
 <body>
+   
+<!-- Update Step Modal -->
+<div class="modal fade" id="updateStepModal" tabindex="-1" aria-labelledby="updateStepModalLabel" aria-hidden="true">
+    <div class="modal-dialog" dir="rtl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStepModalLabel">עדכון</h5>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="updateStepForm">
+                <div class="modal-body">
+                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+                    <input type="hidden" name="updateStepId" id="updateStepId">
+                    <div class="mb-3">
+                        <label for="newFinish">עדכן סטטוס התקדמות שלב:</label>
+                        <select class="form-control" id="newFinish" name="newFinish">
+                            <option value="נגמר">נגמר</option>
+                            <option value="בעבודה">בעבודה</option>
+                            <option value="לא בוצע">לא בוצע</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                    <button type="submit" class="btn btn-primary">עדכן</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+        <!-- Add Step Modal -->
+<div class="modal fade" id="stepAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" dir="rtl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">הוספת שלב חדש</h5>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addStep">
+                <div class="modal-body">
+                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                    <input type="hidden" name="projectid2" id="projectid2" >
+
+                   
+                    <div class="mb-3">
+                        <label for="projectsPercent">אחוז מהפרויקט</label>
+                        <input type="text" name="projectsPercent" id="projectsPercent" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">תיאור</label>
+                        <textarea name="description" id="description" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                    <button type="submit" class="btn btn-primary">הוסף שלב</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
      <!-- Payment Modal -->
      <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
@@ -471,7 +543,14 @@ $jsonChartData = json_encode($chartData);
                                 <td><?= $projectstep["description"] ?></td>
                                 <td><?= $projectstep["projectsPercent"] ?>%</td>
                                 <td><?= $projectstep["payment"] ?></td>
-                                <td><button type="button" value="<?= $id ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button> </td>
+                                <td>
+                                    <div class="button-container">
+                                        <button type="button" value="<?= $id ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button>
+                                        <button type="button" value="<?= $projectstep["id"] ?>" class="deleteStepBtn btn btn-danger border-0" style="background-color: red;"><i class="fas fa-trash"></i></button>
+                                        <button type="button" value="<?= $projectstep["id"] ?>" class="updateStepBtn btn btn-success border-0" style="background-color: green;"><i class="fas fa-edit"></i></button>
+   
+                                    </div>      
+                                </td>
                             </tr>
                     <?php
                             $i++;
@@ -483,9 +562,9 @@ $jsonChartData = json_encode($chartData);
         </div>
         <br>
         <div class="d-flex justify-content-between">
-            <button type="button" value="<?= $id ?>" class="btn btn-primary border-0" style="background-color:  rgba(54, 162, 235, 1);">הוספת שלב/ים</button>
-            
-        </div>
+             <button type="button" value="<?= $id ?>" class="addStepBtn btn btn-primary border-0" style="background-color:  rgba(54, 162, 235, 1);">הוספת שלב/ים </button>  
+           
+         </div>
     </div>
 </div>
 
@@ -589,6 +668,7 @@ $jsonChartData = json_encode($chartData);
         var projectId = "<?php echo $id; ?>";
         document.getElementById("id").value = projectId;
         document.getElementById("projectid").value = projectId;
+        document.getElementById("projectid2").value = projectId;
 
        
     </script>
@@ -638,6 +718,120 @@ $jsonChartData = json_encode($chartData);
             });
 
         });
+
+        $(document).on('click', '.addStepBtn', function () {
+            $('#stepAddModal').modal('show');
+        });
+
+        $(document).on('submit', '#addStep', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("insert_step", true);
+
+            $.ajax({
+                type: "POST",
+                url: "insertStep.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#stepAddModal').modal('hide');
+                        $('#addStep')[0].reset();
+
+
+                        
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+        // Assume that you have a click event handler for the "Delete Step" button
+        $('.deleteStepBtn').on('click', function() {
+            var deleteStepId = $(this).val(); // Get the step ID from the button's value attribute
+
+            $.ajax({
+                type: "POST",
+                url: "deleteStep.php", 
+                data: { deleteStepId: deleteStepId }, // Send the step ID as data
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 200) {
+                        alertify.success(res.message);
+                        
+                    } else {
+                        alertify.error(res.message);
+                    }
+                }
+            });
+        });
+
+        // JavaScript code to open the update step modal
+        $('.updateStepBtn').on('click', function() {
+            var stepId = $(this).val(); // Get the step ID from the button's value attribute
+
+            // Populate the modal form fields with stepId data or perform any additional actions
+
+           $('#updateStepId').val(stepId); // Assuming you have an input field with ID "updateStepId"
+            
+           
+            // Get the current status value
+            $.ajax({
+                type: "POST",
+                url: "fetchCurrentFinish.php", // Replace with the actual PHP file's URL
+                data: { stepId: stepId },
+                success: function(response) {
+                    var currentFinish = response;
+                    $('#newFinish').val(currentFinish); // Set the selected value in the select element
+                    $('#updateStepModal').modal('show'); // Open the modal
+                }
+            });
+        });
+
+        $('#updateStepForm').submit(function(event) {
+        event.preventDefault(); // Prevent form from submitting normally
+        
+        var formData = $(this).serialize(); // Serialize the form data
+        
+        $.ajax({
+            type: 'POST',
+            url: 'updateFinishStatus.php', // Replace with the actual PHP file's URL
+            data: formData,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+                if (res.status == 200) {
+                    // Update the table here
+                    // You can either refresh the entire table or update the specific row
+                    
+                    // Close the modal
+                    $('#updateStepModal').modal('hide');
+                    alertify.success(res.message);
+                } else {
+                    // Handle error case
+                    console.log(res.message);
+                    alertify.error(res.message);
+                    }
+                }
+            });
+        });
+
+
+
 
 
     </script>
