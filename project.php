@@ -192,7 +192,9 @@ $jsonChartData = json_encode($chartData);
     display: flex;
     gap: 10px; /* Adjust the gap as needed */
 }
-    </style>
+
+
+</style>
 
 </head>
 
@@ -592,27 +594,45 @@ $jsonChartData = json_encode($chartData);
                                     ';
                                 ?>
 
-                            <div class="col-sm-12 col-xl-6">
-                                <div class="bg-light rounded h-100 p-4">
-                                    <h3 class="mb-4" style="color: black;  font-size: 18px;">קבצים מצורפים</h3>
-                                    <?php
-                                    if (mysqli_num_rows($fileResult) > 0) {
-                                        while ($file = mysqli_fetch_assoc($fileResult)) {
-                                            $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
-                                            $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
-                                            echo '<div class="file-panel">';
-                                            echo '<div class="file-icon"><i class="' . $iconClass . ' fa-3x" style="color: red;"></i></div>';
-                                            echo '<div class="file-details">';
-                                            echo '<p><a href="' . $file['filename'] . '">' . basename($file['filename']) . '</a></p>';
-                                            echo '</div>';
-                                            echo '</div>';
-                                        }
-                                    } else {
-                                        echo 'No files found for this project.';
-                                    }
-                                    ?>
-                                </div>
-                            </div>                   
+<div class="col-sm-12 col-xl-6">
+    <div class="bg-light rounded h-100 p-4">
+   
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0" style="color: black; font-size: 18px;">קבצים מצורפים</h3>
+            <button class="btn btn-success add-file-button" onclick="showFileInput()">
+                <i class="fas fa-plus"></i>
+            </button>
+            <input type="file" id="fileInput" style="display: none;" onchange="uploadFile(this)" accept=".pdf">
+
+        </div>
+        <?php
+        if (mysqli_num_rows($fileResult) > 0) {
+            while ($file = mysqli_fetch_assoc($fileResult)) {
+                $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+                $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
+        ?>
+                <div class="file-panel" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="file-details" style="display: flex; align-items: center;">
+                        <div class="file-icon">
+                            <i class="<?= $iconClass ?> fa-3x" style="color: red;"></i>
+                        </div>
+                        <p style="margin: 0;">
+                            <a href="<?= $file['filename'] ?>" target="_blank"><?= basename($file['filename']) ?></a>
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-danger delete-button" onclick="deleteFile(<?= $file['id'] ?>)">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+        <?php
+            }
+        } else {
+            echo 'אין קבצים עבור הפרויקט הזה.';
+        }
+        ?>
+    </div>
+</div>
+
                 </div>
             </div>
     
@@ -829,6 +849,58 @@ $jsonChartData = json_encode($chartData);
                 }
             });
         });
+
+        function deleteFile(fileId) {
+        if (confirm('האם אתה פתוח שרוצה למחוק את הקובץ הזה?')) {
+            // Make an AJAX request to deleteFile.php
+            $.ajax({
+                url: 'deleteFile.php',
+                type: 'POST',
+                data: { file_id: fileId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Optional: Update UI to reflect the deletion
+                        refreshPage(); // Refresh the page after successful deletion
+                    } else {
+                        alert('שגיאה במחיקת הקובץ');
+                    }
+                },
+                error: function() {
+                    alert('שגיאה במחיקת הקובץ .');
+                }
+            });
+        }
+    }
+
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    function showFileInput() {
+        const fileInput = document.getElementById('fileInput');
+        fileInput.click();
+    }
+
+    function uploadFile(input) {
+        const formData = new FormData();
+        formData.append('pdfFile', input.files[0]);
+        formData.append('projectName', '<?php echo $name; ?>'); // Replace with your PHP code
+
+        fetch('insertFile.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the JSON response data here
+            console.log(data);
+            refreshPage();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
 
 
