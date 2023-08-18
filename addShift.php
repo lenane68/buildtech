@@ -1,3 +1,30 @@
+<?php
+    $conn = require __DIR__ . "/database.php";
+
+
+    if (isset($_POST["submit"])) {
+
+        $workDate = $_POST["workDate"];
+        $employeeName = $_POST["employeeName"];
+        $dayType = $_POST["dayType"];
+        $hours = $_POST["hours"];
+        $onAccount = $_POST["onAccount"];
+    
+        $stmt = $conn->prepare("INSERT INTO shift (workDate, employeeName, dayType, hours, onAccount) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssdd", $workDate, $employeeName, $dayType, $hours, $onAccount);
+        
+        if ($stmt->execute()) {
+            echo "Record inserted successfully";
+        } else {
+            echo "Error inserting record: " . $stmt->error;
+        }
+    
+        $stmt->close();
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,43 +192,49 @@
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-light rounded h-100 p-4">
                     <h6 class="mb-4">דיווח משמרת עובד</h6>
-                    <form>
+                    <form method="post">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="floatingPassword"
+                            <input type="date" class="form-control" id="workDate" name="workDate"
                                 placeholder="">
                             <label for="floatingPassword">תאריך משמרת</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect"
-                                aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="1">יוסף גבארין </option>
-                                <option value="2">מוחמד ח'אלד </option>
-                                <option value="2">סעיד ח'אלד </option>
+                            <select class="form-select" id="employeeName" name="employeeName" aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <?php
+                            $employeeQuery = "SELECT fullName FROM employee WHERE Active = '1' "; 
+                            $employeeResult = mysqli_query($conn, $employeeQuery);
+
+                            if ($employeeResult && mysqli_num_rows($employeeResult) > 0) {
+                                while ($row = mysqli_fetch_assoc($employeeResult)) {
+                                    echo '<option>' . $row['fullName'] . '</option>';
+                                }
+                            }
+                            ?>
                             </select>
-                            <label for="floatingSelect">עובד</label>
+                        <label for="floatingSelect">עובד</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect"
+                            <select class="form-select" id="dayType" name="dayType"
                                 aria-label="Floating label select example">
                                 <option selected>בחר/י</option>
-                                <option value="1">יום שלם </option>
-                                <option value="2"> רק שעות</option>
-                                <option value="2"> לא עבד </option>
+                                <option value="יום שלם">יום שלם </option>
+                                <option value="רק שעות"> רק שעות</option>
+                                <option value="לא עבד"> לא עבד </option>
                             </select>
                             <label for="floatingSelect">סוג יום עבודה</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingInput"
+                            <input type="text" class="form-control" id="hours" name="hours"
                                 placeholder="">
                             <label for="floatingInput">שעות עבודה נוספות </label>
                         </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="על החשבון">    
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="על החשבון" id="onAccount" name="onAccount">    
                         <span class="input-group-text">.00</span>
                     </div>
-                    <button type="submit" class="btn btn-primary">הוסף</button>
+                    <button type="submit" class="btn btn-primary" name="submit">הוסף</button>
                     </form>
                 </div>
             </div>
