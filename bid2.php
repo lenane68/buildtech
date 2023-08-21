@@ -1,3 +1,12 @@
+<?php
+    $conn = require __DIR__ . "/database.php";
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,9 +38,11 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <script src="https://cdn.tiny.cloud/1/umjzfb3x192t4k497v88yvwomivkefjd1u0xqbilqqd2ixr5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
-<body style="justify-content: center;">
+<body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -42,8 +53,8 @@
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3" >
             <nav class="navbar bg-light navbar-light" >
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
@@ -62,10 +73,10 @@
                 <div class="navbar-nav w-100">
                     <a href="home.php" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid.html" class="nav-item nav-link active"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
-                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
+                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2 active"></i>דיווח משמרת</a>
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
@@ -110,9 +121,9 @@
 
 
         <!-- Content Start -->
-        <div class="content justify-content-center">
-            <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+        <div class="content">
+              <!-- Navbar Start -->
+              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -160,23 +171,64 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            <div class="container justify-content-center">
-            <div class="row mt-3 text-center" style="color:#009CFF; font-size: 40px;">
-                <div class="col bid_col">
-                    <a href="bid2.php" style="width: 400px; height: 400px; padding: 0;align-items: center;justify-content: center;font-weight: normal;border-radius: 200px;">
-                        <div><i class="bi bi-file-earmark-arrow-down" style="font-size: 250px; color:#009CFF;"></i></div>
-                    הפקת הצעת מחיר</a>
-                </div>
-                <div class="col bid_col">
-                    <a href="bid.php" style="width: 400px; height: 400px; padding: 0;align-items: center;justify-content: center;font-weight: normal;border-radius: 200px;">
-                    <div><i class="bi bi-calculator" style="font-size: 250px; color:#009CFF;"></i></div>
-                מחשבון מחיר</a>
+
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">הפקת הצעת מחיר</h6>
+                    <form action="generatebidpdf.php" method="get" target="_blank">
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="bidDate" name="bidDate" placeholder="">
+                    <label for="floatingPassword">תאריך ההצעה</label>
+                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="forward" name="forward" placeholder="">
+                        <label for="floatingInput">לכבוד</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="">
+                        <label for="floatingInput">כתובת</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="body" name="body" rows="8" ></textarea>
+                        <label for="floatingTextarea">תוכן ההצעה</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="price" name="price" placeholder="">
+                        <label for="floatingInput">מחיר סופי כולל מע"מ</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="includePrice" name="includePrice">
+                        <label class="form-check-label" for="includePrice">
+                            לצרף את המחיר הסופי להצעה
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="pdf_report_generate">יצירה</button>
+                </form>
+
                 </div>
             </div>
+
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <!-- Footer End -->
+        </div>
         <!-- Content End -->
-     
+
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -195,6 +247,40 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
+    });
+  </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the date input element
+        var bidDateInput = document.getElementById("bidDate");
+
+        // Add an event listener to the form submit button
+        document.querySelector("form[name='pdfForm']").addEventListener("submit", function(event) {
+            // Format the date as dd/mm/yyyy
+            var selectedDate = new Date(bidDateInput.value);
+            var formattedDate = ("0" + selectedDate.getDate()).slice(-2) + "/" + ("0" + (selectedDate.getMonth() + 1)).slice(-2) + "/" + selectedDate.getFullYear();
+
+            // Update the input field value with the formatted date
+            bidDateInput.value = formattedDate;
+        });
+    });
+</script>
+
+
 </body>
 
 </html>
