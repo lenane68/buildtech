@@ -201,36 +201,7 @@
                                     </tr>
                                 </thead> 
                              
-                                <tbody>   
-                              
-                                <tr class="table-light">
-                                    <td> אתר</td>
-                                    <td> ימי עבודה באתר מסוים</td>
-                                    
-                                    <td>
-                                        <label>
-                                        מתאריך:
-                                        <input type="date" class="" id="" name=""
-                                        placeholder="">
-                                         </label>
-                                        <br>
-                                        <br>
-                                        <label>
-                                        אתר:
-                                        <select class="" id="carNumber" name="carNumber"
-                                        aria-label="Floating label select example">
-                                        <option selected>בחר/י</option>
-                                        <?php 
-                                                    
-                                        ?>
-                                    </select>  
-                                                </label>  
-                                    </td>
-
-                                    <td>  <button type="submit" value="" class="btn btn-primary">הצג</button>
-                                    </td>
-                            
-                               </tr>
+                                <tbody>          
                                
                                <tr  class="table-light">
                                     <td> רכב</td>
@@ -279,7 +250,7 @@
                                     <td></td>
                                     <td>טיפולים לרכב מסוים</td>
                                     <td>
-                                        <form action="pdfreport.php" method="get" targer="_blank">
+                                    <form action="generatefixingpdf.php" method="get" target="_blank">
                                     <label>
                                         מתאריך:
                                         <input type="date" class="" id="frmDate" name="frmDate"
@@ -293,29 +264,36 @@
                                         aria-label="Floating label select example">
                                         <option selected>בחר/י</option>
                                         <?php 
+                                                    foreach($result3 as $row)
+                                                    {
+                                                        echo '<option value="'.$row["number"].'">'.$row["number"].'</option>';
+                                                    }
                                         ?>
                                     </select>  
                                                 </label> 
-                                    </form> 
+                                    
                                     </td>
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                            </td>
+                                           </form> 
                                </tr>
                                <tr  class="table-light">
                                     <td></td>
                                     <td>דוחות לא שולמו</td>
                                     <td>
+                                    <form action="generatenotpaidpdf.php" method="get" target="_blank">
                                     <label>
                                         מתאריך:
-                                        <input type="date" class="" id="" name=""
+                                        <input type="date" class="" id="fromDate" name="fromDate"
                                         placeholder="">
                                          </label>
                                         <br>
                                         <br>
                                         
                                     </td>
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                            </td>
+                                                </form>
                                </tr>
                                <tr  class="table-light">
                                <form action="generatepdf.php" method="get" target="_blank">
@@ -342,7 +320,7 @@
                                            </form>
                                </tr>      
                                <tr  class="table-light">
-                               <form action="generatepdf.php" method="get" target="_blank">
+                               <form action="generateworkerspdf.php" method="get" target="_blank">
                                     <td>עובדים</td>
                                     <td>משכורות עובדים פעילים</td>
                                     <td>
@@ -356,7 +334,7 @@
                                     <td></td>
                                     <td>ימי עבודה של עובד מסוים</td>
                                     <td>
-                                        <form action="" method="get" targer="_blank">
+                                        <form action="generatedayspdf.php" method="get" target="_blank">
                                     <label>
                                         מתאריך:
                                         <input type="date" class="" id="frmDate" name="frmDate"
@@ -377,10 +355,11 @@
                                         ?>
                                     </select>  
                                                 </label> 
-                                    </form> 
+                                    
                                     </td>
-                                    <td>  <button type="button" value="" class="btn btn-primary">הצג</button>
+                                    <td>  <button type="submit" value="" class="btn btn-primary" name="pdf_report_generate">הצג</button>
                                            </td>
+                                           </form> 
                                </tr>
                                <tr class="table-light">
                                     <td> צ'יקים</td>
