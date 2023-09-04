@@ -1,4 +1,10 @@
 <?php 
+
+session_start();
+
+$errorMessage = "";
+$successMessage = "";
+
  $conn = require __DIR__ . "/database.php";
 
  $sql = "SELECT * FROM project";
@@ -7,8 +13,15 @@
     
 
 
+ if ($_SERVER["REQUEST_METHOD"] === "POST"){
+    if (empty($_POST["projectName"]) || empty($_POST["description"]) || empty($_POST["price"])) {
+        $errorMessage = "שדה חובה ריק";
+    }else if (!is_numeric($_POST["price"])) {
+        $errorMessage = " המחיר חייב להיות מספר";
+    } else if( $_POST['projectName'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור שם הפרויקט מהרשימה.<br>';
+    } else {
 
- if(isset($_POST["submit"])){
     $projectName = $_POST['projectName'];
     $description = $_POST['description'];
     $price = $_POST['price'];
@@ -18,16 +31,30 @@
     $stmt->bind_param("ssd", $projectName, $description, $price);
 
 
- 
+    try {
     $execval = $stmt->execute();
     if($execval){
-        echo "Adding successfully...";
-    } else {
-        die($conn->error . " " . $conn->errno);
+        $successMessage = "החריגה נקלטה בהצלחה";
+    } 
+    } catch(mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Error code for duplicate entry
+            $errorMessage = "כנראה שהחריגה כבר קיימת במערכת";
+        } else {
+            $errorMessage = "Error: " . $e->getMessage();
+        }
     }
-    echo $execval;
+   
     $stmt->close();
     $conn->close();
+    }
+
+    // Store the messages in session variables
+    $_SESSION["successMessage"] = $successMessage;
+    $_SESSION["errorMessage"] = $errorMessage;
+
+    // Redirect to the same page to prevent re-submission
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
 
  }
    
@@ -65,6 +92,23 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
 </head>
 
 <body>
@@ -199,11 +243,10 @@
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-            <form method="post">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת חריגה</h6>
-                    <form>
+            <div class="col-sm-12 custom-form">
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+            <h5 class="mb-4">הוספת חריגה</h5>
+                    <form method="post">
                         <div class="form-floating mb-3">
                             <select class="form-select" id="projectName" name="projectName"
                                 aria-label="Floating label select example">
@@ -215,22 +258,42 @@
                                             }
                                 ?>
                             </select>
-                            <label for="projectName">פרויקט</label>
+                            <label for="projectName" class="position-absolute top-0 end-0">פרויקט</label>
                         </div>
                         <div class="form-floating mb-3">
                             <textarea class="form-control" placeholder=""
                                 id="description" name ="description" style="height: 150px;"></textarea>
-                            <label for="description">תיאור חריגה</label>
+                            <label for="description" class="position-absolute top-0 end-0">תיאור חריגה</label>
                         </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
+                    <span class="input-group-text">00.</span>
                         <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="מחיר" id="price" name="price">    
-                        <span class="input-group-text">.00</span>
+                        
+                        <span class="input-group-text">₪</span>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
-                    </form>
-                </div>
+                     <!-- Display error message -->
+                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
                 </form>
+                </div>
+                
             </div>
 
 

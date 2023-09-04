@@ -14,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errorMessage = "מספר זיהוי חייב להיות מספר";
     }  else  if (!empty($_POST["email"])&&(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))) {
         $errorMessage = "אימייל לא חוקי";
+    } else if( $_POST['gender'] === "בחר/י"){
+        $errorMessage = 'צריך לציין את המין.<br>';
     }
     else{
 

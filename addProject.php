@@ -37,6 +37,9 @@ foreach ($fieldsToCheck as $fieldName => $fieldLabel) {
     if (!is_numeric($_POST['price'])) {
         $errorMessage = 'השדה של המחיר חייב להיות מספר.<br>';
         }
+        else if( $_POST['clientName'] === "בחר/י"){
+            $errorMessage = 'צריך לבחור שם הלקוח מהרשימה.<br>';
+        }
     }
 
     //check if the types correct inserted

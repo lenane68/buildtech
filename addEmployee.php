@@ -12,8 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["fullName"]) || empty($_POST["job"]) || empty($_POST["startDate"]) || empty($_POST["Gender"]) || empty($_POST["daySalary"])) {
         $errorMessage = "כל השדות חובה";
 
-    } elseif (!is_numeric($_POST["daySalary"])) {
+    } else if (!is_numeric($_POST["daySalary"])) {
         $errorMessage = "המשכורת חייבת להיות מספר";
+    } else if( $_POST['job'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור תפקיד מהרשימה.<br>';
+    } else if( $_POST['Gender'] === "בחר/י"){
+        $errorMessage = 'צריך לציין את המין.<br>';
     } else{
     $fullName = $_POST['fullName'];
     $job = $_POST['job'];
