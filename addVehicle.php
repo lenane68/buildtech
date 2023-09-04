@@ -1,31 +1,25 @@
 <?php 
 
-if(isset($_POST['submit'])){
+session_start();
 
-    if (empty($_POST["number"])) {
-        die("number is required");
-    }
-    if (empty($_POST["type"])) {
-        die("type is required");
-    }
-    if (empty($_POST["year"])) {
-        die("year is required");
-    }
-    if (empty($_POST["color"])) {
-        die("color is required");
-    }
-    if (empty($_POST["testFinishDate"])) {
-        die("test finish date is required");
-    }
-    if (empty($_POST["insuranceFinishDate"])) {
-        die("insurance finish date is required");
-    }
-    if (empty($_POST["careDate"])) {
-        die("care date is required");
-    }
+$errorMessage = "";
+$successMessage = "";
 
-    //$password_hash = password_hash($_POST["floatingPassword"], PASSWORD_DEFAULT);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (empty($_POST["number"]) || empty($_POST["type"]) || empty($_POST["year"]) || empty($_POST["color"]) ||
+     empty($_POST["testFinishDate"]) || empty($_POST["insuranceFinishDate"]) || empty($_POST["careDate"])) {
+        $errorMessage = "שדה חובה ריק";
 
+    } else if (!is_numeric($_POST["number"])) {
+        $errorMessage = "מספר הרכב/ הכלי חייב להיות מספר";
+    } else if( $_POST['color'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור צבע מהרשימה<br>';
+    } else if( $_POST['fuelType'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור סוג בנזין מהרשימה<br>';
+    } else if (!empty($_POST["year"]) && (!is_numeric($_POST["year"]) || $_POST["year"] < 1900 || $_POST["year"] > date("Y"))) {
+        $errorMessage = 'שנת ייצור לא חוקית<br>';
+    } else {
+ 
     $number = $_POST['number'];
     $type = $_POST['type'];
     $year = $_POST['year'];
@@ -39,80 +33,30 @@ if(isset($_POST['submit'])){
 
     $stmt = $conn->prepare("insert into car(number, type, year, color, testDate, insuranceDate, careDate, fuelType) values(?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssss", $number, $type, $year, $color, $testFinishDate, $insuranceFinishDate, $careDate, $fuelType);
+    try {
     $execval = $stmt->execute();
-
-   
-     
-    $file =$_FILES['file'];
-    $file2 =$_FILES['file2'];
-
-    $fileName = $_FILES['file']['name'];
-    $fileTmpName = $_FILES['file']['tmp_name'];
-    $fileSize = $_FILES['file']['size'];
-    $fileError = $_FILES['file']['error'];
-    $fileType = $_FILES['file']['type'];
-
-    $fileName2 = $_FILES['file2']['name'];
-    $fileTmpName2 = $_FILES['file2']['tmp_name'];
-    $fileSize2 = $_FILES['file2']['size'];
-    $fileError2 = $_FILES['file2']['error'];
-    $fileType2 = $_FILES['file2']['type'];
-    
-    $fileExt = explode('.', $fileName);
-    $fileActualExt = strtolower(end($fileExt));
-
-    $fileExt2 = explode('.', $fileName2);
-    $fileActualExt2 = strtolower(end($fileExt2));
-
-    $allowed = array('pdf');
-
-
-    if((in_array($fileActualExt, $allowed)) && (in_array($fileActualExt2, $allowed))) {
-        if(($fileError === 0) && ($fileError2 === 0)){
-            if(($fileSize < 1000000) && ($execval) && ($fileSize2 < 1000000)){
-                $fileNameNew = uniqid('', true).".".$fileActualExt;
-                $fileDestination = 'carFiles/'.$fileNameNew;
-                move_uploaded_file($fileTmpName, $fileDestination);
-
-                $fileNameNew2 = uniqid('', true).".".$fileActualExt2;
-                $fileDestination2 = 'carFiles/'.$fileNameNew2;
-                move_uploaded_file($fileTmpName2, $fileDestination2);
-
-                $category1 = "רישיון";
-                $category2 = "ביטוח";
-                
-                $stmt2 = $conn->prepare("insert into carfile(file_name, type, size, carNumber, category) values(?, ?, ?, ?, ?)");
-                $stmt2->bind_param("sssss", $fileNameNew, $fileType, $fileSize, $number, $category1);
-                $execval2 = $stmt2->execute();
-
-                $stmt3 = $conn->prepare("insert into carfile(file_name, type, size, carNumber, category) values(?, ?, ?, ?, ?)");
-                $stmt3->bind_param("sssss", $fileNameNew2, $fileType2, $fileSize2, $number, $category2);
-                $execval3 = $stmt3->execute();
-                
-                if(($execval2) && ($execval3)){
-                    echo "Added successfully and Upload file success";
-                } else {
-                    die($conn->error . " " . $conn->errno);   
-                }
-               
-            } else {
-                if(!($execval)){
-                    die($conn->error . " " . $conn->errno);
-                } else 
-                echo "Your file is too big!";  
-            }
+    if ($execval) {
+        $successMessage = "הרכב/ הכלי נקלט בהצלחה";
+    } 
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Error code for duplicate entry
+            $errorMessage = "כנראה שהלקוח כבר קיים במערכת";
         } else {
-            echo "There was an error uploading your file!";  
+            $errorMessage = "Error: " . $e->getMessage();
         }
-    } else {
-        echo "You can't upload files of this type!";
     }
-
-
-
-    echo $execval;
+   
     $stmt->close();
     $conn->close();
+    }
+
+    // Store the messages in session variables
+    $_SESSION["successMessage"] = $successMessage;
+    $_SESSION["errorMessage"] = $errorMessage;
+
+    // Redirect to the same page to prevent re-submission
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
 
 }
 ?>
@@ -150,6 +94,23 @@ if(isset($_POST['submit'])){
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
 </head>
 
 <body>
@@ -283,24 +244,24 @@ if(isset($_POST['submit'])){
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת רכב/ כלי צמ"ה</h6>
-                    <form action="" method="post" enctype="multipart/form-data">
+            <div class="col-sm-12 custom-form">
+            <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+                    <h5 class="mb-4">הוספת רכב/ כלי צמ"ה</h5>
+                        <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="number" name="number"
                                 placeholder="">
-                            <label for="number">מספר</label>
+                            <label for="number" class="position-absolute top-0 end-0">מספר</label>
                         </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="type" name="type"
                             placeholder="">
-                        <label for="type">סוג</label>
+                        <label for="type" class="position-absolute top-0 end-0">סוג</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="year" name="year"
                             placeholder="">
-                        <label for="year">שנה</label>
+                        <label for="year" class="position-absolute top-0 end-0">שנה</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" id="color" name="color"
@@ -317,7 +278,7 @@ if(isset($_POST['submit'])){
                             <option >שחור</option>
           
                         </select>
-                        <label for="color">צבע</label>
+                        <label for="color" class="position-absolute top-0 end-0">צבע</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" id="fuelType" name="fuelType"
@@ -326,37 +287,44 @@ if(isset($_POST['submit'])){
                             <option >בנזין 95</option>
                             <option >סולר</option>
                         </select>
-                        <label for="fuelType">סוג דלק</label>
+                        <label for="fuelType" class="position-absolute top-0 end-0">סוג דלק</label>
                         </div>
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="testFinishDate" name="testFinishDate"
                             placeholder="">
-                        <label for="testFinishDate">תאריך סיום טסט</label>
+                        <label for="testFinishDate" class="position-absolute top-0 end-0">תאריך סיום טסט</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="insuranceFinishDate" name="insuranceFinishDate"
                             placeholder="">
-                        <label for="insuranceFinishDate">תאריך סיום ביטוח</label>
+                        <label for="insuranceFinishDate" class="position-absolute top-0 end-0">תאריך סיום ביטוח</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="careDate" name="careDate"
                             placeholder="">
-                        <label for="careDate">תאריך הטיפול הבא</label>
+                        <label for="careDate" class="position-absolute top-0 end-0">תאריך הטיפול הבא</label>
                     </div>
-                    <div class="form-group">
-                    <div class="mb-3">
-                        <label for="file" class="form-label">רשיון</label>
-                        <input class="form-control" type="file" name="file">
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <div class="mb-3">
-                        <label for="file2" class="form-label">ביטוח</label>
-                        <input class="form-control" type="file" name="file2">
-                    </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit" name="submit">הוסף</button>
-                    </form>
+                    <button  type="submit" class="btn btn-primary" name="submit">הוסף</button>
+                    <!-- Display error message -->
+                    <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
+                </form>
                 </div>
             </div>
 
