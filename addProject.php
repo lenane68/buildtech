@@ -1,4 +1,9 @@
 <?php 
+session_start();
+
+$errorMessage = "";
+$successMessage = "";
+
  $conn = require __DIR__ . "/database.php";
 
  $sql = "SELECT * FROM client";
@@ -6,6 +11,63 @@
  $result = $conn->query($sql);
     
  if(isset($_POST["submit"])){
+
+    // Define the list of fields to check
+$fieldsToCheck = [
+    'name' => 'שם הפרויקט',
+    'type' => 'סוג הפרויקט', 
+    'startDate' => 'תאריך התחלה',
+    'address' => 'כתובת',
+    'finishDate' => 'תאריך סיום',
+    'price' => 'מחיר',
+    'clientName' => 'שם הלקוח'
+];
+
+    // Check if any of the fields is empty
+foreach ($fieldsToCheck as $fieldName => $fieldLabel) {
+    if (empty($_POST[$fieldName])) {
+        $errorMessage = "שדה חובה ריק";
+        break; // Stop checking after the first missing field
+    }
+}
+
+
+    //check if the price is not a number
+    if ($errorMessage=="") {
+    if (!is_numeric($_POST['price'])) {
+        $errorMessage = 'השדה של המחיר חייב להיות מספר.<br>';
+        }
+    }
+
+    //check if the types correct inserted
+    if ($errorMessage=="") {
+        // Define an array of field names you want to check
+        $fieldsToCheck = [
+            'floorsNum',
+            'floorsNum2',
+            'roomsNum',
+            'space',
+            'cup',
+        ];
+
+        // Loop through the fields and check if they are not empty and not numeric
+        foreach ($fieldsToCheck as $fieldName) {
+            $fieldValue = $_POST[$fieldName];
+            
+           
+            if (!empty($fieldValue)) {
+                if (!is_numeric($fieldValue)) {
+                    $errorMessages = "השדה של $fieldName חייב להיות מספר.<br>";
+                    break; // Stop checking after the first wrong field
+                } 
+            }
+           
+        }
+    }
+
+
+// If no empty fields, and types is right, proceed with other checks
+if ($errorMessage=="") {
 
     $name = $_POST['name'];
     $type = $_POST['type'];
@@ -34,13 +96,10 @@
     $clientName = $_POST['clientName'];
     // Construct the API request URL
     $apiKey = 'AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0';
-    $latitude = 5.5;
-    $longitude = 4;
-
+    $latitude = $_POST['latitude'];
+    $longitude = $_POST['longitude'];
     
 
-
-   
 
  if (empty($_POST["floorsNum2"])) { //פרטי
     $stmt = $conn->prepare("insert into project(name, address, startDate, finishDate, clientName, type, floorsNum, pool, basement, parking, totalPrice) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -52,8 +111,11 @@
 
 }
 
+
+//Inserting the project's location 
 $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName) values(?, ?, ?, ?)");
-    $stmt6->bind_param("sdds", $address, $latitude, $longitude, $name);
+$stmt6->bind_param("sdds", $address, $latitude, $longitude, $name);
+
 
 //Inserting the files 
      // Get project details from the form
@@ -65,6 +127,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
  
      // Handle the first uploaded file
      $uploadedFile1 = $_FILES['pdfFile1'];
+     if (!empty($uploadedFile1['name'])) {
      $filename1 = $uploadDirectory . basename($uploadedFile1['name']);
      $fileExtension1 = strtolower(pathinfo($filename1, PATHINFO_EXTENSION));
  
@@ -76,14 +139,17 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
              mysqli_query($conn, $insertFile1Query);
             // echo 'File 1 uploaded successfully!<br>';
          } else {
-             echo 'Error uploading file 1.<br>';
+            $errorMessage = 'שגיאה בהעלאת הקובץ הראשון.<br>';
          }
      } else {
-         echo 'Only PDF files are allowed for file 1.<br>';
+         $errorMessage =  'אפשר להעלות רק קבצי pdf.<br>';
      }
+    }
  
      // Handle the second uploaded file
+     if ($errorMessage==""){
      $uploadedFile2 = $_FILES['pdfFile2'];
+     if (!empty($uploadedFile2['name'])) {
      $filename2 = $uploadDirectory . basename($uploadedFile2['name']);
      $fileExtension2 = strtolower(pathinfo($filename2, PATHINFO_EXTENSION));
  
@@ -95,14 +161,18 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
              mysqli_query($conn, $insertFile2Query);
              //echo 'File 2 uploaded successfully!';
          } else {
-             echo 'Error uploading file 2.';
-         }
+            $errorMessage = 'שגיאה בהעלאת הקובץ השני.<br>';
+       }
      } else {
-         echo 'Only PDF files are allowed for file 2.';
-     }
+        $errorMessage =  'אפשר להעלות רק קבצי pdf.<br>';
+    }
+    }
+    }
 
      // Handle the third uploaded file
+     if ($errorMessage==""){
      $uploadedFile3 = $_FILES['pdfFile3'];
+     if (!empty($uploadedFile3['name'])) {
      $filename3 = $uploadDirectory . basename($uploadedFile3['name']);
      $fileExtension3 = strtolower(pathinfo($filename3, PATHINFO_EXTENSION));
  
@@ -114,14 +184,18 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
              mysqli_query($conn, $insertFile3Query);
              //echo 'File 3 uploaded successfully!';
          } else {
-             echo 'Error uploading file 3.';
-         }
+            $errorMessage = 'שגיאה בהעלאת הקובץ השלישי.<br>';
+        }
      } else {
-         echo 'Only PDF files are allowed for file 3.';
-     }
+        $errorMessage =  'אפשר להעלות רק קבצי pdf.<br>';
+    }
+    }
+    }
 
      // Handle the fourth uploaded file
+     if ($errorMessage==""){
      $uploadedFile4 = $_FILES['pdfFile4'];
+     if (!empty($uploadedFile4['name'])) {
      $filename4 = $uploadDirectory . basename($uploadedFile4['name']);
      $fileExtension4 = strtolower(pathinfo($filename4, PATHINFO_EXTENSION));
  
@@ -131,31 +205,56 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
          if (move_uploaded_file($uploadedFile4['tmp_name'], $filename4)) {
              $insertFile4Query = "INSERT INTO files (project_name, filename) VALUES ('$name', '$filename4')";
              mysqli_query($conn, $insertFile4Query);
-             echo 'File 4 uploaded successfully!';
-         } else {
-            // echo 'Error uploading file 4.';
+             
+            } else {
+                $errorMessage = 'שגיאה בהעלאת הקובץ הרביעי.<br>';
          }
      } else {
-         echo 'Only PDF files are allowed for file 4.';
-     }
+        $errorMessage =  'אפשר להעלות רק קבצי pdf.<br>';
+    }
+    }
+    }
+
     
-    $execval = $stmt->execute();
-    $execval6 = $stmt6->execute();
-  
+    try{
+        $execval = $stmt->execute();
+    if($execval){
+        try{
+            $execval6 = $stmt6->execute();
+        if($execval6){
+            $successMessage = "הפרויקט נקלט בהצלחה";
+        }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) { // Error code for duplicate entry
+                $errorMessage = "כנראה שמיקום הפרויקט כבר קיים במערכת";
+            } else {
+                $errorMessage = "Error: " . $e->getMessage();
+            }
+            $successMessage = "הפרויקט נקלט בהצלחה למרות שגיאה בשמירת המיקום";
+            
+        } 
+    }
+    }catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Error code for duplicate entry
+            $errorMessage = "כנראה שהפרויקט כבר קיים במערכת";
+        } else {
+            $errorMessage = "Error: " . $e->getMessage();
+        }
+    } 
+    
     $stmt->close();
-
-   
-
-/*
- $execval = $stmt->execute();
- if($execval){
-     echo "Adding successfully...";
- } else {
-     die($conn->error . " " . $conn->errno);
- }*/
-
-    echo $execval;
+    $stmt6->close();
     $conn->close();
+    }
+    
+
+     // Store the messages in session variables
+     $_SESSION["successMessage"] = $successMessage;
+     $_SESSION["errorMessage"] = $errorMessage;
+ 
+     // Redirect to the same page to prevent re-submission
+     header("Location: " . $_SERVER['REQUEST_URI']);
+     exit();
 
  }
 
@@ -163,7 +262,7 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
 
 
 
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -333,11 +432,13 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
             <div class="container-fluid pt-4 px-4" dir="rtl">
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="row g-4">
-               
+
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4" dir="rtl">
-                            <h6 class="mb-4">הוספת פרויקט</h6>
-                            <form>
+                            <h5 class="mb-4">הוספת פרויקט</h5>
+                            <form method="post">
+                            <input type="hidden" class="form-control" id="latitude" name="latitude" type="hidden">
+                            <input type="hidden" class="form-control" id="longitude" name="longitude" type="hidden">
                             <div class="form-floating mb-3 position-relative">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="name@example.com">
                                 <label for="name" class="position-absolute top-0 end-0">שם פרויקט</label>
@@ -449,12 +550,25 @@ $stmt6 = $conn->prepare("insert into data_location(descr, lat, lon, projectName)
                                 <label for="formFile" class="form-label">לוח זמנים </label>
                                 <input class="form-control" type="file" name="pdfFile4" accept="application/pdf">
                             </div>
-                            <!---------------
-                            <div class="mb-3">
-                                <label for="formFileMultiple" class="form-label">תוכניות עבודה</label>
-                                <input class="form-control" type="file" name="files[]" multiple>
-                            </div>---->
-                                          
+                            <!-- Display error message -->
+                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
                         </div>
                     </div>
                 </div>
