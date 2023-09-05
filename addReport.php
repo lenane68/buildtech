@@ -24,6 +24,8 @@ $successMessage = "";
 
     $reportNumber = $_POST['reportNumber'];
     $carNumber = $_POST['carNumber'];
+    if($carNumber === "בחר/י")
+        $carNumber = "אין";
     $reportDate = $_POST['reportDate'];
     if(isset($_POST['paid'])){
         $paid =true;

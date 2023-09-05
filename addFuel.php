@@ -1,4 +1,10 @@
 <?php 
+
+session_start();
+
+$errorMessage = "";
+$successMessage = "";
+
  $conn = require __DIR__ . "/database.php";
 
  $sql = "SELECT * FROM car";
@@ -8,7 +14,19 @@
 
 
 
- if(isset($_POST["submit"])){
+ if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (empty($_POST["carNumber"]) || empty($_POST["amount"]) || empty($_POST["price"]) || empty($_POST["fullDate"])) {
+        $errorMessage = "שדה חובה ריק";
+
+    }  else if (!is_numeric($_POST["amount"])) {
+        $errorMessage = "כמות בליטר חייבת להיות מספר";
+    } else if (!is_numeric($_POST["price"])) {
+        $errorMessage = " הסכום חייב להיות מספר";
+    }  else if( $_POST['carNumber'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור מספר רכב מהרשימה';
+    } else {
+
+    
     $carNumber = $_POST['carNumber'];
     $amount = $_POST['amount'];
     $price = $_POST['price'];
@@ -19,17 +37,30 @@
     $stmt = $conn->prepare("insert into fuel(carNumber, amount, price, fullDate) values(?, ?, ?, ?)");
     $stmt->bind_param("sdds", $carNumber, $amount, $price, $fullDate);
 
-
- 
+    try {
     $execval = $stmt->execute();
     if($execval){
-        echo "Adding successfully...";
-    } else {
-        die($conn->error . " " . $conn->errno);
+        $successMessage = "הדיווח נקלט בהצלחה";
+           
+    } 
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Error code for duplicate entry
+            $errorMessage = "כנראה שהדיווח כבר קיים במערכת";
+        } else {
+            $errorMessage = "Error: " . $e->getMessage();
+        }
     }
-    echo $execval;
     $stmt->close();
     $conn->close();
+    }
+
+     // Store the messages in session variables
+     $_SESSION["successMessage"] = $successMessage;
+     $_SESSION["errorMessage"] = $errorMessage;
+ 
+     // Redirect to the same page to prevent re-submission
+     header("Location: " . $_SERVER['REQUEST_URI']);
+     exit();
 
  }
    
@@ -67,6 +98,23 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
 </head>
 
 <body>
@@ -201,11 +249,10 @@
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-            <form method="post">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">מילוי דלק</h6>
-                    <form>
+                    <div class="col-sm-12 custom-form">
+                        <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+                        <h5 class="mb-4">מילוי דלק</h5>
+                        <form method="post">
                         <div class="form-floating mb-3">
                             <select class="form-select" id="carNumber" name="carNumber"
                                 aria-label="Floating label select example">
@@ -217,31 +264,50 @@
                                             }
                                 ?>
                             </select>
-                            <label for="carNumber">מס' רכב</label>
+                            <label for="carNumber" class="position-absolute top-0 end-0">מס' רכב</label>
                         </div>
                         
                         <div class="form-floating mb-3">
                               <input type="text" class="form-control" id="amount" name="amount"
                                     placeholder="name@example.com"  onchange="myFunction(event)">
-                                <label for="amount">הכמות בליטר</label>
+                                <label for="amount" class="position-absolute top-0 end-0">הכמות בליטר</label>
                         </div> 
                         <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
+                        
+                        <span class="input-group-text">00.</span>
                         <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="הסכום" id="price" name="price">    
-                        <span class="input-group-text">.00</span>
+                        <span class="input-group-text">₪</span>
                          </div>
                 
                           
                         <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="fullDate" name="fullDate"
                                         placeholder="">
-                                    <label for="fullDate">תאריך המילוי</label>
+                                    <label for="fullDate" class="position-absolute top-0 end-0">תאריך המילוי</label>
                         </div>                 
                 
                     <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
-                    </form>
-                </div>
+                     <!-- Display error message -->
+                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
                 </form>
+                </div>
             </div>
 
 
