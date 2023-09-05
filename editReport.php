@@ -50,12 +50,12 @@
 
 <body>
     <!-- View Report Modal -->
-    <div class="modal fade" id="reportViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="reportViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">הצגת דו"ח</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
                             <div class="mb-3">
@@ -94,12 +94,12 @@
     </div>
 
      <!-- Edit Report Modal -->
-     <div class="modal fade" id="reportEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="reportEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת דו"ח</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateReport">
                     <div class="modal-body">
@@ -108,13 +108,13 @@
 
                         <div class="mb-3">
                             <label for=""> מספר הדו"ח</label>
-                            <input type="text" name="reportNumber" id="reportNumber" class="form-control" />
+                            <input type="text" name="reportNumber" id="reportNumber" class="form-control" readonly/>
                         </div>
                        
                         <div class="form-floating mb-3">
                             <select class="form-select" name="carNumber" id="carNumber" 
                                 aria-label="Floating label select example">
-                                
+                                <option>אין</option>
                                 <?php 
                                             foreach($result as $row)
                                             {
@@ -122,7 +122,7 @@
                                             }
                                 ?>
                             </select>
-                            <label for="carNumber">פרויקט</label>
+                            <label for="carNumber">מספר רכב</label>
                         </div>
 
                         <div class="mb-3">
@@ -137,9 +137,9 @@
                             <input type="text" name="price" id="price" class="form-control" />
                         </div>
 
-                        <div class="form-check form-switch">
-                           <label class="form-check-label" for="paid">שולם</label>
-                           <input class="form-check-input" type="checkbox" role="switch"
+                        <div class="form-check form-switch mb-3">
+                           <label class="form-check-label" for="paid" class="position-absolute top-0 end-0">שולם</label>
+                           <input class="form-check-input position-absolute" type="checkbox" role="switch" style="margin-right: 10px;"
                              id="paid" name="paid">        
                          </div>
 
@@ -288,13 +288,13 @@
             <!-- Navbar End -->
 
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
                           <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת דוחות תנועה</h6>
+                            <h5 class="mb-4">טבלת דוחות תנועה</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -400,7 +400,10 @@
                     $('#carNumber').val(res.data.carNumber);
                     $('#reportDate').val(res.data.reportDate);
                     $('#price').val(res.data.price);
-                    $('#paid').val(res.data.paid);
+                    // Check the checkbox if res.data.paid is 1
+                    // Set the checkbox state based on res.data.paid
+                    $('#paid').prop('checked', res.data.paid == 1);
+
                     $('#notes').val(res.data.notes);
                    
 

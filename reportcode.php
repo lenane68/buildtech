@@ -45,11 +45,18 @@ if(isset($_POST['update_report']))
     $paid = isset($_POST['paid']) ? 1 : 0;
     $notes = mysqli_real_escape_string($conn, $_POST['notes']);
   
-    if($carNumber == NULL || $reportDate == NULL || $price == NULL)
+    if($reportDate == NULL || $price == NULL)
     {
         $res = [
             'status' => 422,
             'message' => 'שדה חובה ריק'
+        ];
+        echo json_encode($res);
+        return;
+    } else if (!is_numeric($price)) {
+        $res = [
+            'status' => 422,
+            'message' => ' הסכום חייב להיות מספר'
         ];
         echo json_encode($res);
         return;
