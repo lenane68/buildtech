@@ -56,6 +56,13 @@ if(isset($_POST['update_car']))
         ];
         echo json_encode($res);
         return;
+    } else if ((!is_numeric($year)) || $year < 1900 || $year > date("Y")) {
+        $res = [
+            'status' => 422,
+            'message' => 'שנת ייצור לא חוקית'
+        ];
+        echo json_encode($res);
+        return;
     }
 
     $query = "UPDATE car SET type='$type', year='$year', color='$color', testDate='$testDate', insuranceDate='$insuranceDate', careDate='$careDate', fuelType='$fuelType'
