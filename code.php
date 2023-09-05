@@ -47,7 +47,7 @@ if(isset($_POST['update_client']))
     $phone2 = mysqli_real_escape_string($conn, $_POST['phone2']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
 
-    if($clientName == NULL || $address == NULL || $id == NULL || $phone == NULL || $email == NULL)
+    if($clientName == NULL || $address == NULL || $id == NULL || $phone == NULL || $gender == NULL)
     {
         $res = [
             'status' => 422,
@@ -55,7 +55,21 @@ if(isset($_POST['update_client']))
         ];
         echo json_encode($res);
         return;
-    }
+    }  else if (!is_numeric($id)) {
+        $res = [
+            'status' => 422,
+            'message' => 'מספר זיהוי חייב להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    }  else  if (($email !== null) &&(!filter_var($email, FILTER_VALIDATE_EMAIL))) {
+        $res = [
+            'status' => 422,
+            'message' => 'אימייל לא חוקי'
+        ];
+        echo json_encode($res);
+        return;
+    } 
 
     $query = "UPDATE client SET fullName='$clientName', address='$address', id='$id', gender='$gender', phone='$phone', phone2='$phone2', email='$email'
                 WHERE fullName='$clientName'";

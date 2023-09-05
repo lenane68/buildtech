@@ -40,12 +40,12 @@
 
 <body>
     <!-- View Client Modal -->
-    <div class="modal fade" id="clientViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="clientViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">הצגת לקוח</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
 
@@ -88,12 +88,12 @@
     </div>
 
      <!-- Edit Client Modal -->
-     <div class="modal fade" id="clientEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="clientEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת לקוח</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateClient">
                     <div class="modal-body">
@@ -102,7 +102,7 @@
 
                         <div class="mb-3">
                         <label for="">שם מלא</label>
-                        <input type="text" name="clientName" id="clientName" class="form-control" >
+                        <input type="text" name="clientName" id="clientName" class="form-control" readonly>
                         </div>
 
                         <div class="mb-3">
@@ -114,8 +114,14 @@
                             <input type="text" name="id" id="id" class="form-control" />
                         </div>
                         <div class="mb-3">
-                            <label for="">מגדר</label>
-                            <input type="text" name="gender" id="gender" class="form-control" />
+                        <label for="">מגדר</label>
+                        <select class="form-select" id="gender" name="gender"
+                            aria-label="Floating label select example">
+                            <option>זכר</option>
+                            <option>נקבה</option>
+                        </select>
+                            
+        
                         </div>
                         <div class="mb-3">
                             <label for="">טלפון</label>
@@ -271,11 +277,11 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת לקוחות</h6>
+                          <div class="bg-light rounded h-100 p-4" dir="rtl">
+                            <h5 class="mb-4">טבלת לקוחות</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

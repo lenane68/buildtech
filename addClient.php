@@ -266,8 +266,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <select class="form-select" id="gender" name="gender"
                             aria-label="Floating label select example">
                             <option selected>בחר/י</option>
-                            <option value="1">זכר</option>
-                            <option value="2">נקבה</option>
+                            <option>זכר</option>
+                            <option>נקבה</option>
                         </select>
                         <label for="gender" class="position-absolute top-0 end-0">מין</label>
                     </div>
