@@ -1,9 +1,33 @@
 <?php
+
+session_start();
+
+$errorMessage = "";
+$successMessage = "";
+
     $conn = require __DIR__ . "/database.php";
 
 
-    if (isset($_POST["submit"])) {
-
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (empty($_POST["workDate"]) || empty($_POST["employeeName"]) || empty($_POST["dayType"])) {
+            $errorMessage = "שדה חובה ריק";
+    
+        } else if (!empty($_POST["hours"]) && (!is_numeric($_POST["hours"]))) {
+            $errorMessage = "שעות עבודה חייבות להיות מספר";
+        } else if (!empty($_POST["onAccount"]) && (!is_numeric($_POST["onAccount"]))) {
+            $errorMessage = "על החשבון חייב להיות מספר";
+        } else if( $_POST['employeeName'] === "בחר/י"){
+            $errorMessage = 'צריך לבחור שם עובד מהרשימה.<br>';
+        } else if( $_POST['dayType'] === "בחר/י"){
+            $errorMessage = 'צריך לבחור סוג יום העבודה מהרשימה.<br>';
+        } else if( $_POST['dayType'] === "רק שעות"){
+            if (empty($_POST["hours"]))
+                $errorMessage = 'צריך להזין כמה שעות עבד<br>';
+        } else if( $_POST['dayType'] === "לא עבד"){
+            if (empty($_POST["onAccount"]))
+                $errorMessage = 'צריך להזין כמה לקח על החשבון<br>';
+        }   else{
+            
         $workDate = $_POST["workDate"];
         $employeeName = $_POST["employeeName"];
         $dayType = $_POST["dayType"];
@@ -13,13 +37,31 @@
         $stmt = $conn->prepare("INSERT INTO shift (workDate, employeeName, dayType, hours, onAccount) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssdd", $workDate, $employeeName, $dayType, $hours, $onAccount);
         
-        if ($stmt->execute()) {
-            echo "Record inserted successfully";
-        } else {
-            echo "Error inserting record: " . $stmt->error;
-        }
+        try {
+            $execval = $stmt->execute();
+            if ($execval) {
+                $successMessage = "המשמרת נקלטה בהצלחה";
+               
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) { // Error code for duplicate entry
+                $errorMessage = "כנראה שהמשמרת כבר קיימת במערכת";
+            } else {
+                $errorMessage = "Error: " . $e->getMessage();
+            }
+        } 
     
         $stmt->close();
+        $conn->close();
+        }
+
+         // Store the messages in session variables
+      $_SESSION["successMessage"] = $successMessage;
+      $_SESSION["errorMessage"] = $errorMessage;
+  
+      // Redirect to the same page to prevent re-submission
+      header("Location: " . $_SERVER['REQUEST_URI']);
+      exit();
     }
 
 ?>
@@ -56,6 +98,24 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
 </head>
 
 <body>
@@ -189,14 +249,14 @@
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">דיווח משמרת עובד</h6>
+            <div class="col-sm-12 custom-form">
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+                 <h5 class="mb-4">דיווח משמרת עובד</h5>
                     <form method="post">
                         <div class="form-floating mb-3">
                             <input type="date" class="form-control" id="workDate" name="workDate"
                                 placeholder="">
-                            <label for="floatingPassword">תאריך משמרת</label>
+                            <label for="floatingPassword" class="position-absolute top-0 end-0">תאריך משמרת</label>
                         </div>
                         <div class="form-floating mb-3">
                             <select class="form-select" id="employeeName" name="employeeName" aria-label="Floating label select example">
@@ -212,7 +272,7 @@
                             }
                             ?>
                             </select>
-                        <label for="floatingSelect">עובד</label>
+                        <label for="floatingSelect" class="position-absolute top-0 end-0">עובד</label>
                         </div>
                         <div class="form-floating mb-3">
                             <select class="form-select" id="dayType" name="dayType"
@@ -222,20 +282,39 @@
                                 <option value="רק שעות"> רק שעות</option>
                                 <option value="לא עבד"> לא עבד </option>
                             </select>
-                            <label for="floatingSelect">סוג יום עבודה</label>
+                            <label for="floatingSelect" class="position-absolute top-0 end-0">סוג יום עבודה</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="hours" name="hours"
                                 placeholder="">
-                            <label for="floatingInput">שעות עבודה נוספות </label>
+                            <label for="floatingInput" class="position-absolute top-0 end-0">שעות עבודה נוספות </label>
                         </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
+                        <span class="input-group-text">00.</span>
                         <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="על החשבון" id="onAccount" name="onAccount">    
-                        <span class="input-group-text">.00</span>
+                        <span class="input-group-text">₪</span>
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit">הוסף</button>
-                    </form>
+                     <!-- Display error message -->
+                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
+                </form>
                 </div>
             </div>
 
