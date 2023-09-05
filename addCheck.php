@@ -259,7 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="matDate" name="matDate"
                             placeholder="">
-                        <label for="matDate" class="position-absolute top-0 end-0">תאריך פרעון</label>
+                        <label for="matDate" class="position-absolute top-0 end-0">תאריך פירעון</label>
                     </div>
                     <button type="submit" class="btn btn-primary">הוסף</button>
                      <!-- Display error message -->
