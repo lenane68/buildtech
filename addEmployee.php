@@ -270,7 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="daySalary" name="daySalary" placeholder="">
-                            <label for="daySalary" class="position-absolute top-0 end-0">משכורת ליום</label>
+                            <label for="daySalary" class="position-absolute top-0 end-0">משכורת בחודש</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="date" class="form-control" id="startDate" name="startDate" placeholder="">
