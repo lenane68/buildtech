@@ -62,7 +62,7 @@ if(isset($_POST['update_client']))
         ];
         echo json_encode($res);
         return;
-    }  else  if (($email !== null) &&(!filter_var($email, FILTER_VALIDATE_EMAIL))) {
+    }  else  if (($email != null) &&(!filter_var($email, FILTER_VALIDATE_EMAIL))) {
         $res = [
             'status' => 422,
             'message' => 'אימייל לא חוקי'

@@ -55,7 +55,35 @@ if(isset($_POST['update_supplier']))
         ];
         echo json_encode($res);
         return;
-    }
+    } else if (!is_numeric($id)) {
+        $res = [
+            'status' => 422,
+            'message' => 'מספר זיהוי חייב להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    }  else  if (($email != null) &&(!filter_var($email, FILTER_VALIDATE_EMAIL))) {
+        $res = [
+            'status' => 422,
+            'message' => 'אימייל לא חוקי'
+        ];
+        echo json_encode($res);
+        return;
+    } else  if (($phone != null) &&(!preg_match("/^0[23489]{1}-?\d{7}$|^[0-9]{10}$/", $phone))) {
+        $res = [
+            'status' => 422,
+            'message' => 'מספר טלפון לא חוקי'
+        ];
+        echo json_encode($res);
+        return;
+    } else  if (($phone2 != null) &&(!preg_match("/^0[23489]{1}-?\d{7}$|^[0-9]{10}$/", $phone2))) {
+        $res = [
+            'status' => 422,
+            'message' => 'מספר טלפון 2 לא חוקי'
+        ];
+        echo json_encode($res);
+        return;
+    } 
 
     $query = "UPDATE supplier SET name='$name', address='$address', id='$id', phone='$phone', phone2='$phone2', email='$email'
                 WHERE serialNumber='$supplier_id'";

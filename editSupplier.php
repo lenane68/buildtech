@@ -40,12 +40,12 @@
 
 <body>
     <!-- View Supplier Modal -->
-    <div class="modal fade" id="supplierViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="supplierViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">הצגת ספק</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
 
@@ -83,12 +83,12 @@
     </div>
 
      <!-- Edit Supplier Modal -->
-     <div class="modal fade" id="supplierEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="supplierEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת ספק</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateSupplier">
                     <div class="modal-body">
@@ -263,13 +263,13 @@
             <!-- Navbar End -->
 
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
                           <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת ספקים</h6>
+                            <h5 class="mb-4">טבלת ספקים</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
