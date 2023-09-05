@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 
@@ -6,63 +6,54 @@ $errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (empty($_POST["number"]) || empty($_POST["type"]) || empty($_POST["year"]) || empty($_POST["color"]) ||
-     empty($_POST["testFinishDate"]) || empty($_POST["insuranceFinishDate"]) || empty($_POST["careDate"])) {
+    if (empty($_POST["checkNumber"]) || empty($_POST["forWho"]) || empty($_POST["price"]) || empty($_POST["matDate"])) {
         $errorMessage = "שדה חובה ריק";
 
-    } else if (!is_numeric($_POST["number"])) {
-        $errorMessage = "מספר הרכב/ הכלי חייב להיות מספר";
-    } else if( $_POST['color'] === "בחר/י"){
-        $errorMessage = 'צריך לבחור צבע מהרשימה<br>';
-    } else if( $_POST['fuelType'] === "בחר/י"){
-        $errorMessage = 'צריך לבחור סוג בנזין מהרשימה<br>';
-    } else if (!empty($_POST["year"]) && (!is_numeric($_POST["year"]) || $_POST["year"] < 1900 || $_POST["year"] > date("Y"))) {
-        $errorMessage = 'שנת ייצור לא חוקית<br>';
-    } else {
- 
-    $number = $_POST['number'];
-    $type = $_POST['type'];
-    $year = $_POST['year'];
-    $color = $_POST['color'];
-    $testFinishDate = $_POST['testFinishDate'];
-    $insuranceFinishDate = $_POST['insuranceFinishDate'];
-    $careDate = $_POST['careDate'];
-    $fuelType = $_POST['fuelType'];
+    }
+    else if (!is_numeric($_POST["checkNumber"])) {
+        $errorMessage = "מספר הצ'יק חייב להיות מספר";
+    }  else if (!is_numeric($_POST["price"])) {
+        $errorMessage = "סכום הצ'יק חייב להיות מספר";
+    }  
+    else{
 
+    $checkNumber = $_POST['checkNumber'];
+	$forWho = $_POST['forWho'];
+    $price =  $_POST['price'];
+    $matDate = $_POST['matDate'];
+ 
+	
     $conn = require __DIR__ . "/database.php";
 
-    $stmt = $conn->prepare("insert into car(number, type, year, color, testDate, insuranceDate, careDate, fuelType) values(?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssss", $number, $type, $year, $color, $testFinishDate, $insuranceFinishDate, $careDate, $fuelType);
+    $stmt = $conn->prepare("insert into checks(id, forName, price, checkDate) values(?, ?, ?, ?)");
+    $stmt->bind_param("isid", $checkNumber, $forWho, $price, $matDate);
     try {
-    $execval = $stmt->execute();
-    if ($execval) {
-        $successMessage = "הרכב/ הכלי נקלט בהצלחה";
-    } 
+        $execval = $stmt->execute();
+        if ($execval) {
+            $successMessage = "הצ'יק נקלט בהצלחה";
+           
+        }
     } catch (mysqli_sql_exception $e) {
         if ($e->getCode() === 1062) { // Error code for duplicate entry
-            $errorMessage = "כנראה שהכלי כבר קיים במערכת";
+            $errorMessage = "כנראה שהצ'יק כבר קיים במערכת";
         } else {
             $errorMessage = "Error: " . $e->getMessage();
         }
-    }
-   
+    } 
+    
     $stmt->close();
     $conn->close();
     }
 
-    // Store the messages in session variables
-    $_SESSION["successMessage"] = $successMessage;
-    $_SESSION["errorMessage"] = $errorMessage;
-
-    // Redirect to the same page to prevent re-submission
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit();
-
+      // Store the messages in session variables
+      $_SESSION["successMessage"] = $successMessage;
+      $_SESSION["errorMessage"] = $errorMessage;
+  
+      // Redirect to the same page to prevent re-submission
+      header("Location: " . $_SERVER['REQUEST_URI']);
+      exit();
 }
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
     <style>
     .custom-form {
         display: flex;
@@ -153,12 +145,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
                         <a href="addEmployee.html" class="dropdown-item">עובד</a>
-                            <a href="addClient.html" class="dropdown-item">לקוח</a>
+                            <a href="addClient.html" class="dropdown-item active">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
                             <a href="addSupplier.html" class="dropdown-item">ספק</a>
-                            <a href="addVehicle.php" class="dropdown-item active">רכב & ציוד צמ"ה</a>
+                            <a href="addVehicle.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
                             <a href="" class="dropdown-item">צ'יק</a>
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח בנזין</a>
@@ -193,8 +185,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Content Start -->
         <div class="content">
-              <!-- Navbar Start -->
-              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+             <!-- Navbar Start -->
+             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -242,71 +234,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </nav>
             <!-- Navbar End -->
+      
 
 
             <div class="col-sm-12 custom-form">
-            <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
-                    <h5 class="mb-4">הוספת רכב/ כלי צמ"ה</h5>
-                        <form action="" method="post" enctype="multipart/form-data">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="number" name="number"
-                                placeholder="">
-                            <label for="number" class="position-absolute top-0 end-0">מספר</label>
-                        </div>
+    <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+           <h5 class="mb-4">הוספת צ'יק</h6>
+                    <form method="post">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="type" name="type"
+                        <input type="text" class="form-control" id="checkNumber" name="checkNumber"
                             placeholder="">
-                        <label for="type" class="position-absolute top-0 end-0">סוג</label>
+                        <label for="checkNumber" class="position-absolute top-0 end-0">מספר צ'יק</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="year" name="year"
+                        <input type="text" class="form-control" id="forWho" name="forWho"
                             placeholder="">
-                        <label for="year" class="position-absolute top-0 end-0">שנה</label>
+                        <label for="forWho" class="position-absolute top-0 end-0">עבור/ למען</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="color" name="color"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option >אדום</option>
-                            <option >ברונז</option>
-                            <option >כחול</option>
-                            <option >ירוק</option>
-                            <option >כסף</option>
-                            <option >כתום</option>
-                            <option >לבן</option>
-                            <option >צהוב</option>
-                            <option >שחור</option>
-          
-                        </select>
-                        <label for="color" class="position-absolute top-0 end-0">צבע</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="fuelType" name="fuelType"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option >בנזין 95</option>
-                            <option >סולר</option>
-                        </select>
-                        <label for="fuelType" class="position-absolute top-0 end-0">סוג דלק</label>
-                        </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="testFinishDate" name="testFinishDate"
+                        <input type="text" class="form-control" id="price" name="price"
                             placeholder="">
-                        <label for="testFinishDate" class="position-absolute top-0 end-0">תאריך סיום טסט</label>
+                        <label for="price" class="position-absolute top-0 end-0">סכום</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="insuranceFinishDate" name="insuranceFinishDate"
+                        <input type="date" class="form-control" id="matDate" name="matDate"
                             placeholder="">
-                        <label for="insuranceFinishDate" class="position-absolute top-0 end-0">תאריך סיום ביטוח</label>
+                        <label for="matDate" class="position-absolute top-0 end-0">תאריך פרעון</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="careDate" name="careDate"
-                            placeholder="">
-                        <label for="careDate" class="position-absolute top-0 end-0">תאריך הטיפול הבא</label>
-                    </div>
-                    <button  type="submit" class="btn btn-primary" name="submit">הוסף</button>
-                    <!-- Display error message -->
-                    <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                    <button type="submit" class="btn btn-primary">הוסף</button>
+                     <!-- Display error message -->
+                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
                             <div class="alert alert-danger" role="alert">
                                 <?php echo $_SESSION["errorMessage"]; ?>
                             </div>
@@ -325,6 +282,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         unset($_SESSION["successMessage"]);
                         ?>
                 </form>
+                
+
                 </div>
             </div>
 
