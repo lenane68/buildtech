@@ -52,7 +52,14 @@ if(isset($_POST['update_exception']))
         ];
         echo json_encode($res);
         return;
-    }
+    } else if (!is_numeric($price)) {
+        $res = [
+            'status' => 422,
+            'message' => 'המחיר חייב להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    } 
 
     $query = "UPDATE exception SET projectName='$name', description='$description', price='$price'
                 WHERE id='$exception_id'";

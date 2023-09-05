@@ -50,12 +50,12 @@
 
 <body>
     <!-- View Exception Modal -->
-    <div class="modal fade" id="exceptionViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exceptionViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">הצגת חומר</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
 
@@ -82,12 +82,12 @@
     </div>
 
      <!-- Edit Exception Modal -->
-     <div class="modal fade" id="exceptionEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="exceptionEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת חומר</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateException">
                     <div class="modal-body">
@@ -262,11 +262,11 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">טבלת חריגים</h6>
+                          <div class="bg-light rounded h-100 p-4" dir="rtl">
+                            <h5 class="mb-4">טבלת חריגים</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
