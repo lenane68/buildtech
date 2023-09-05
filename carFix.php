@@ -1,4 +1,11 @@
 <?php 
+
+
+session_start();
+
+$errorMessage = "";
+$successMessage = "";
+
  $conn = require __DIR__ . "/database.php";
 
  $sql = "SELECT * FROM car";
@@ -6,9 +13,17 @@
  $result = $conn->query($sql);
     
 
+ if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (empty($_POST["carNumber"]) || empty($_POST["price"]) || empty($_POST["fixingDetails"]) || empty($_POST["fixingDate"])) {
+        $errorMessage = "שדה חובה ריק";
 
+    }  else if (!is_numeric($_POST["price"])) {
+        $errorMessage = " מחיר התיקון חייב להיות מספר";
+    } else if( $_POST['carNumber'] === "בחר/י"){
+        $errorMessage = 'צריך לבחור מספר רכב מהרשימה.<br>';
+    } else {
 
- if(isset($_POST["submit"])){
+   
     $carNumber = $_POST['carNumber'];
     $price = $_POST['price'];
     $fixingDetails = $_POST['fixingDetails'];
@@ -20,16 +35,30 @@
     $stmt->bind_param("sdss", $carNumber, $price, $fixingDetails, $fixingDate);
 
 
- 
+    try {
     $execval = $stmt->execute();
     if($execval){
-        echo "Adding successfully...";
-    } else {
-        die($conn->error . " " . $conn->errno);
-    }
-    echo $execval;
+        $successMessage = "הדיווח נקלט בהצלחה";
+           
+    } } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Error code for duplicate entry
+            $errorMessage = "כנראה שהדיווח כבר קיים במערכת";
+        } else {
+            $errorMessage = "Error: " . $e->getMessage();
+        }
+    } 
+ 
     $stmt->close();
     $conn->close();
+    }
+
+     // Store the messages in session variables
+     $_SESSION["successMessage"] = $successMessage;
+     $_SESSION["errorMessage"] = $errorMessage;
+ 
+     // Redirect to the same page to prevent re-submission
+     header("Location: " . $_SERVER['REQUEST_URI']);
+     exit();
 
  }
    
@@ -67,6 +96,24 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
 </head>
 
 <body>
@@ -201,11 +248,10 @@
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-            <form method="post">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הוספת תיקון עבור רכב</h6>
-                    <form>
+            <div class="col-sm-12 custom-form">
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+                 <h5 class="mb-4">הוספת תיקון עבור רכב</h5>
+                    <form method="post">
                         <div class="form-floating mb-3">
                             <select class="form-select" id="carNumber" name="carNumber"
                                 aria-label="Floating label select example">
@@ -217,29 +263,47 @@
                                             }
                                 ?>
                             </select>
-                            <label for="carNumber">מס' רכב</label>
+                            <label for="carNumber" class="position-absolute top-0 end-0">מס' רכב</label>
                         </div>
 
                         <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
+                        <span class="input-group-text">00.</span>
                         <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="מחיר התיקון" id="price" name="price">    
-                        <span class="input-group-text">.00</span>
+                        <span class="input-group-text">₪</span>
                          </div>
                          <div class="form-floating mb-3">
                             <textarea class="form-control" placeholder=""
                                 id="fixingDetails" name ="fixingDetails" style="height: 150px;"></textarea>
-                            <label for="fixingDetails"> מהות התיקון</label>
+                            <label for="fixingDetails" class="position-absolute top-0 end-0"> מהות התיקון</label>
                         </div> 
                         <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="fixingDate" name="fixingDate"
                                         placeholder="">
-                                    <label for="fixingDate">תאריך הביצוע</label>
+                                    <label for="fixingDate" class="position-absolute top-0 end-0">תאריך הביצוע</label>
                         </div>            
                 
                     <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
-                    </form>
-                </div>
+                    <!-- Display error message -->
+                    <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $_SESSION["errorMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                        <!-- Display success message -->
+                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo $_SESSION["successMessage"]; ?>
+                            </div>
+                        <?php } ?>
+
+                          <!-- Clear session variables after displaying messages -->
+                          <?php
+                        unset($_SESSION["errorMessage"]);
+                        unset($_SESSION["successMessage"]);
+                        ?>
                 </form>
+                </div>
             </div>
 
 
