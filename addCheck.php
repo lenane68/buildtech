@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conn = require __DIR__ . "/database.php";
 
     $stmt = $conn->prepare("insert into checks(id, forName, price, checkDate) values(?, ?, ?, ?)");
-    $stmt->bind_param("isid", $checkNumber, $forWho, $price, $matDate);
+    $stmt->bind_param("isis", $checkNumber, $forWho, $price, $matDate);
     try {
         $execval = $stmt->execute();
         if ($execval) {
