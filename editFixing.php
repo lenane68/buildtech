@@ -50,12 +50,12 @@
 
 <body>
     <!-- View Fixing Modal -->
-    <div class="modal fade" id="fixingViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="fixingViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">הצגת דוחות תנועה</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="exampleModalLabel">הצגת טיפולי רכב </h5>
+                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
 
@@ -85,12 +85,12 @@
     </div>
 
      <!-- Edit Fixing Modal -->
-     <div class="modal fade" id="fixingEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="fixingEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">עריכת חומר</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="exampleModalLabel">עריכת טיפול רכב</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="updateFixing">
                     <div class="modal-body">
@@ -110,7 +110,7 @@
                                             }
                                 ?>
                             </select>
-                            <label for="carNumber">פרויקט</label>
+                            <label for="carNumber">מספר רכב</label>
                         </div>
 
 
@@ -269,13 +269,13 @@
             <!-- Navbar End -->
 
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
                           <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4"> טבלת טיפולי רכב</h6>
+                            <h5 class="mb-4"> טבלת טיפולי רכב</h5>
                         
                             
-                            <table class="table" id="myTable">
+                            <table class="table" id="myTable" dir="rtl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

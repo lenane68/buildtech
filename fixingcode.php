@@ -53,7 +53,14 @@ if(isset($_POST['update_fixing']))
         ];
         echo json_encode($res);
         return;
-    }
+    } else if (!is_numeric($price)) {
+        $res = [
+            'status' => 422,
+            'message' => ' המחיר חייב להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    } 
 
     $query = "UPDATE fixing SET carNumber='$carNumber', price='$price', fixingDetails='$fixingDetails', fixingDate='$fixingDate'
                 WHERE serialNumber='$serialNumber'";
