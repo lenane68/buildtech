@@ -26,8 +26,8 @@ class PDF extends TCPDF
 
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
        
-        $this->SetFont('dejavusansb', '', 10);
-                //189 is total width of A4 page, height, border, line,
+        $this->SetFont('dejavusans', '', 12, '', true);
+        //189 is total width of A4 page, height, border, line,
         $this->MultiCell(189, 3, 'גבארין אבו רפיק', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'עבודות בנייה ושיפוצים ע.מ. 203940218', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'מעלה עירון-זלפה', 0,'R', 0,1, '', '', true);
@@ -35,8 +35,8 @@ class PDF extends TCPDF
         $this->MultiCell(189, 3, '0524001227', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'ת"ד 863', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'aborafeekjbareen@gmail.com', 0,'R', 0,1, '', '', true);
-        $this->SetFont('dejavusansb', 'B', 12);
-        $this->Ln(12); //space
+        $this->SetFont('dejavusans', 'B', 13, '', true);
+        $this->Ln(22); //space
         $this->Cell(189, 3, 'דו"ח בנזין לרכב',0,1,'C');
    
     }   
@@ -140,13 +140,16 @@ $pdf->SetFont('dejavusans', '', 14, '', true);
 $pdf->AddPage();
 
 
-$pdf->Ln(39); 
+$pdf->Ln(60); 
 
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
 $pdf ->SetFont('dejavusans', 'B',10);
+$pdf ->SetTextColor(51, 99, 148);
 $pdf->MultiCell(189, 3, 'רכב מספר: '.$carNumber.' ', 0,'C', 0,1, '', '', true);
-$pdf->Ln(7);
+$pdf->Ln(10);
 
+$pdf ->SetTextColor(0, 0, 0);
+$pdf ->SetFont('dejavusans', '', 10, '', true);
 $pdf->SetFillColor(162, 191, 220);
 $pdf->Cell(20,5,'מס', 1,0,'C',1);
 $pdf->Cell(30,5,'כמות', 1,0,'C',1);
@@ -169,18 +172,20 @@ $totalPrice = 0;
             if (($i%$max) == 0){
             $pdf->AddPage();
             $pdf->Ln(39); 
-            //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
             $pdf ->SetFont('dejavusans', 'B',10);
-            $pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
-            $pdf->Ln(7);
+            $pdf ->SetTextColor(51, 99, 148);
+            $pdf->MultiCell(189, 3, 'רכב מספר: '.$carNumber.' ', 0,'C', 0,1, '', '', true);
+            $pdf->Ln(10);
+            $pdf ->SetTextColor(0, 0, 0);
+            $pdf ->SetFont('dejavusans', '', 10, '', true);
             $pdf->SetFillColor(162, 191, 220);
-            $$pdf->Cell(20,5,'מס', 1,0,'C',1);
+            $pdf->Cell(20,5,'מס', 1,0,'C',1);
             $pdf->Cell(30,5,'כמות', 1,0,'C',1);
             $pdf->Cell(30,5,'מחיר', 1,0,'C',1);
-            $pdf->Cell(40,5,' תאריך מילוי', 1,0,'C',1);
+            $pdf->Cell(40,5,'תאריך מילוי', 1,0,'C',1);
         }
 
-        $pdf->Ln(6);
+        $pdf->Ln(8);
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->Cell(30,5, $amount, 0,0,'C');
         $pdf->Cell(30,5, $price.' ₪', 0,0,'C');
@@ -197,4 +202,4 @@ $totalPrice = 0;
     $pdf->Cell(180, 8, 'סה"כ סכום דלק: '.$totalPrice.' ₪',0,1,'R',0);
 }
 // Close and output PDF document
-$pdf->Output('example_001.pdf', 'I');
+$pdf->Output('fuel_report.pdf', 'I');

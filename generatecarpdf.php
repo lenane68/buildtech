@@ -204,4 +204,4 @@ $total = 0;
    
 }
 // Close and output PDF document
-$pdf->Output('example_001.pdf', 'I');
+$pdf->Output('vehicles_report.pdf', 'I');
