@@ -8,6 +8,11 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+
+
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -37,7 +42,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">הצגת לקוח</h5>
+                <h5 class="modal-title" id="exampleModalLabel">הצגת עובד</h5>
                 <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
@@ -60,7 +65,7 @@
     
                             <div class="mb-3">
                                 <label for=""> תאריך התחלת עבודה</label>
-                                <p  id="view_startDate" class="form-control" ></p>
+                                <p  id="view_startDate" class="form-control"></p>
                             </div>
                             <div class="mb-3">
                                 <label for="">עדיין עובד</label>
@@ -80,9 +85,9 @@
     </div>
 
      <!-- Edit Employee Modal -->
-     <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
             <div class="modal-dialog">
-                <div class="modal-content" dir="rtl">
+                <div class="modal-content" >
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת עובד</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -96,16 +101,25 @@
 
                         <div class="mb-3">
                         <label for="">שם מלא</label>
-                        <input type="text" name="employeeName" id="employeeName" class="form-control" >
+                        <input type="text" name="employeeName" id="employeeName" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="">תפקיד</label>
-                            <input type="text" name="job" id="job" class="form-control" />
+                            <select class="form-select" id="job" name="job" aria-label="Floating label select example">
+    
+                                <option value="מנהל">מנהל</option>
+                                <option value="עובד">עובד</option>
+                                <option value="מזכירה">מזכירה</option>
+                            </select>
+                           
                         </div>
      
                         <div class="mb-3">
                             <label for="">מגדר</label>
-                            <input type="text" name="gender" id="gender" class="form-control" />
+                            <select class="form-select" id="gender" name="gender" aria-label="Floating label select example">
+                                <option value="זכר">זכר</option>
+                                <option value="נקבה">נקבה</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="">תאריך התחלת עבודה</label>
@@ -113,8 +127,8 @@
                         </div>
 
                         <div class="form-check form-switch mb-3">
-                            <label class="form-check-label" for="">עדיין עובד</label>
-                            <input type="checkbox" name="active" id="active" class="form-check-input form-control" role="switch" checked>
+                            <label class="form-check-label" for="active" class="position-absolute top-0 end-0">עדיין עובד</label>
+                            <input style="margin-right: 10px;" type="checkbox" name="active" id="active" class="form-check-input  position-absolute" role="switch">
                         </div>
 
                         <div class="mb-3">
@@ -261,9 +275,9 @@
             </nav>
             <!-- Navbar End -->
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4" dir="rtl">
+                          <div class="bg-light rounded h-100 p-4">
                             <h5 class="mb-4">טבלת עובדים</h5>
                         
                             
@@ -296,7 +310,7 @@
                                 <tr>
                                     <th scope="row"></th>
                                     <td> <?= $employee["fullName"] ?> </td>
-                                    <td> <?= $employee["startDate"] ?> </td>
+                                    <td class="date-cell"> <?= $employee["startDate"] ?> </td>
                                     <td> <?= $employee["salary"] ?> </td>
                                     <td>
                                             <button type="button" value="<?=$employee['id'];?>" class="viewEmployeeBtn btn btn-info btn-sm">הצג</button>
@@ -370,7 +384,7 @@
                     $('#job').val(res.data.job);
                     $('#startDate').val(res.data.startDate);
                     $('#gender').val(res.data.Gender);
-                    $('#active').val(res.data.Active);
+                    $('#active').prop('checked', res.data.Active == 1);
                     $('#salary').val(res.data.salary);
 
                     $('#employeeEditModal').modal('show');
@@ -476,6 +490,28 @@
             }
         });
     </script>
+    <script>
+    // Get all elements with the "date-cell" class
+    var dateCells = document.querySelectorAll('.date-cell');
+
+    // Iterate through each element and format the date
+    dateCells.forEach(function(cell) {
+        var originalDate = cell.textContent.trim(); // Get the original date from the cell
+        var formattedDate = formatDateString(originalDate); // Format the date
+        cell.textContent = formattedDate; // Update the cell with the formatted date
+    });
+
+    // Function to format a date string from YYYY-MM-DD to DD/MM/YYYY
+    function formatDateString(dateString) {
+        var parts = dateString.split('-');
+        if (parts.length === 3) {
+            return parts[2] + '/' + parts[1] + '/' + parts[0];
+        } else {
+            return dateString; // Return the original date if it's not in the expected format
+        }
+    }
+</script>
+
 </body>
 
 </html>

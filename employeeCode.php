@@ -45,14 +45,21 @@ if (isset($_POST['update_employee'])) {
     $active = isset($_POST['active']) ? 1 : 0; // Check if the checkbox is checked
     $salary = mysqli_real_escape_string($conn, $_POST['salary']);
 
-    if (empty($name) || empty($salary) || empty($startDate)) {
+    if (empty($name) || empty($salary) || empty($startDate) || empty($job) || empty($gender)) {
         $res = [
             'status' => 422,
             'message' => 'שדה חובה ריק'
         ];
         echo json_encode($res);
         return;
-    }
+    } else if (!is_numeric($salary)) {
+        $res = [
+            'status' => 422,
+            'message' => 'המשכורת חייבת להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    } 
 
     $query = "UPDATE employee SET fullName='$name', job='$job', startDate='$startDate', Gender='$job', startDate='$startDate', Gender='$gender', Active='$active', salary='$salary'
                 WHERE id='$employee_id'";
