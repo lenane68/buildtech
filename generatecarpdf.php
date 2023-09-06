@@ -24,7 +24,7 @@ class PDF extends TCPDF
 
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
        
-        $this->SetFont('dejavusansb', '', 10);
+        $this->SetFont('dejavusans', '', 12, '', true);
                 //189 is total width of A4 page, height, border, line,
         $this->MultiCell(189, 3, 'גבארין אבו רפיק', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'עבודות בנייה ושיפוצים ע.מ. 203940218', 0,'R', 0,1, '', '', true);
@@ -33,8 +33,8 @@ class PDF extends TCPDF
         $this->MultiCell(189, 3, '0524001227', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'ת"ד 863', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'aborafeekjbareen@gmail.com', 0,'R', 0,1, '', '', true);
-        $this->SetFont('dejavusansb', 'B', 12);
-        $this->Ln(12); //space
+        $this->SetFont('dejavusans', 'B', 13, '', true);
+        $this->Ln(22); //space
         $this->Cell(189, 3, 'רכבים וצמ"ה',0,1,'C');
    
     }   
@@ -128,7 +128,7 @@ $pdf->setFontSubsetting(true);
 // dejavusans is a UTF-8 Unicode font, if you only need to
 // print standard ASCII chars, you can use core fonts like
 // helvetica or times to reduce file size.
-$pdf->SetFont('dejavusans', '', 14, '', true);
+$pdf->SetFont('dejavusans', '', 12, '', true);
 
 
 
@@ -143,9 +143,9 @@ $pdf->Ln(39);
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
 //$pdf ->SetFont('dejavusans', 'B',10);
 //$pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
-$pdf->Ln(7);
+$pdf->Ln(25);
 
-$pdf ->SetFont('dejavusans', 'B',10);
+$pdf ->SetFont('dejavusans', '', 10, '', true);
 $pdf->SetFillColor(162, 191, 220);
 $pdf->Cell(20,5,'מס', 1,0,'C',1);
 $pdf->Cell(25,5,'סוג ', 1,0,'C',1);
@@ -157,7 +157,7 @@ $pdf->Cell(30,5,' הטיפול הבא', 1,0,'C',1);
 $pdf->Cell(20,5,'סוג דלק', 1,0,'C',1);
 
 $i = 1; //no of page start
-$max = 12; //when s1 no == 12 go to next page
+$max = 11; //when s1 no == 12 go to next page
 $total = 0;
         while ($row = mysqli_fetch_array($query))
         {
@@ -174,9 +174,9 @@ $total = 0;
             $pdf->AddPage();
             $pdf->Ln(39); 
             //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
-            $pdf ->SetFont('dejavusans', 'B',10);
+            $pdf ->SetFont('dejavusans', '', 10, '', true);
             //$pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
-            $pdf->Ln(7);
+            $pdf->Ln(25);
             $pdf->SetFillColor(162, 191, 220);
             $pdf->Cell(20,5,'מס', 1,0,'C',1);
             $pdf->Cell(25,5,'סוג ', 1,0,'C',1);
