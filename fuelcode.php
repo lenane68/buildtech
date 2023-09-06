@@ -53,6 +53,20 @@ if(isset($_POST['update_fuel']))
         ];
         echo json_encode($res);
         return;
+    } else if (!is_numeric($amount)) {
+        $res = [
+            'status' => 422,
+            'message' => ' הכמות חייבת להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
+    } else if (!is_numeric($price)) {
+        $res = [
+            'status' => 422,
+            'message' => ' המחיר חייב להיות מספר'
+        ];
+        echo json_encode($res);
+        return;
     }
 
     $query = "UPDATE fuel SET carNumber='$carNumber', amount='$amount', price='$price', fullDate='$fullDate'
