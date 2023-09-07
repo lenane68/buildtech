@@ -25,7 +25,11 @@ if(isset($_GET['pdf_report_generate'])) {
  */
 class PDF extends TCPDF
 {
+    private $isHeaderAdded = false; // Flag to track whether the header has been added
+
    public function Header(){
+     // Check if the header has not been added
+     if (!$this->isHeaderAdded) {
         $imageFile = K_PATH_IMAGES.'logo.jpg';
         $this->Image($imageFile, 10, 10, 70, '', 'JPG', '', 'T', false, 100, 'L', false, false,
         0, false, false, false);
@@ -34,6 +38,7 @@ class PDF extends TCPDF
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
        
         $this->SetFont('dejavusans', '', 10);
+    
    
                 //189 is total width of A4 page, height, border, line,
         $this->MultiCell(189, 3, 'גבארין אבו רפיק', 0,'R', 0,1, '', '', true);
@@ -49,13 +54,16 @@ class PDF extends TCPDF
 
          // Add space after header information
          $this->Ln(12);
+         $this->isHeaderAdded = true; // Set the flag to indicate that the header has been added
+     
+     }
 
     }   
 
    public function Footer(){
         // Set position from bottom
         $this->SetY(-25);
-
+        $this->Ln(10);
         // Set font for the footer
         $this->SetFont('dejavusans', 'B', 10);
 
@@ -128,21 +136,9 @@ $pdf->SetFont('dejavusans', '', 14, '', true);
 // This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
 
+
 $pdf->Ln(28); // Add space
 
-// Add content to the PDF
-$pageHeight = $pdf->getPageHeight(); // Get the height of the page
-
-// Calculate space needed for header, content, and footer
-$headerHeight = 30; // Adjust as needed
-$contentHeight = 200; // Adjust as needed
-$footerHeight = 20; // Adjust as needed
-
-// Check if there's enough space for header
-$remainingHeight = $pageHeight - $pdf->getY();
-if ($remainingHeight < $headerHeight) {
-    $pdf->AddPage(); // Start a new page
-} 
 
  // Add content to the PDF
 
@@ -150,7 +146,8 @@ if ($remainingHeight < $headerHeight) {
     // Date
     $pdf->SetTextColor(44, 86, 122);
     $pdf->SetFont('dejavusans', 'B', 12);
-    $pdf->Cell(0, 10, '' . $bidDate, 0, 1, 'R');
+    $formattedBidDate = date('d/m/Y', strtotime($bidDate));
+    $pdf->Cell(0, 10, '' . $formattedBidDate, 0, 1, 'R');
 
     // Recipient Name
     $pdf->SetFont('dejavusans', 'B', 12);
@@ -171,49 +168,22 @@ if ($remainingHeight < $headerHeight) {
     $pdf->Ln(1);
     $pdf->SetFont('dejavusans', '', 12);
     $pdf->writeHTML($body, true, false, false, false, ''); // Use the $body variable here
-    $pdf->Ln(5);
-
-    // Check if there's enough space for content
-    //$remainingHeight = $pageHeight - $pdf->getY();
-    //if ($remainingHeight < $contentHeight) {
-     //   $pdf->AddPage(); // Start a new page
-    //}
-
-  
+    
 // Price
 if ($includePrice) {
-    // Calculate the height needed for the price content
+   
     $formattedPrice = number_format($price, 0, '.', ',');
-    $priceContentHeight = $pdf->getStringHeight(0, 'מחיר סופי כולל מע"מ: ' . $formattedPrice . ' ₪.');
+     
     
-    // Check if there is enough remaining space for the price content
-    $remainingHeight = $pageHeight - $pdf->getY();
-    if ($remainingHeight < $priceContentHeight) {
-        $pdf->AddPage(); // Start a new page
-       
-
-    }
     
     // Add price content
-    $pdf->Ln(); // Add space
+    $pdf->Ln(3); // Add space
     $pdf->SetFont('dejavusans', 'B', 12);
     $pdf->Cell(0, 10, 'מחיר סופי כולל מע"מ: ' . $formattedPrice . ' ₪.', 0, 1, 'R');
 }
 
     // Closing words
 $closingWords = 'נשמח אם תקבלו הצעתנו';
-$closingWordsHeight = $pdf->getStringHeight(0, $closingWords);
-$signatureHeight = $pdf->getStringHeight(0, 'גבארין אבו רפיק');
-
-// Calculate space needed for closing words and signature
-$spaceNeeded = $closingWordsHeight + $signatureHeight + 20; // 20 is for extra space
-
-// Check if there is enough remaining space for closing words and signature
-$remainingHeight = $pageHeight - $pdf->getY();
-if ($spaceNeeded > $remainingHeight) {
-    $pdf->AddPage(); // Start a new page
-}
-
 // Add closing words and signature
 $pdf->Ln(20); // Add space
 $pdf->SetFont('dejavusans', '', 12);

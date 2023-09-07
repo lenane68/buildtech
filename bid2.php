@@ -40,6 +40,29 @@
     <link href="css/style.css" rel="stylesheet">
 
     <script src="https://cdn.tiny.cloud/1/umjzfb3x192t4k497v88yvwomivkefjd1u0xqbilqqd2ixr5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+     <!--<script src="ckeditor\ckeditor.js"></script> -->
+
+     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    
+     <style>
+    .custom-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-form-container {
+        max-width: 500px;
+        width: 100%;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .custom-form .form-floating {
+        text-align: right;
+    }
+</style>
+
 </head>
 
 <body>
@@ -173,33 +196,33 @@
             <!-- Navbar End -->
 
 
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">הפקת הצעת מחיר</h6>
+            <div class="col-sm-12 custom-form">
+                 <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
+                     <h5 class="mb-4">הפקת הצעת מחיר</h6>
                     <form action="generatebidpdf.php" method="get" target="_blank">
                     <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="bidDate" name="bidDate" placeholder="">
-                    <label for="floatingPassword">תאריך ההצעה</label>
+                    <input type="date" class="form-control" id="bidDate" name="bidDate" placeholder="">
+                    <label for="floatingPassword" class="position-absolute top-0 end-0">תאריך ההצעה</label>
                         </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="forward" name="forward" placeholder="">
-                        <label for="floatingInput">לכבוד</label>
+                        <label for="floatingInput" class="position-absolute top-0 end-0">לכבוד</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="address" name="address" placeholder="">
-                        <label for="floatingInput">כתובת</label>
+                        <label for="floatingInput" class="position-absolute top-0 end-0">כתובת</label>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="body" name="body" rows="8" ></textarea>
-                        <label for="floatingTextarea">תוכן ההצעה</label>
+                        <label for="floatingTextarea" >תוכן ההצעה</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="price" name="price" placeholder="">
-                        <label for="floatingInput">מחיר סופי כולל מע"מ</label>
+                        <label for="floatingInput" class="position-absolute top-0 end-0">מחיר סופי כולל מע"מ</label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="includePrice" name="includePrice">
-                        <label class="form-check-label" for="includePrice">
+                        <input class="form-check-input position-absolute" type="checkbox" id="includePrice" name="includePrice">
+                        <label class="form-check-label position-absolute" for="includePrice" class="position-absolute top-0 end-0" style="margin-right: 25px;">
                             לצרף את המחיר הסופי להצעה
                         </label>
                     </div>
@@ -248,6 +271,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
+    <!--
     <script>
     tinymce.init({
       selector: 'textarea',
@@ -261,7 +285,7 @@
       ],
       ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
     });
-  </script>
+  </script>-->
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -278,6 +302,11 @@
             bidDateInput.value = formattedDate;
         });
     });
+</script>
+
+<script>
+    CKEDITOR.config.charset = 'utf-8';
+  CKEDITOR.replace( 'body' );
 </script>
 
 
