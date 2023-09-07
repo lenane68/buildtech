@@ -160,7 +160,7 @@ $pdf->Cell(40,5,'תאריך מילוי', 1,0,'C',1);
 
 
 $i = 1; //no of page start
-$max = 12; //when s1 no == 6 go to next page
+$max = 16; //when s1 no == 6 go to next page
 $totalAmount = 0;
 $totalPrice = 0;
         while ($row = mysqli_fetch_array($query))
@@ -171,7 +171,7 @@ $totalPrice = 0;
 
             if (($i%$max) == 0){
             $pdf->AddPage();
-            $pdf->Ln(39); 
+            $pdf->Ln(60); 
             $pdf ->SetFont('dejavusans', 'B',10);
             $pdf ->SetTextColor(51, 99, 148);
             $pdf->MultiCell(189, 3, 'רכב מספר: '.$carNumber.' ', 0,'C', 0,1, '', '', true);
@@ -185,21 +185,26 @@ $totalPrice = 0;
             $pdf->Cell(40,5,'תאריך מילוי', 1,0,'C',1);
         }
 
-        $pdf->Ln(8);
+        $pdf->Ln(10);
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->Cell(30,5, $amount, 0,0,'C');
-        $pdf->Cell(30,5, $price.' ₪', 0,0,'C');
+        $priceFormatted = number_format($price, 0, '.', ',');
+        $pdf->Cell(30,5, $priceFormatted.' ₪', 0,0,'C');
         $pdf->Cell(40,5, $fullDate.' ₪', 0,0,'C');
         
         $i++;
         $totalAmount+=$amount;
         $totalPrice+=$price;
     }
-    $pdf->Ln(120);
+    $pdf->Ln(15);
     $pdf ->SetFont('dejavusans', 'I',10);
-    $pdf->Cell(180, 8, 'סה"כ כמות דלק: '.$totalAmount.' ליטר',0,1,'R',0);
+    // Format the with commas
+    $totalFormatted = number_format($totalAmount, 0, '.', ',');
+    $pdf->Cell(180, 8, 'סה"כ כמות דלק: '.$totalFormatted.' ליטר',0,1,'R',0);
     $pdf ->SetFont('dejavusans', 'B',10);
-    $pdf->Cell(180, 8, 'סה"כ סכום דלק: '.$totalPrice.' ₪',0,1,'R',0);
+    // Format the with commas
+    $totalFormatted = number_format($totalPrice, 0, '.', ',');
+    $pdf->Cell(180, 8, 'סה"כ סכום דלק: '.$totalFormatted.' ₪',0,1,'R',0);
 }
 // Close and output PDF document
 $pdf->Output('fuel_report.pdf', 'I');

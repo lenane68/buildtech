@@ -160,7 +160,7 @@ $pdf->Cell(40,5,'תאריך טיפול', 1,0,'C',1);
 
 
 $i = 1; //no of page start
-$max = 12; //when s1 no == 6 go to next page
+$max = 16; //when s1 no == 6 go to next page
 
 $totalPrice = 0;
         while ($row = mysqli_fetch_array($query))
@@ -171,7 +171,7 @@ $totalPrice = 0;
 
             if (($i%$max) == 0){
             $pdf->AddPage();
-            $pdf->Ln(39); 
+            $pdf->Ln(60); 
             $pdf ->SetFont('dejavusans', 'B',10);
             $pdf ->SetTextColor(51, 99, 148);
             $pdf->MultiCell(189, 3, 'רכב מספר: '.$carNumber.' ', 0,'C', 0,1, '', '', true);
@@ -185,20 +185,21 @@ $totalPrice = 0;
             $pdf->Cell(40,5,' תאריך טיפו', 1,0,'C',1);
         }
 
-        $pdf->Ln(8);
+        $pdf->Ln(10);
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->Cell(80,5, $details, 0,0,'C');
-        $pdf->Cell(30,5, $price.' ₪', 0,0,'C');
+        $totalFormatted = number_format($price, 0, '.', ',');
+        $pdf->Cell(30,5, $totalFormatted.' ₪', 0,0,'C');
         $pdf->Cell(40,5, $fixDate.' ₪', 0,0,'C');
         
         $i++;
         $totalPrice+=$price;
     }
-    $pdf->Ln(120);
+    $pdf->Ln(15);
     $pdf ->SetFont('dejavusans', 'I',10);
-    //$pdf->Cell(180, 8, 'סה"כ כמות דלק: '.$totalAmount.' ליטר',0,1,'R',0);
     $pdf ->SetFont('dejavusans', 'B',10);
-    $pdf->Cell(180, 8, 'סה"כ סכום טיפולים: '.$totalPrice.' ₪',0,1,'R',0);
+    $totalFormatted = number_format($totalPrice, 0, '.', ',');
+    $pdf->Cell(180, 8, 'סה"כ סכום טיפולים: '.$totalFormatted.' ₪',0,1,'R',0);
 }
 // Close and output PDF document
 $pdf->Output('fixing_car.pdf', 'I');

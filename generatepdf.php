@@ -25,8 +25,8 @@ class PDF extends TCPDF
 
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
        
-        $this->SetFont('dejavusansb', '', 10);
-                //189 is total width of A4 page, height, border, line,
+        $this->SetFont('dejavusans', '', 12, '', true);
+        //189 is total width of A4 page, height, border, line,
         $this->MultiCell(189, 3, 'גבארין אבו רפיק', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'עבודות בנייה ושיפוצים ע.מ. 203940218', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'מעלה עירון-זלפה', 0,'R', 0,1, '', '', true);
@@ -34,8 +34,8 @@ class PDF extends TCPDF
         $this->MultiCell(189, 3, '0524001227', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'ת"ד 863', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'aborafeekjbareen@gmail.com', 0,'R', 0,1, '', '', true);
-        $this->SetFont('dejavusansb', 'B', 12);
-        $this->Ln(12); //space
+        $this->SetFont('dejavusans', 'B', 13, '', true);
+        $this->Ln(22); //space
         $this->Cell(189, 3, 'חריגים פרויקט',0,1,'C');
    
     }   
@@ -87,7 +87,7 @@ $pdf = new PDF('p', 'mm', 'A4', true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Nermin');
-$pdf->SetTitle('Exceptions Report');
+$pdf->SetTitle('חריגים בפרויקט');
 $pdf->SetSubject('');
 $pdf->SetKeywords('');
 $pdf->setRTL(true);
@@ -129,7 +129,7 @@ $pdf->setFontSubsetting(true);
 // dejavusans is a UTF-8 Unicode font, if you only need to
 // print standard ASCII chars, you can use core fonts like
 // helvetica or times to reduce file size.
-$pdf->SetFont('dejavusans', '', 14, '', true);
+$pdf->SetFont('dejavusans', '', 12, '', true);
 
 
 
@@ -139,13 +139,16 @@ $pdf->SetFont('dejavusans', '', 14, '', true);
 $pdf->AddPage();
 
 
-$pdf->Ln(39); 
+$pdf->Ln(60); 
 
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
-$pdf ->SetFont('dejavusans', 'B',10);
+$pdf ->SetFont('dejavusans', 'B',12);
+$pdf ->SetTextColor(51, 99, 148);
 $pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
 $pdf->Ln(7);
 
+$pdf ->SetTextColor(0, 0, 0);
+$pdf ->SetFont('dejavusans', '', 10, '', true);
 $pdf->SetFillColor(162, 191, 220);
 $pdf->Cell(20,5,'מס', 1,0,'C',1);
 $pdf->Cell(80,5,'תיאור חריגה', 1,0,'C',1);
@@ -155,7 +158,7 @@ $pdf->Cell(30,5,'מחיר', 1,0,'C',1);
 
 
 $i = 1; //no of page start
-$max = 10; //when s1 no == 6 go to next page
+$max = 16; //when s1 no == 6 go to next page
 $total = 0;
         while ($row = mysqli_fetch_array($query))
         {
@@ -164,30 +167,35 @@ $total = 0;
 
             if (($i%$max) == 0){
             $pdf->AddPage();
-            $pdf->Ln(39); 
-            //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
-            $pdf ->SetFont('dejavusans', 'B',10);
+            $pdf->Ln(60); 
+            $pdf ->SetFont('dejavusans', 'B',12);
+            $pdf ->SetTextColor(51, 99, 148);
             $pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
-            $pdf->Ln(7);
+            $pdf->Ln(10);
+            $pdf ->SetTextColor(0, 0, 0);
+            $pdf ->SetFont('dejavusans', '', 10, '', true);
             $pdf->SetFillColor(162, 191, 220);
             $pdf->Cell(20,5,'מס', 1,0,'C',1);
             $pdf->Cell(80,5,'תיאור חריגה', 1,0,'C',1);
             $pdf->Cell(30,5,'מחיר', 1,0,'C',1);
         }
 
-        $pdf->Ln(6);
+        $pdf->Ln(10);
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->Cell(80,5, $description, 0,0,'C');
-        $pdf->Cell(30,5, $price.' ₪', 0,0,'C');
+        $totalPrice = number_format($price, 0, '.', ',');
+        $pdf->Cell(30,5, $totalPrice.' ₪', 0,0,'C');
         $i++;
         $total+=$price;
     }
     $totalTax = ($total * 0.17) + $total;
-    $pdf->Ln(25);
+    $pdf->Ln(15);
     $pdf ->SetFont('dejavusans', 'I',10);
-    $pdf->Cell(180, 8, 'סה"כ חריגים: '.$total.' ₪',0,1,'R',0);
+    $totalFormatted = number_format($total, 0, '.', ',');
+    $pdf->Cell(180, 8, 'סה"כ חריגים: '.$totalFormatted.' ₪',0,1,'R',0);
     $pdf ->SetFont('dejavusans', 'B',10);
-    $pdf->Cell(180, 8, 'כולל מע"מ: '.$totalTax.' ₪',0,1,'R',0);
+    $totalFormatted = number_format($totalTax, 0, '.', ',');
+    $pdf->Cell(180, 8, 'כולל מע"מ: '.$totalFormatted.' ₪',0,1,'R',0);
 }
 // Close and output PDF document
-$pdf->Output('example_001.pdf', 'I');
+$pdf->Output('exceptions_project.pdf', 'I');

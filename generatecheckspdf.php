@@ -26,7 +26,7 @@ class PDF extends TCPDF
 
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
        
-        $this->SetFont('dejavusansb', '', 10);
+        $this->SetFont('dejavusans', '', 12, '', true);
                 //189 is total width of A4 page, height, border, line,
         $this->MultiCell(189, 3, 'גבארין אבו רפיק', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'עבודות בנייה ושיפוצים ע.מ. 203940218', 0,'R', 0,1, '', '', true);
@@ -36,7 +36,7 @@ class PDF extends TCPDF
         $this->MultiCell(189, 3, 'ת"ד 863', 0,'R', 0,1, '', '', true);
         $this->MultiCell(189, 3, 'aborafeekjbareen@gmail.com', 0,'R', 0,1, '', '', true);
         $this->SetFont('dejavusansb', 'B', 12);
-        $this->Ln(12); //space
+        $this->Ln(22); //space
         $this->Cell(189, 3, 'רשימת ציקים',0,1,'C');
    
     }   
@@ -140,14 +140,16 @@ $pdf->SetFont('dejavusans', '', 14, '', true);
 $pdf->AddPage();
 
 
-$pdf->Ln(39); 
+$pdf->Ln(60); 
 
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
-$pdf ->SetFont('dejavusans', 'B',10);
+$pdf ->SetFont('dejavusans', 'B',11);
+$pdf ->SetTextColor(51, 99, 148);
 $pdf->MultiCell(189, 3, 'מתאריך: '.$frmDate. ' עד תאריך: '.$toDate, 0,'C', 0,1, '', '', true);
 $pdf->Ln(7);
 
-$pdf ->SetFont('dejavusans', 'B',10);
+$pdf ->SetTextColor(0, 0, 0);
+$pdf ->SetFont('dejavusans', '', 10, '', true);
 $pdf->SetFillColor(162, 191, 220);
 $pdf->Cell(20,5,'מס', 1,0,'C',1);
 $pdf->Cell(25,5,'מס ציק ', 1,0,'C',1);
@@ -156,7 +158,7 @@ $pdf->Cell(25,5,'סכום', 1,0,'C',1);
 $pdf->Cell(30,5,'תאריך פרעון', 1,0,'C',1);
 
 $i = 1; //no of page start
-$max = 12; //when s1 no == 12 go to next page
+$max = 16; //when s1 no == 12 go to next page
 $total = 0;
         while ($row = mysqli_fetch_array($query))
         {
@@ -167,9 +169,9 @@ $total = 0;
            
             if (($i%$max) == 0){
             $pdf->AddPage();
-            $pdf->Ln(39); 
+            $pdf->Ln(60); 
             //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
-            $pdf ->SetFont('dejavusans', 'B',10);
+            $pdf ->SetFont('dejavusans', '', 10, '', true);
             //$pdf->MultiCell(189, 3, ''.$projectName.' ', 0,'C', 0,1, '', '', true);
             $pdf->Ln(7);
             $pdf->SetFillColor(162, 191, 220);
@@ -180,18 +182,21 @@ $total = 0;
             $pdf->Cell(30,5,'תאריך פרעון', 1,0,'C',1);
         }
 
-        $pdf->Ln(15);
+        $pdf->Ln(10);
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->MultiCell(25,5, $checkId, 0,'C', 0,0, '', '', true);
         $pdf->Cell(30,5, $forName, 0,0,'C');
-        $pdf->Cell(25,5, $price, 0,0,'C');
+        $totalFormatted = number_format($price, 0, '.', ',');
+        $pdf->Cell(25,5, $totalFormatted, 0,0,'C');
         $pdf->Cell(30,5, $checkDate, 0,0,'C');
         $i++;
         $total+=$price;
     }
     $pdf->Ln(20);
     $pdf ->SetFont('dejavusans', 'B',10);
-    $pdf->Cell(180, 8, 'סה"כ סכום : '.$total.'₪',0,1,'R',0);
+    $totalFormatted = number_format($total, 0, '.', ',');
+  
+    $pdf->Cell(180, 8, 'סה"כ סכום : '.$totalFormatted.'₪',0,1,'R',0);
     $pdf->Ln(25);
    
 }
