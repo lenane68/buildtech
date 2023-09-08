@@ -45,6 +45,14 @@
   .modal-header {
     position: relative;
   }
+
+
+    /* Add CSS styles for the link */
+    .getAll {
+        cursor: pointer;
+    }
+
+
   </style>
 </head>
 
@@ -102,27 +110,38 @@
                     <h5 class="modal-title" id="exampleModalLabel">עריכת חשבון בנק</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="updateBank">
+                <form id="updateBank" >
                     <div class="modal-body">
 
                         <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
                         <div class="mb-3">
                         <label for="">מספר חשבון</label>
-                        <input type="text" name="accountNumber" id="accountNumber" class="form-control" >
+                        <input type="number" name="accountNumber" id="accountNumber" class="form-control" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="">מספר סניף</label>
-                            <input type="text" name="branch" id="branch" class="form-control" />
+                            <input type="number" name="branch" id="branch" class="form-control" required/>
                         </div>
                         <div class="mb-3">
                             <label for="">בנק</label>
-                            <input type="text" name="bank" id="bank" class="form-control" />
+                            <select class="form-select" name="bank" id="bank" aria-label="Floating label select example" required>
+                                <option>בנק דיסקונט לישראל בע"מ</option>
+                                <option>בנק הפועלים בע"מ</option>
+                                <option>בנק "יהב" לעובדי המדינה בע"מ</option>
+                                <option>בנק ירושלים בע"מ</option>
+                                <option>בנק לאומי לישראל בע"מ</option>
+                                <option>וואן זירו הבנק הדיגיטלי בע"מ</option>
+                                <option>בנק מזרחי טפחות בע"מ</option>
+                                <option>בנק מסד בע"מ</option>
+                                <option>בנק מרכנתיל דיסקונט בע"מ</option>
+                                <option>הבנק הבינלאומי הראשון לישראל בע"מ</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="">בבעלות</label>
-                            <input type="text" name="owner" id="owner" class="form-control" />
+                            <input type="text" name="owner" id="owner" class="form-control" required/>
                         </div>
                         <div class="mb-3">
                             <label for="">מספר זהב</label>
@@ -158,20 +177,31 @@
 
                         <div class="mb-3">
                         <label for="">מספר חשבון</label>
-                        <input type="text" name="accountNumber" id="accountNumber" class="form-control" >
+                        <input type="number" name="accountNumber" id="accountNumber" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="">מספר סניף</label>
-                            <input type="text" name="branch" id="branch" class="form-control" />
+                            <input type="number" name="branch" id="branch" class="form-control" required/>
                         </div>
                         <div class="mb-3">
                             <label for="">בנק</label>
-                            <input type="text" name="bank" id="bank" class="form-control" />
+                            <select class="form-select" name="bank" id="bank" aria-label="Floating label select example" required>
+                                <option>בנק דיסקונט לישראל בע"מ</option>
+                                <option>בנק הפועלים בע"מ</option>
+                                <option>בנק "יהב" לעובדי המדינה בע"מ</option>
+                                <option>בנק ירושלים בע"מ</option>
+                                <option>בנק לאומי לישראל בע"מ</option>
+                                <option>וואן זירו הבנק הדיגיטלי בע"מ</option>
+                                <option>בנק מזרחי טפחות בע"מ</option>
+                                <option>בנק מסד בע"מ</option>
+                                <option>בנק מרכנתיל דיסקונט בע"מ</option>
+                                <option>הבנק הבינלאומי הראשון לישראל בע"מ</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="">בבעלות</label>
-                            <input type="text" name="owner" id="owner" class="form-control" />
+                            <input type="text" name="owner" id="owner" class="form-control" required/>
                         </div>
                         <div class="mb-3">
                             <label for="">מספר זהב</label>
@@ -191,6 +221,182 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- View incomes and expenses Modal -->
+     <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" dir="rtl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ריכוז הכנסות והוצאות</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="get" action="generateEconomicpdf.php" target="_blank">
+                    <div class="modal-body">
+
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+                        
+                        <div class="mb-3">
+                        <label for="">ריכוז עבור:</label>
+                        <select class="form-select" id="type" name="type" aria-label="Floating label select example" required> 
+                            <option >הכנסות</option>
+                            <option >הוצאות</option>
+                           
+                        </select>
+                        </div>
+
+                        <div class="mb-3">
+                        <label for="">מתאריך</label>
+                        <input type="date" name="fromDate" id="fromDate" class="form-control" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">עד תאריך</label>
+                            <input type="date" name="toDate" id="toDate" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary" name="pdf_report_generate">אישור</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add income Modal -->
+        <div class="modal fade" id="incomeAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" dir="rtl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">הוספת הכנסה</h5>
+                        <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="addIncome">
+                        <div class="modal-body">
+                            <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                            <div class="mb-3">
+                                <label for="">עבור</label>
+                                <textarea type="text" name="details" id="details" class="form-control" required></textarea> <!-- Add closing tag here -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">סכום</label>
+                                <input type="number" name="price" id="price" class="form-control" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">תאריך</label>
+                                <input type="date" name="date" id="date" class="form-control" required /> <!-- Changed id to "date" -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">קטגוריה</label>
+                                <select class="form-select" name="category" id="category" aria-label="Floating label select example" required>
+                                    <option>פרויקטים</option>
+                                    <option>רכבים</option>
+                                    <option>ספקים</option>
+                                    <option>עובדים</option>
+                                    <option>קבלני משני</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                            <label for="" >פרויקט</label>
+                                <select class="form-select" id="projectId" name="projectId" aria-label="Floating label select example">
+                                    <option value="-1" selected >בחר/י</option>
+                                    <?php
+                                    $conn = require __DIR__ . "/database.php";
+                                    $projectQuery = "SELECT * FROM project";
+                                    $projectResult = mysqli_query($conn, $projectQuery);
+
+                                    if ($projectResult && mysqli_num_rows($projectResult) > 0) {
+                                        while ($row = mysqli_fetch_assoc($projectResult)) {
+                                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                            <button type="submit" class="btn btn-primary">הוסף הכנסה</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- Add expense Modal -->
+         <div class="modal fade" id="expenseAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" dir="rtl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">הוספת הוצאה</h5>
+                        <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="addExpense">
+                        <div class="modal-body">
+                            <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                            <div class="mb-3">
+                                <label for="">עבור</label>
+                                <textarea type="text" name="details" id="details" class="form-control" required></textarea> <!-- Add closing tag here -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">סכום</label>
+                                <input type="number" name="price" id="price" class="form-control" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">תאריך</label>
+                                <input type="date" name="date" id="date" class="form-control" required /> <!-- Changed id to "date" -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="">קטגוריה</label>
+                                <select class="form-select" name="category" id="category" aria-label="Floating label select example" required>
+                                    <option>פרויקטים</option>
+                                    <option>רכבים</option>
+                                    <option>ספקים</option>
+                                    <option>עובדים</option>
+                                    <option>קבלני משני</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                            <label for="" >פרויקט</label>
+                                <select class="form-select" id="projectId" name="projectId" aria-label="Floating label select example">
+                                    <option value="-1" selected >בחר/י</option>
+                                    <?php
+                                    $conn = require __DIR__ . "/database.php";
+                                    $projectQuery = "SELECT * FROM project";
+                                    $projectResult = mysqli_query($conn, $projectQuery);
+
+                                    if ($projectResult && mysqli_num_rows($projectResult) > 0) {
+                                        while ($row = mysqli_fetch_assoc($projectResult)) {
+                                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                            <button type="submit" class="btn btn-primary">הוסף הוצאה</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
@@ -431,8 +637,8 @@
                     </div>
                     <div class="bg-light text-center rounded p-4">
     <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-        <h6 class="mb-0" style="color: #DE9670; font-weight: bold; font-size: 19px;">ריכוז הכנסות והוצאות</h6>
-        <a href="">הצג הכל</a>
+        <h6 class="mb-0" style="color: #DE9670; font-weight: bold; font-size: 19px;">ריכוז הכנסות והוצאות מאז חודש</h6>
+        <a  class="getAll">הצג הכל</a>
     </div>
     <div class="table-responsive" dir="rtl">
     <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
@@ -452,13 +658,16 @@
             <?php
             $conn = require __DIR__ . "/database.php";
 
-            // Fetch data from the income table
-            $incomeQuery = "SELECT * FROM income ORDER BY date DESC";
-            $incomeResult = mysqli_query($conn, $incomeQuery);
+            // Calculate the date for one month ago from today
+        $oneMonthAgo = date('Y-m-d', strtotime('-1 month'));
 
-            // Fetch data from the expense table
-            $expenseQuery = "SELECT * FROM expense ORDER BY date DESC";
-            $expenseResult = mysqli_query($conn, $expenseQuery);
+        // Fetch data from the income table for the last month until today
+        $incomeQuery = "SELECT * FROM income WHERE date >= '$oneMonthAgo' AND date <= CURDATE() ORDER BY date DESC";
+        $incomeResult = mysqli_query($conn, $incomeQuery);
+
+        // Fetch data from the expense table for the last month until today
+        $expenseQuery = "SELECT * FROM expense WHERE date >= '$oneMonthAgo' AND date <= CURDATE() ORDER BY date DESC";
+        $expenseResult = mysqli_query($conn, $expenseQuery);
 
             // Loop through the income records
             while ($income = mysqli_fetch_assoc($incomeResult)) {
@@ -504,11 +713,11 @@
 </div>
 <div class="col-sm-12 col-xl-6">
     <div class="bg-light rounded h-100 p-4 d-flex justify-content-center align-items-center position-relative">
-        <button class="btn btn-primary btn-lg px-4 py-3 mx-2" type="button">
+        <button class="addIncome btn btn-primary btn-lg px-4 py-3 mx-2" type="button">
             <span class="button-label">הכנסה</span>
             <i class="fas fa-arrow-up"></i>
         </button>
-        <button class="btn btn-danger btn-lg px-4 py-3 mx-2" type="button">
+        <button class="addExpense btn btn-danger btn-lg px-4 py-3 mx-2" type="button">
             <span class="button-label">הוצאה</span>
             <i class="fas fa-arrow-down"></i>
         </button>
@@ -529,9 +738,9 @@
                                 <table class="table" dir="rtl" id="myTable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">בעל</th>
                                             <th scope="col">מס'</th>
-                                            <th scope="col">סניף</th>
-                                            <th scope="col">בנק</th>
+                                            
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
@@ -539,7 +748,7 @@
                                     <?php 
 
                                     $conn = require __DIR__ . "/database.php";
-                                    $query = "SELECT * FROM bankaccount";
+                                    $query = "SELECT * FROM bankaccount ORDER BY owner";
 
                                     $query_run = mysqli_query($conn, $query);
 
@@ -551,10 +760,10 @@
 
                                         ?>
                                     <tr>
-                                    
+                                    <td><?= $bank["owner"] ?></td>
                                     <td><?= $bank["accountNumber"] ?></td>
-                                    <td><?= $bank["branchNumber"] ?></td>
-                                    <td><?= $bank["bankName"] ?></td>
+                                    
+                                    
                                     <td>
                                             <button type="button" value="<?=$bank['accountNumber'];?>" class="viewBankBtn btn btn-info btn-sm">הצג</button>
                                             <button type="button" value="<?=$bank['accountNumber'];?>" class="editBankBtn btn btn-success btn-sm">עדכון</button>
@@ -705,6 +914,7 @@
                 }
             }
          });
+        });
 
          $(document).on('click', '.deleteBankBtn', function (e) {
             e.preventDefault();
@@ -735,12 +945,12 @@
                 });
             }
         });
-    });
+    
 
-    $(document).on('click', '.addAccount', function () {
-            
-            //alert(projectid);
-            $('#bankAddModal').modal('show');
+        $(document).on('click', '.addAccount', function () {
+                
+                //alert(projectid);
+                $('#bankAddModal').modal('show');
         });
 
         $(document).on('submit', '#addBank', function (e) {
@@ -782,6 +992,107 @@
             });
 
         });
+
+        $(document).on('click', '.getAll', function () {
+            
+            $('#reportModal').modal('show');
+        });
+
+        $(document).on('click', '.addIncome', function () {
+            
+            //alert(projectid);
+            $('#incomeAddModal').modal('show');
+        });
+
+        $(document).on('submit', '#addIncome', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("add_income", true);
+
+            $.ajax({
+                type: "POST",
+                url: "addIncome.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#incomeAddModal').modal('hide');
+                        $('#addIncome')[0].reset();
+
+                        //$('#myTable').load(location.href + " #myTable");
+
+                        
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+
+        $(document).on('click', '.addExpense', function () {
+            
+            //alert(projectid);
+            $('#expenseAddModal').modal('show');
+        });
+
+        $(document).on('submit', '#addExpense', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("add_expense", true);
+
+            $.ajax({
+                type: "POST",
+                url: "addExpense.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                        $('#expenseAddModal').modal('hide');
+                        $('#addExpense')[0].reset();
+
+                        //$('#myTable').load(location.href + " #myTable");
+
+                        
+                    }else if(res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+
+      
+
+        
        
         </script>
         <script>
@@ -815,7 +1126,7 @@
         document.body.removeChild(textarea);
 
         // Provide visual feedback or notify the user that the data has been copied
-        alert('Data copied!');
+        alert('פרטי החשבון הועתקו בהצלחה!');
         });
         </script>
 

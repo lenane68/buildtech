@@ -46,7 +46,7 @@ if(isset($_POST['update_bank']))
     $gold = mysqli_real_escape_string($conn, $_POST['gold']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
    
-    if($accountNumber == NULL || $branch == NULL || $bank == NULL || $owner == NULL || $gold == NULL || $address == NULL)
+    if($accountNumber == NULL || $branch == NULL || $bank == NULL || $owner == NULL )
     {
         $res = [
             'status' => 422,
