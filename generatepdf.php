@@ -7,7 +7,7 @@ $conn = require __DIR__ . "/database.php";
 if(isset($_GET['pdf_report_generate'])) {
     $projectName = $_GET['projectName'];
 
-    $select = "SELECT * FROM exception WHERE projectName = '$projectName'";
+    $select = "SELECT * FROM exception WHERE projectName = '$projectName' ORDER BY ";
     $query = mysqli_query($conn, $select);
    
    

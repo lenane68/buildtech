@@ -10,7 +10,7 @@ if(isset($_GET['pdf_report_generate'])) {
     $fromDate = $_GET['frmDate'];
 
 
-    $select = "SELECT * FROM shift WHERE employeeName = '$employeeName' AND workDate >= '$fromDate'";
+    $select = "SELECT * FROM shift WHERE employeeName = '$employeeName' AND workDate >= '$fromDate' ORDER BY workDate";
     $query = mysqli_query($conn, $select);
    
    
@@ -146,7 +146,8 @@ $pdf->Ln(60);
 
 $pdf ->SetFont('dejavusans', 'B',11);
 $pdf ->SetTextColor(51, 99, 148);
-$pdf->MultiCell(189, 3, 'ימי עבודה מתאריך: '.$fromDate. '  של: '.$employeeName, 0,'C', 0,1, '', '', true);
+$formattedDate = date('d/m/Y', strtotime($fromDate));  
+$pdf->MultiCell(189, 3, 'ימי עבודה מתאריך: '.$formattedDate. '  של: '.$employeeName, 0,'C', 0,1, '', '', true);
 
 $pdf->Ln(7);
 
@@ -194,7 +195,8 @@ $totalOnAccount = 0;
 
         $pdf->Ln(10);
         $pdf->Cell(20,5, $i, 0,0,'C');
-        $pdf->MultiCell(25,5, $workDate, 0,'C', 0,0, '', '', true);
+        $formattedDate = date('d/m/Y', strtotime($workDate));
+        $pdf->MultiCell(25,5, $formattedDate, 0,'C', 0,0, '', '', true);
         $pdf->Cell(20,5, $dayType, 0,0,'C');
         $pdf->Cell(30,5, $hours, 0,0,'C');
         // Concatenate the shekel icon with the salary value

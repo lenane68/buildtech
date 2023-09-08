@@ -6,7 +6,7 @@ $conn = require __DIR__ . "/database.php";
 
 if(isset($_GET['pdf_report_generate'])) {
 
-    $select = "SELECT * FROM car";
+    $select = "SELECT * FROM car ORDER BY type";
     $query = mysqli_query($conn, $select);
    
    
@@ -193,9 +193,14 @@ $total = 0;
         $pdf->MultiCell(25,5, $type, 0,'C', 0,0, '', '', true);
         $pdf->Cell(20,5, $year, 0,0,'C');
         $pdf->Cell(15,5, $color, 0,0,'C');
-        $pdf->Cell(30,5, $testDate, 0,0,'C');
-        $pdf->Cell(30,5, $insuranceDate, 0,0,'C');
-        $pdf->Cell(30,5, $careDate, 0,0,'C');
+        
+        $formattedDate = date('d/m/Y', strtotime($testDate));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
+        $formattedDate = date('d/m/Y', strtotime($insuranceDate));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
+        $formattedDate = date('d/m/Y', strtotime($careDate));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
+        
         $pdf->Cell(20,5, $fuelType, 0,0,'C');
         $i++;
     }

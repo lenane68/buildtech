@@ -6,7 +6,7 @@ $conn = require __DIR__ . "/database.php";
 
 if(isset($_GET['pdf_report_generate'])) {
 
-    $select = "SELECT * FROM employee";
+    $select = "SELECT * FROM employee ORDER BY fullName";
     $query = mysqli_query($conn, $select);
    
    
@@ -184,7 +184,8 @@ $total = 0;
         $pdf->Cell(20,5, $i, 0,0,'C');
         $pdf->MultiCell(25,5, $name, 0,'C', 0,0, '', '', true);
         $pdf->Cell(20,5, $job, 0,0,'C');
-        $pdf->Cell(30,5, $start, 0,0,'C');
+        $formattedDate = date('d/m/Y', strtotime($start));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
         // Concatenate the shekel icon with the salary value
         $salaryWithIcon = "₪ " . $salary;
         $pdf->Cell(30,5, $salaryWithIcon, 0,0,'C');

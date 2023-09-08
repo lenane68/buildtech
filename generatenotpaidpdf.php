@@ -7,7 +7,7 @@ $conn = require __DIR__ . "/database.php";
 if(isset($_GET['pdf_report_generate'])) {
     $frmDate =  $_GET['fromDate'];
 
-    $select = "SELECT * FROM report WHERE reportDate >= '$frmDate' AND paid = '0'";
+    $select = "SELECT * FROM report WHERE reportDate >= '$frmDate' AND paid = '0' ORDER BY reportDate";
     $query = mysqli_query($conn, $select);
    
    
@@ -144,7 +144,8 @@ $pdf->Ln(60);
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
 $pdf ->SetFont('dejavusans', 'B',10);
 $pdf ->SetTextColor(51, 99, 148);
-$pdf->MultiCell(189, 3, 'מתאריך: '.$frmDate.' ', 0,'C', 0,1, '', '', true);
+$formattedDate = date('d/m/Y', strtotime($frmDate));
+$pdf->MultiCell(189, 3, 'מתאריך: '.$formattedDate.' ', 0,'C', 0,1, '', '', true);
 $pdf->Ln(10);
 
 $pdf ->SetTextColor(0, 0, 0);
@@ -188,7 +189,8 @@ $total = 0;
         $pdf->Cell(30,5, $carNumber, 0,0,'C');
         $priceFormatted = number_format($price, 0, '.', ',');
         $pdf->Cell(25,5, $priceFormatted, 0,0,'C');
-        $pdf->Cell(30,5, $reportDate, 0,0,'C');
+        $formattedDate = date('d/m/Y', strtotime($reportDate));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
         $pdf->Cell(30,5, $notes, 0,0,'C');
         $i++;
         $total+=$price;

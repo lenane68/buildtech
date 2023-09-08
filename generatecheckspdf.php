@@ -8,7 +8,7 @@ if(isset($_GET['pdf_report_generate'])) {
     $frmDate =  $_GET['frmDate'];
     $toDate =  $_GET['toDate'];
 
-    $select = "SELECT * FROM checks WHERE checkDate BETWEEN '$frmDate' AND '$toDate'";
+    $select = "SELECT * FROM checks WHERE checkDate BETWEEN '$frmDate' AND '$toDate' ORDER BY checkDate";
     $query = mysqli_query($conn, $select);
    
    
@@ -145,7 +145,10 @@ $pdf->Ln(60);
 //$this->MultiCell(189, 15, 'הערה: דו"ח זה תקף למועד הפקתו בתאריך '.$datetoday, 0, 'R', 0, 1, '', '', true);
 $pdf ->SetFont('dejavusans', 'B',11);
 $pdf ->SetTextColor(51, 99, 148);
-$pdf->MultiCell(189, 3, 'מתאריך: '.$frmDate. ' עד תאריך: '.$toDate, 0,'C', 0,1, '', '', true);
+$formattedDateFrom = date('d/m/Y', strtotime($frmDate));
+$formattedDateTo = date('d/m/Y', strtotime($toDate));
+       
+$pdf->MultiCell(189, 3, 'מתאריך: '.$formattedDateFrom. ' עד תאריך: '.$formattedDateTo, 0,'C', 0,1, '', '', true);
 $pdf->Ln(7);
 
 $pdf ->SetTextColor(0, 0, 0);
@@ -188,7 +191,10 @@ $total = 0;
         $pdf->Cell(30,5, $forName, 0,0,'C');
         $totalFormatted = number_format($price, 0, '.', ',');
         $pdf->Cell(25,5, $totalFormatted, 0,0,'C');
-        $pdf->Cell(30,5, $checkDate, 0,0,'C');
+        
+        $formattedDate = date('d/m/Y', strtotime($checkDate));
+        $pdf->Cell(30,5, $formattedDate, 0,0,'C');
+        
         $i++;
         $total+=$price;
     }

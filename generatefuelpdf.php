@@ -8,7 +8,7 @@ if(isset($_GET['pdf_report_generate'])) {
     $carNumber = $_GET['carNumber'];
     $fromDate = $_GET['fromDate'];
 
-    $select = "SELECT * FROM fuel WHERE carNumber = '$carNumber' AND fullDate >= '$fromDate'";
+    $select = "SELECT * FROM fuel WHERE carNumber = '$carNumber' AND fullDate >= '$fromDate' ORDER BY fullDate";
     $query = mysqli_query($conn, $select);
    
    
@@ -190,7 +190,8 @@ $totalPrice = 0;
         $pdf->Cell(30,5, $amount, 0,0,'C');
         $priceFormatted = number_format($price, 0, '.', ',');
         $pdf->Cell(30,5, $priceFormatted.' ₪', 0,0,'C');
-        $pdf->Cell(40,5, $fullDate.' ₪', 0,0,'C');
+        $formattedDate = date('d/m/Y', strtotime($fullDate));
+        $pdf->Cell(40,5, $formattedDate, 0,0,'C');
         
         $i++;
         $totalAmount+=$amount;
