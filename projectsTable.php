@@ -177,12 +177,14 @@
                                 <tr class="text-white text-center" style="background-color: #2FA6D6;">
 
                                     <th scope="col">שם פרויקט</th>
+                                    <th scope="col">סוג</th>
                                     <th scope="col">תאריך התחלה</th>
                                     <th scope="col">לקוח</th>
                                     <th scope="col">כתובת</th>
                                     <th scope="col">אחוז סיום</th>
                                     <th scope="col">נשאר לתשלום</th>
                                     <th scope="col">הצגה</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -229,6 +231,7 @@
                                 <tr class="text-center" style="color: black">
                                     <form action="project.php" method="post" target="">
                                     <td> <?= $project["name"] ?> </td>
+                                    <td> <?= $project["type"] ?> </td>
                                     <td> <?= date('d.m.Y', strtotime($project["startDate"])) ?></td>
                                     <td><?= $project["clientName"] ?> </td>
                                     <td><?= $project["address"] ?> </td>
@@ -236,8 +239,13 @@
                                     <td><?= number_format($still) ?>₪</td>
                                     <input type="hidden" name="id" id="id" value="<?=$project['id'];?>" ></input>
                                     <td><button type="submit" value="" class="btn btn-sm btn-primary border-0" name="project_generate" style="background-color:#6D7C78 ">הצג</button></td>
-    
-                                   </form>
+                                    
+                                </form>
+                                <td>
+                                    <button value="" class="btn btn-sm btn-danger border-0" name="project_delete" onclick="deleteProject(this)" data-project-id="<?= $project['id']; ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    </td> 
                                 </tr>
                                 <?php
                                    }
@@ -288,6 +296,38 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+        function deleteProject(button) {
+            // Get the project ID from the data attribute
+            var projectId = button.getAttribute("data-project-id");
+
+            // Confirm with the user before proceeding
+            if (confirm("האם אתה בטוח שברצונך למחוק הפרויקט הזה?")) {
+                // Send an AJAX request to delete the project
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "delete_project.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Check the response from delete_project.php
+                        if (xhr.responseText == "success") {
+                            // Project deleted successfully, you can handle this as needed
+                            // For example, remove the row from the table
+                            
+                           
+                            var row = button.closest("tr");
+                            row.remove();
+                        } else {
+                            // Handle errors if necessary
+                            alert("Error: " + xhr.responseText);
+                        }
+                    }
+                };
+                xhr.send("project_id=" + projectId);
+            }
+        }
+        </script>
 </body>
 
 </html>

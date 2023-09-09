@@ -133,7 +133,7 @@ $jsonChartData = json_encode($chartData);
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&libraries=places"></script>
 
-
+   
     
  
     <style> 
@@ -249,7 +249,7 @@ $jsonChartData = json_encode($chartData);
                    
                     <div class="mb-3">
                         <label for="projectsPercent">אחוז מהפרויקט</label>
-                        <input type="text" name="projectsPercent" id="projectsPercent" class="form-control" />
+                        <input type="number" name="projectsPercent" id="projectsPercent" class="form-control" />
                     </div>
                     <div class="mb-3">
                         <label for="description">תיאור</label>
@@ -269,7 +269,7 @@ $jsonChartData = json_encode($chartData);
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">דיווח על תשלום</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">עדכון סטטוס תשלום</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="insertPayment">
@@ -278,26 +278,26 @@ $jsonChartData = json_encode($chartData);
                         <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
                         <input type="hidden" name="projectid" id="projectid" >
-
-                        <label for="">הסכום</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">₪</span>
-                            <input type="text" name="price" id="price" class="form-control" />
+                        <input type="hidden" name="projectstepid" id="projectstepid" >
+                       
+                        <div class="mb-3">
+                        <label for="finish"> סטטוס התשלום</label>
+                        <select class="form-control" id="payment" name="payment">
+                            <option >שולם</option>
+                            <option >שולם חלקי</option>
+                            <option >לא שולם</option>
+                        </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="">עבור % מהשלב</label>
-                            <input type="text" name="details" id="details" class="form-control" ></input>
+                            <label for="">אחוז שולם מהשלב</label>
+                            <input type="number" name="paymentPercent" id="paymentPercent" class="form-control" ></input>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="">תאריך התשלום</label>
-                            <input type="date" name="paymentDate" id="paymentDate" class="form-control" />
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
-                        <button type="submit" class="btn btn-primary">דיווח</button>
+                        <button type="submit" class="btn btn-primary">עדכון</button>
                     </div>
                 </form>
                 </div>
@@ -440,7 +440,7 @@ $jsonChartData = json_encode($chartData);
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
-                        <form action="updateproject.php" method="get">
+                        <form id="updateProject">
                             <button type="submit" name="submit" class="btn btn-primary border-0" style="float: left; background-color: rgba(54, 162, 235, 1);"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
                             <h6 class="mb-4" id="name" style="color: black; font-size: 20px;"></h6>
 
@@ -456,27 +456,27 @@ $jsonChartData = json_encode($chartData);
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">שם הפרויקט</label>
-                                    <input type="text" class="form-control" id="projectName" name="projectName"style="font-weight: bold; color: black;"
+                                    <input type="text" class="form-control" id="projectName" name="projectName"style="font-weight: bold; color: black;" readonly
                                     > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">המזמין </label>
-                                    <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;"
+                                    <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;" require
                                      > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">כתובת </label>
-                                    <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;"
+                                    <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;" require
                                     > 
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך התחלת הפרויקט</label>
-                                    <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;"
+                                    <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;" require
                                 >
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך סיום משוערך</label>
-                                    <input type="date" class="form-control" id="endDate" name="endDate" style="font-weight: bold; color: black;"
+                                    <input type="date" class="form-control" id="endDate" name="endDate" style="font-weight: bold; color: black;" require
                                 >
                                 </div>
                                 
@@ -519,8 +519,8 @@ $jsonChartData = json_encode($chartData);
     <br>
 
 
-        <div class="table-container">
-            <table class="table">
+        <div class="table-container" id="myTable">
+            <table class="table" >
                 <thead>
                     <tr style="background-color: #95A29F;" class="text-white text-center">
                         <th scope="col">#</th>
@@ -530,7 +530,7 @@ $jsonChartData = json_encode($chartData);
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     <?php
                     $i = 1;
                     $conn = require __DIR__ . "/database.php";
@@ -547,7 +547,7 @@ $jsonChartData = json_encode($chartData);
                                 <td><?= $projectstep["payment"] ?></td>
                                 <td>
                                     <div class="button-container">
-                                        <button type="button" value="<?= $id ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button>
+                                        <button type="button" value="<?= $projectstep["id"] ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button>
                                         <button type="button" value="<?= $projectstep["id"] ?>" class="deleteStepBtn btn btn-danger border-0" style="background-color: red;"><i class="fas fa-trash"></i></button>
                                         <button type="button" value="<?= $projectstep["id"] ?>" class="updateStepBtn btn btn-success border-0" style="background-color: green;"><i class="fas fa-edit"></i></button>
    
@@ -664,6 +664,8 @@ $jsonChartData = json_encode($chartData);
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
@@ -697,8 +699,30 @@ $jsonChartData = json_encode($chartData);
         $(document).on('click', '.insertPaymentBtn', function () {
             
             var projectid = $(this).val();
-            //alert(projectid);
-            $('#paymentModal').modal('show');
+
+            $('#projectstepid').val(projectid); 
+            
+            $.ajax({
+                type: "GET",
+                url: "insertPayment.php?projectid=" + projectid,
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 404) {
+
+                        alert(res.message);
+                    }else if(res.status == 200){
+                        
+                    
+
+                    $('#payment').val(res.data.payment);
+                    $('#paymentPercent').val(res.data.paymentPercent);
+                    
+                  
+                    $('#paymentModal').modal('show');
+                    
+                    }
+                }
+            });
         });
 
         $(document).on('submit', '#insertPayment', function (e) {
@@ -729,6 +753,11 @@ $jsonChartData = json_encode($chartData);
                         
                         $('#paymentModal').modal('hide');
                         $('#insertPayment')[0].reset();
+
+                        setTimeout(function() {
+                            refreshPage();
+                        }, 2000); // 2000 milliseconds = 2 seconds
+                        //$('#myTable').load(location.href + " #myTable");
 
                         
                     }else if(res.status == 500) {
@@ -772,8 +801,11 @@ $jsonChartData = json_encode($chartData);
                         $('#stepAddModal').modal('hide');
                         $('#addStep')[0].reset();
 
-
-                        
+                        //$('#myTable').load(location.href + " #myTable");
+                        // Wait for 2 seconds before refreshing the page
+                        setTimeout(function() {
+                            refreshPage();
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     }else if(res.status == 500) {
                         alert(res.message);
                     }
@@ -794,6 +826,10 @@ $jsonChartData = json_encode($chartData);
                     if (res.status == 200) {
                         alertify.success(res.message);
                         
+                        //$('#myTable').load(location.href + " #myTable");
+                        setTimeout(function() {
+                            refreshPage();
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     } else {
                         alertify.error(res.message);
                     }
@@ -808,7 +844,7 @@ $jsonChartData = json_encode($chartData);
             // Populate the modal form fields with stepId data or perform any additional actions
 
            $('#updateStepId').val(stepId); // Assuming you have an input field with ID "updateStepId"
-            
+           
            
             // Get the current status value
             $.ajax({
@@ -825,9 +861,7 @@ $jsonChartData = json_encode($chartData);
 
         $('#updateStepForm').submit(function(event) {
         event.preventDefault(); // Prevent form from submitting normally
-        
         var formData = $(this).serialize(); // Serialize the form data
-        
         $.ajax({
             type: 'POST',
             url: 'updateFinishStatus.php', // Replace with the actual PHP file's URL
@@ -841,6 +875,12 @@ $jsonChartData = json_encode($chartData);
                     // Close the modal
                     $('#updateStepModal').modal('hide');
                     alertify.success(res.message);
+
+                    setTimeout(function() {
+                            refreshPage();
+                        }, 2000); // 2000 milliseconds = 2 seconds
+                    //$('#myTable').load(location.href + " #myTable");
+
                 } else {
                     // Handle error case
                     console.log(res.message);
@@ -861,7 +901,14 @@ $jsonChartData = json_encode($chartData);
                 success: function(response) {
                     if (response.success) {
                         // Optional: Update UI to reflect the deletion
-                        refreshPage(); // Refresh the page after successful deletion
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success("הקובץ נמחק בהצלחה");
+
+                        setTimeout(function() {
+                            refreshPage();
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     } else {
                         alert('שגיאה במחיקת הקובץ');
                     }
@@ -870,8 +917,8 @@ $jsonChartData = json_encode($chartData);
                     alert('שגיאה במחיקת הקובץ .');
                 }
             });
+            }
         }
-    }
 
     function refreshPage() {
         window.location.reload();
@@ -895,7 +942,14 @@ $jsonChartData = json_encode($chartData);
         .then(data => {
             // Handle the JSON response data here
             console.log(data);
-            refreshPage();
+            $('#errorMessageUpdate').addClass('d-none');
+
+            alertify.set('notifier','position', 'top-right');
+            alertify.success("הקובץ הועלה בהצלחה");
+
+            setTimeout(function() {
+                refreshPage();
+            }, 2000); // 2000 milliseconds = 2 seconds
         })
         .catch(error => {
             console.error('Error:', error);
@@ -944,6 +998,51 @@ $jsonChartData = json_encode($chartData);
                 maintainAspectRatio: false
             }
         });
+
+        
+
+
+        $(document).on('submit', '#updateProject', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("update_project", true);
+
+            $.ajax({
+                type: "POST",
+                url: "updateproject.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    var res = jQuery.parseJSON(response);
+                    if(res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+                        alertify.error(res.message);
+                    }else if(res.status == 200){
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success(res.message);
+                        
+                       // $('#updateProject')[0].reset();
+
+                        //$('#myTable').load(location.href + " #myTable");
+
+                    }else if(res.status == 500) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+                      
+                        alertify.error(res.message);
+                    }
+                }
+            });
+
+        });
+
     </script>
 
 <script>

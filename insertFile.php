@@ -3,7 +3,7 @@ $conn = require __DIR__ . "/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["pdfFile"]) && isset($_POST["projectName"])) {
     $uploadedFile = $_FILES["pdfFile"];
-    $projectName = $_POST["projectName"]; // Get project name from the AJAX request
+    $projectName = $_POST["projectName"];
 
     // Check if the file is a PDF
     $fileExtension = strtolower(pathinfo($uploadedFile["name"], PATHINFO_EXTENSION));

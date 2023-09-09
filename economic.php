@@ -641,7 +641,7 @@
         <a  class="getAll">הצג הכל</a>
     </div>
     <div class="table-responsive" dir="rtl">
-    <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
+    <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0" id="myTable2">
         <thead>
             <tr class="text-white text-center" style="background-color: #0E2038;">
                 <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
@@ -1033,7 +1033,7 @@
                         $('#incomeAddModal').modal('hide');
                         $('#addIncome')[0].reset();
 
-                        //$('#myTable').load(location.href + " #myTable");
+                        $('#myTable2').load(location.href + " #myTable2");
 
                         
                     }else if(res.status == 500) {
@@ -1079,7 +1079,7 @@
                         $('#expenseAddModal').modal('hide');
                         $('#addExpense')[0].reset();
 
-                        //$('#myTable').load(location.href + " #myTable");
+                        $('#myTable2').load(location.href + " #myTable2");
 
                         
                     }else if(res.status == 500) {

@@ -2,8 +2,6 @@
 
 $conn = require __DIR__ . "/database.php";
 
-error_reporting(E_ALL);
-
 
 if(isset($_POST['insert_step']))
 {
@@ -54,7 +52,7 @@ if(isset($_POST['insert_step']))
         echo json_encode($res);
         return;
     }
-   
+    echo $execval;
     $stmt->close();
     $conn->close();
     

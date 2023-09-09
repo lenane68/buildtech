@@ -2,16 +2,18 @@
 
 $conn = require __DIR__ . "/database.php";
 
+
+
 if(isset($_POST['insert_payment']))
 {
-    $projectid = mysqli_real_escape_string($conn, $_POST['projectid']);
+    $projectstepid = $_POST['projectstepid'];
 
     
-    $price = mysqli_real_escape_string($conn, $_POST['price']);
-    $details = mysqli_real_escape_string($conn, $_POST['details']);
-    $paymentDate = mysqli_real_escape_string($conn, $_POST['paymentDate']);
+    $payment =  $_POST['payment'];
+    $paymentPercent = $_POST['paymentPercent'];
+    
    
-    if($price == NULL || $details == NULL ||  $paymentDate == NULL)
+    if($payment == NULL || $paymentPercent == NULL)
     {
         $res = [
             'status' => 422,
@@ -20,24 +22,50 @@ if(isset($_POST['insert_payment']))
         echo json_encode($res);
         return;
     }
-    $category = 'פרויקטים';
+  
 
-    $stmt2 = $conn->prepare("insert into income(price, date, details, category, projectId) values(?, ?, ?, ?, ?)");
-    $stmt2->bind_param("dsssi", $price, $paymentDate, $details, $category,  $projectid);
+    $query = "UPDATE projectstep SET payment='$payment', paymentPercent='$paymentPercent'
+    WHERE id='$projectstepid'";
+    $query_run = mysqli_query($conn, $query);
 
+        if($query_run)
+        {
+            $res = [
+            'status' => 200,
+            'message' => 'סטטוס התשלום עודכן בהצלחה'
+            ];
+            echo json_encode($res);
+            return;
+        }
+        else
+        {
+        $res = [
+            'status' => 500,
+            'message' => 'סטטוס התשלום לא עודכן'
+        ];
+        echo json_encode($res);
+        return;
+        }
 
-    $stmt = $conn->prepare("insert into payments(projectNumber, price, date, forWhat) values(?, ?, ?, ?)");
-    $stmt->bind_param("idss", $projectid, $price, $paymentDate, $details);
+    
+}
 
-    $execval2 = $stmt2->execute();
-    $execval = $stmt->execute();
- 
+if(isset($_GET['projectid']))
+{
 
-    if($execval && $execval2)
+    $projectid = mysqli_real_escape_string($conn, $_GET['projectid']);
+
+    $query = "SELECT * FROM projectstep WHERE id='$projectid'";
+    $query_run = mysqli_query($conn, $query);
+
+    if(mysqli_num_rows($query_run) == 1)
     {
+        $step = mysqli_fetch_array($query_run);
+
         $res = [
             'status' => 200,
-            'message' => ' התשלום הוקלט בהצלחה'
+            'message' => 'השלב נשלף בהצלחה דרך השם',
+            'data' => $step
         ];
         echo json_encode($res);
         return;
@@ -45,16 +73,11 @@ if(isset($_POST['insert_payment']))
     else
     {
         $res = [
-            'status' => 500,
-            'message' => 'התשלום לא הוקלט'
+            'status' => 404,
+            'message' => 'מס השלב לא נמצא'
         ];
         echo json_encode($res);
         return;
     }
-    echo $execval2;
-    echo $execval;
-    $stmt->close();
-    $stmt2->close();
-    $conn->close();
-    
+
 }
