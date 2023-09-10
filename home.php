@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
     $conn = require __DIR__ . "/database.php";
 
     $query = "SELECT * FROM project";
@@ -55,6 +58,17 @@
         }
     }
 
+    $addresses = array();
+
+    $sql = "SELECT address FROM project WHERE finishDate > now()"; // Replace with your table name
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $addresses[] = $row["address"];
+        }
+    }
+
     if(isset($_POST["submit"])){
         
         $description = $_POST['description'];
@@ -70,6 +84,10 @@
         }
         echo $execval;
         $stmt->close();
+
+        // Redirect to the same page to prevent re-submission
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
        
 
     }
@@ -89,6 +107,10 @@
         {
             die($conn->error . " " . $conn->errno);
         }
+
+        // Redirect to the same page to prevent re-submission
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
        
 
     }
@@ -271,6 +293,8 @@ $jsonChartData = json_encode($chartData);
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0" defer></script>
 
 </head>
 
@@ -455,7 +479,7 @@ $jsonChartData = json_encode($chartData);
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light text-center rounded p-4" style="height: 400px;">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a href="">הצג הכל</a>
+                    <a href=""></a>
                     <h6 class="mb-0" style="font-weight: bold; font-size: 18px;">הכנסות, הוצאות ורווח</h6>  
                 </div>
                 <canvas id="barChart" style="height: 250px; width: 100%;"></canvas>
@@ -464,7 +488,7 @@ $jsonChartData = json_encode($chartData);
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light text-center rounded p-4" style="height: 400px;">
                 <div class="d-flex align-items-center justify-content-between mb-4" style="height: 5px;">
-                    <a href="">הצג הכל</a>
+                    <a href=""></a>
                     <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הוצאה לפי קטגוריות</h6>
                 </div>
                 <canvas id="incomeChart" style="height: 100px; width: 50%;"></canvas>
@@ -492,6 +516,7 @@ $jsonChartData = json_encode($chartData);
                             <thead> 
                                 <tr class="text-white text-center" style="background-color: #2FA6D6;">
                                     <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
+                                    <th scope="col">פרויקט</th>
                                     <th scope="col">תאריך התחלה</th>
                                     <th scope="col">לקוח</th>
                                     <th scope="col">כתובת</th>
@@ -546,6 +571,7 @@ $jsonChartData = json_encode($chartData);
                                        ?>
                                 <tr class="text-center" style="color: black">
                                     <!--<td><input class="form-check-input" type="checkbox"></td>-->
+                                    <td><?= $project["name"] ?></td>
                                     <td><?= date('d.m.Y', strtotime($project["startDate"])) ?> </td>
                                     <td><?= $project["clientName"] ?></td>
                                     <td><?= $project["address"] ?></td>
@@ -564,52 +590,24 @@ $jsonChartData = json_encode($chartData);
                 </div>
             </div>
             <!-- Recent Sales End -->
-
+             
 
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-            <?php
-            // Fetch addresses from the database (Replace with your code to fetch addresses from MySQL)
-            // Query to fetch addresses from the database
-            $sql = "SELECT descr FROM data_location";
-            $result = $conn->query($sql);
-
-            // Check if there are any addresses
-            if ($result->num_rows > 0) {
-                $addresses = array();
-                
-                // Fetch addresses and add them to the array
-                while ($row = $result->fetch_assoc()) {
-                    $addresses[] = $row['descr'];
-                }
-            }
-
-            // Google Maps API key (Replace with your actual API key)
-            $apiKey = "AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0";
-
-            // Function to generate the embedded map URL with markers for all addresses
-            function generateMapUrl($addresses, $apiKey) {
-                $encodedAddresses = implode("|", array_map('rawurlencode', $addresses));
-                $mapUrl = "https://www.google.com/maps/embed/v1/search?key=$apiKey&q=$encodedAddresses";
-                return $mapUrl;
-            }
-
-            // Output the HTML with embedded map and markers
-            $mapUrl = generateMapUrl($addresses, $apiKey);
-            echo '<div class="col-sm-12 col-md-6 col-xl-4">
+                <div class="row g-4"> 
+                <div class="col-sm-12 col-md-6 col-xl-4">
                     <div class="bg-light rounded h-100 p-4">
-                        <iframe class="position-relative rounded w-100 h-100"
-                            src="' . $mapUrl . '"
-                            frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
-                            tabindex="0"></iframe>
+                            <div id="map" style="height: 400px; width: 100%;"></div> 
                     </div>
-                </div>';
-            ?>
+                </div>
+
+            
+
+            
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a href="">הצג הכל</a>
+                                <a href=""> </a>
                                 <h6 class="mb-0">לוח שנה</h6>
                             
                             </div>
@@ -619,7 +617,7 @@ $jsonChartData = json_encode($chartData);
                     <div class="col-sm-12 col-md-6 col-xl-4">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <a href="">הצג הכל</a>
+                            <a href=""></a>
                             <h6 class="mb-0">רשימת מטלות</h6>
                         </div>
 
@@ -720,7 +718,36 @@ $jsonChartData = json_encode($chartData);
         paragraph.appendChild(text);
     </script>
 
-    
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 6, // Adjust the initial zoom level as needed
+            center: new google.maps.LatLng(31.5, 34.8),// Set the initial map center
+        });
+
+        // Use PHP to generate a JavaScript array from PHP array
+        var addresses = <?php echo json_encode($addresses); ?>;
+
+        geocodeAddresses(addresses, map);
+    }
+
+    function geocodeAddresses(addresses, map) {
+        var geocoder = new google.maps.Geocoder();
+
+        for (var i = 0; i < addresses.length; i++) {
+            geocoder.geocode({ 'address': addresses[i] }, function (results, status) {
+                if (status === 'OK') {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                    });
+                } else {
+                    console.error('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    }
+</script>
     
     <script>
     // Retrieve the data from PHP variables
@@ -812,6 +839,9 @@ $jsonChartData = json_encode($chartData);
         }
     }
     </script>
+
+
+
 
 
 
