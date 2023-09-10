@@ -147,27 +147,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <span>מנהל ראשי</span>
                     </div>
                 </div>
-                <div class="navbar-nav w-100">
+                <div class="navbar-nav w-100" style="float:right;">
                     <a href="home.php" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid2.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
-                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
+                    <a href="addShift.php" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.html" class="dropdown-item active">עובד</a>
-                            <a href="addClient.html" class="dropdown-item">לקוח</a>
-                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
+                        <a href="addEmployee.php" class="dropdown-item active">עובד</a>
+                            <a href="addClient.php" class="dropdown-item">לקוח</a>
+                            <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
-                            <a href="addSupplier.html" class="dropdown-item">ספק</a>
+                            <a href="addSupplier.php" class="dropdown-item">ספק</a>
                             <a href="addVehicle.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
-                            <a href="" class="dropdown-item">צ'יק</a>
+                            <a href="addCheck.php" class="dropdown-item">צ'יק</a>
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
-                            <a href="addFuel.php" class="dropdown-item">דיווח בנזין</a>
+                            <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
                             
                         </div>
@@ -177,15 +177,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <div class="dropdown-menu bg-transparent border-0">
                         <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
-                            <a href="editMaterial.php" class="dropdown-item">חומר</a>
-                            <a href="" class="dropdown-item">פרויקט</a>
-                            <a href="" class="dropdown-item">משמרת</a>
+                            <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
+                            <a href="editShift.php" class="dropdown-item">משמרת</a>
                             <a href="editException.php" class="dropdown-item">חריגה</a>
                             <a href="editSupplier.php" class="dropdown-item">ספק</a>
                             <a href="editCar.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
-                            <a href="" class="dropdown-item">צ'יק</a>
+                            <a href="editCheck.php" class="dropdown-item">צ'יק</a>
                             <a href="editReport.php" class="dropdown-item">דו"ח תנועה</a>
-                            <a href="editFuel.php" class="dropdown-item">דיווח בנזין</a>
+                            <a href="editFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
@@ -195,6 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </nav>
         </div>
         <!-- Sidebar End -->
+
 
 
         <!-- Content Start -->
