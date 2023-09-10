@@ -115,7 +115,7 @@ session_start();
 
     }
     // Query to retrieve incomes and order by date
-    $incomeQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM income GROUP BY month ORDER BY date ASC";
+    $incomeQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM income GROUP BY month ORDER BY month ASC";
     $incomeResult = $conn->query($incomeQuery);
 
     // Check if the query was successful
@@ -136,7 +136,7 @@ session_start();
     }
 
     // Query to retrieve expenses and order by date
-    $expenseQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM expense GROUP BY month ORDER BY date ASC";
+    $expenseQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM expense GROUP BY month ORDER BY month ASC";
     $expenseResult = $conn->query($expenseQuery);
 
     // Check if the query was successful
