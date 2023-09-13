@@ -19,6 +19,10 @@ $result = $con->query($sqli);
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -73,7 +77,7 @@ $result = $con->query($sqli);
                 <div class="navbar-nav w-100" style="float:right;">
                     <a href="home.php" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid2.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link active"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.php" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
@@ -83,7 +87,7 @@ $result = $con->query($sqli);
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
-                            <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
+                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
                             <a href="addSupplier.php" class="dropdown-item">ספק</a>
@@ -100,7 +104,7 @@ $result = $con->query($sqli);
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
-                            <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
+                            <a href="editMaterial.php" class="dropdown-item">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
                             <a href="editException.php" class="dropdown-item">חריגה</a>
                             <a href="editSupplier.php" class="dropdown-item">ספק</a>
@@ -224,7 +228,7 @@ $result = $con->query($sqli);
             </div>
 
             <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4" dir="rtl">
+            <div class="container-fluid pt-4 px-4" dir="rtl" id="myInventory">
                 <h1>החומרים </h1>
                 <div class="row g-4">
                     <?php
@@ -287,6 +291,7 @@ $result = $con->query($sqli);
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
 
 
     <!-- Template Javascript -->
@@ -356,7 +361,7 @@ $result = $con->query($sqli);
                         $('#materialEditModal').modal('hide');
                         $('#updateMaterial')[0].reset();
 
-                        $('#myTable').load(location.href + " #myTable");
+                        $('#myInventory').load(location.href + " #myInventory")
 
                     } else if (res.status == 500) {
                         alert(res.message);

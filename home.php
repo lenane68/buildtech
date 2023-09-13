@@ -331,7 +331,7 @@ $jsonChartData = json_encode($chartData);
                 <div class="navbar-nav w-100" style="float:right;">
                     <a href="home.php" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid2.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.php" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
@@ -341,7 +341,7 @@ $jsonChartData = json_encode($chartData);
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
-                            <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
+                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
                             <a href="addSupplier.php" class="dropdown-item">ספק</a>
@@ -358,7 +358,7 @@ $jsonChartData = json_encode($chartData);
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
-                            <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
+                            <a href="editMaterial.php" class="dropdown-item">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
                             <a href="editException.php" class="dropdown-item">חריגה</a>
                             <a href="editSupplier.php" class="dropdown-item">ספק</a>

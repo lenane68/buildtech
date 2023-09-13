@@ -1,3 +1,8 @@
+<?php
+$conn = require __DIR__ . "/database.php";
+
+?>
+
 <!DOCTYPE html>
 <html dir="rtl">
 
@@ -162,19 +167,31 @@
             <!-- Navbar End -->
             <h6 class="mb-4">חישוב שלד</h6>
             <div class="bg-light rounded h-100 p-4">
-                <form>
-                    <label for="batonclass">1. חישוב בטון: מחיר לקוב 200 ש״ח</label>
+                <form id="bid_batoon">
+                    <label for="batonclass">1. חישוב בטון: </label>
                     <div class="form-floating mb-3" id="batonclass">
-                        <select class="form-select" id="batonSelect" aria-label="Floating label select example">
+                        <select class="form-select" id="batonSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_batoon')">
                             <option selected>בחר/י</option>
-                            <option value="1">בטון מוכן</option>
-                            <option value="2">בטון מזוין</option>
-                            <option value="3">בטון דיקורטיבי</option>
+                            <?php
+                            $sqli = "SELECT * FROM materials_bid WHERE name = 'batoon'";
+                            $result = $conn->query($sqli);
+
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                while ($row = $result->fetch_assoc()) {
+
+                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                }
+                            } else {
+                                echo "";
+                            }
+                            ?>
                         </select>
-                        <label for="batonSelect">סוג בטון</label>
+                        <label for=" batonSelect">סוג בטון</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="floatingInput" placeholder="">
+                        <!--   <input type="hidden" class="form-control" id="price_batoon" placeholder=""> -->
+                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_batoon')">
                         <label for="floatingInput">כמות קובים</label>
                     </div>
                     <div class="input-group mb-3">
@@ -184,20 +201,32 @@
                     </div>
                 </form>
 
-                <form>
-                    <label for="barzelclass">2. חישוב ברזל : מחיר לטון 999 ש״ח</label>
+                <form id="bid_barzel">
+                    <label for="barzelclass">2. חישוב ברזל:</label>
                     <div class="form-floating mb-3" id="barzelclass">
-                        <select class="form-select" id="barzelSelect" aria-label="Floating label select example">
+                        <select class="form-select" id="barzelSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_barzel')">
                             <option selected>בחר/י</option>
-                            <option value="1">ברזל 6 מ״מ</option>
-                            <option value="2">ברזל 8 מ״מ</option>
-                            <option value="3">ברזל 10 מ״מ</option>
+                            <?php
+                            $sqli2 = "SELECT * FROM materials_bid WHERE name = 'ברזל'";
+                            $result2 = $conn->query($sqli2);
+
+                            if ($result2->num_rows > 0) {
+                                // output data of each row
+                                while ($row = $result2->fetch_assoc()) {
+
+                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                }
+                            } else {
+                                echo "";
+                            }
+                            ?>
                         </select>
-                        <label for="barzelSelect">סוג ברזל</label>
+                        <label for=" barzelSelect">סוג ברזל</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">כמות טונים</label>
+                        <!-- <input type="hidden" class="form-control" id="price_barzel" placeholder=""> -->
+                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_barzel')">
+                        <label for="floatingInput">כמות יחידות</label>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
@@ -206,23 +235,32 @@
                     </div>
                 </form>
 
-                <form>
-                    <label for="blockclass">3. חישוב בלוק : מחיר לטון 29 ש״ח</label>
+                <form id="bid_block">
+                    <label for="blockclass">3. חישוב בלוק :</label>
                     <div class="form-floating mb-3" id="blockclass">
-                        <select class="form-select" id="blockSelect" aria-label="Floating label select example">
+                        <select class="form-select" id="blockSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_block')">
                             <option selected>בחר/י</option>
-                            <option value="1">בלוק אדום 22</option>
-                            <option value="2">בלוק שחור</option>
-                            <option value="3">בלוק פומיס 22</option>
-                            <option value="4">בלוק איטונג</option>
-                            <option value="5">בלוק אשבונד</option>
-                            <option value="6">בלוק תעלה</option>
+                            <?php
+                            $sqli3 = "SELECT * FROM materials_bid WHERE name = 'בלוק'";
+                            $result3 = $conn->query($sqli3);
+
+                            if ($result3->num_rows > 0) {
+                                // output data of each row
+                                while ($row = $result3->fetch_assoc()) {
+
+                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                }
+                            } else {
+                                echo "";
+                            }
+                            ?>
                         </select>
-                        <label for="blockSelect">סוג בלוק</label>
+                        <label for=" blockSelect">סוג בלוק</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">כמות מטרים</label>
+                        <!--   <input type="hidden" class="form-control" id="price_block" placeholder=""> -->
+                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_block')">
+                        <label for="floatingInput">כמות יחידות</label>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
@@ -253,6 +291,15 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+        function calculateTotalPrice(formId) {
+            var price = $("#" + formId + " select").val(); // Get selected price from dropdown
+            var quantity = $("#" + formId + " input[type='number']").val(); // Get quantity
+
+            var totalPrice = quantity * price;
+            $("#" + formId + " .input-group input[type='text']").val(totalPrice); // Set total price in the input field
+        }
+    </script>
 </body>
 
 </html>
