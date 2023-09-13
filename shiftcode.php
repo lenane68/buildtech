@@ -1,18 +1,16 @@
-<?php 
+<?php
 
 $conn = require __DIR__ . "/database.php";
 
 
-if(isset($_GET['id']))
-{
+if (isset($_GET['id'])) {
 
     $id = mysqli_real_escape_string($conn, $_GET['id']);
 
     $query = "SELECT * FROM shift WHERE id='$id'";
     $query_run = mysqli_query($conn, $query);
 
-    if(mysqli_num_rows($query_run) == 1)
-    {
+    if (mysqli_num_rows($query_run) == 1) {
         $report = mysqli_fetch_array($query_run);
 
         $res = [
@@ -22,9 +20,7 @@ if(isset($_GET['id']))
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 404,
             'message' => 'המשמרת לא נמצאת'
@@ -32,11 +28,9 @@ if(isset($_GET['id']))
         echo json_encode($res);
         return;
     }
-
 }
 
-if(isset($_POST['update_shift']))
-{
+if (isset($_POST['update_shift'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
 
     $workDate = mysqli_real_escape_string($conn, $_POST['workDate']);
@@ -44,9 +38,8 @@ if(isset($_POST['update_shift']))
     $dayType = mysqli_real_escape_string($conn, $_POST['dayType']);
     $hours = mysqli_real_escape_string($conn, $_POST['hours']);
     $onAccount = mysqli_real_escape_string($conn, $_POST['onAccount']);
-  
-    if($workDate == NULL || $employeeName == NULL || $dayType == NULL)
-    {
+
+    if ($workDate == NULL || $employeeName == NULL || $dayType == NULL) {
         $res = [
             'status' => 422,
             'message' => 'שדה חובה ריק'
@@ -67,14 +60,14 @@ if(isset($_POST['update_shift']))
         ];
         echo json_encode($res);
         return;
-    } else if(($dayType == 'רק שעות') && ($hours == null)){
+    } else if (($dayType == 'רק שעות') && ($hours == null)) {
         $res = [
             'status' => 422,
             'message' => 'צריך להזין כמה שעות עבד'
         ];
         echo json_encode($res);
         return;
-    } else if(($dayType == 'לא עבד') && ($onAccount == null)){
+    } else if (($dayType == 'לא עבד') && ($onAccount == null)) {
         $res = [
             'status' => 422,
             'message' => 'צריך להזין כמה לקח על החשבון'
@@ -87,17 +80,14 @@ if(isset($_POST['update_shift']))
                 WHERE id='$id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'המשמרת עודכנה בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'המשמרת לא עודכנה'
@@ -109,24 +99,20 @@ if(isset($_POST['update_shift']))
 
 
 
-if(isset($_POST['delete_shift']))
-{
+if (isset($_POST['delete_shift'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
 
     $query = "DELETE FROM shift WHERE id='$id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'המשמרת נמחקה בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'המשמרת לא נמחקה'
@@ -135,10 +121,3 @@ if(isset($_POST['delete_shift']))
         return;
     }
 }
-
-
-
-
-
-
-

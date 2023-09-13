@@ -2,216 +2,218 @@
 
 session_start();
 
-    $conn = require __DIR__ . "/database.php";
+$conn = require __DIR__ . "/database.php";
 
-    $query = "SELECT * FROM project";
+/* by lena*/
+
+/*$query_notify1 = "SELECT * FROM car where testDate >= (DATE(NOW()) - INTERVAL 30 DAY)";
+$query_notify2 = "SELECT * FROM checks where checkDate >= (DATE(NOW()) - INTERVAL 30 DAY)";
+
+$result_car = $conn->query($query_notify1);
+$result_checks = $conn->query($query_notify2);
+
+if ($result_car->num_rows > 0) {
+    while ($row_car = $result_car->fetch_assoc()) {
+        $stmt = $conn->prepare("insert into notification(title, full_message) values(?, ?)");
+        $full_message = "תאריך הטסט ברכב שמספרו : " . $row_car["number"] . "הוא : " . $row_car["testDate"] . "";
+        $stmt->bind_param("isis", "טסט רכב", $full_message);
+    }
+}
+//******************** */
+
+$query = "SELECT * FROM project";
+$query_run = mysqli_query($conn, $query);
+
+$total = 0;
+
+if (mysqli_num_rows($query_run) > 0) {
+    foreach ($query_run as $project) {
+        $total++;
+    }
+}
+
+$query2 = "SELECT * FROM employee WHERE Active = 1";
+$query_run2 = mysqli_query($conn, $query2);
+
+$totalEmployee = 0;
+
+if (mysqli_num_rows($query_run2) > 0) {
+    foreach ($query_run2 as $employee) {
+        $totalEmployee++;
+    }
+}
+
+$query3 = "SELECT * FROM expense WHERE MONTH(date) = MONTH(now())
+    and YEAR(date) = YEAR(now())";
+$query_run3 = mysqli_query($conn, $query3);
+
+$totalexpenses = 0;
+
+if (mysqli_num_rows($query_run3) > 0) {
+    foreach ($query_run3 as $expense) {
+        $totalexpenses += $expense["price"];
+    }
+}
+
+$query4 = "SELECT * FROM income WHERE MONTH(date) = MONTH(now())
+    and YEAR(date) = YEAR(now())";
+$query_run4 = mysqli_query($conn, $query4);
+
+$totalincomes = 0;
+
+if (mysqli_num_rows($query_run4) > 0) {
+    foreach ($query_run4 as $income) {
+        $totalincomes += $income["price"];
+    }
+}
+
+$addresses = array();
+
+$sql = "SELECT address FROM project WHERE finishDate > now()"; // Replace with your table name
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $addresses[] = $row["address"];
+    }
+}
+
+if (isset($_POST["submit"])) {
+
+    $description = $_POST['description'];
+
+    $stmt = $conn->prepare("insert into tasks(description) values(?)");
+    $stmt->bind_param("s", $description);
+
+    $execval = $stmt->execute();
+    if ($execval) {
+        echo "Adding successfully...";
+    } else {
+        die($conn->error . " " . $conn->errno);
+    }
+    echo $execval;
+    $stmt->close();
+
+    // Redirect to the same page to prevent re-submission
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
+if (isset($_POST["delete"])) {
+
+    $id = $_POST['id'];
+
+    $query = "UPDATE tasks SET done='1' WHERE id='$id'";
     $query_run = mysqli_query($conn, $query);
-                         
-    $total=0;
 
-    if(mysqli_num_rows($query_run) > 0)
-    { 
-        foreach($query_run as $project)
-        {
-            $total++;
-        }
-    }
-
-    $query2 = "SELECT * FROM employee WHERE Active = 1";
-    $query_run2 = mysqli_query($conn, $query2);
-                         
-    $totalEmployee=0;
-
-    if(mysqli_num_rows($query_run2) > 0)
-    { 
-        foreach($query_run2 as $employee)
-        {
-            $totalEmployee++;
-        }
-    }
-
-    $query3 = "SELECT * FROM expense WHERE MONTH(date) = MONTH(now())
-    and YEAR(date) = YEAR(now())";
-    $query_run3 = mysqli_query($conn, $query3);
-                         
-    $totalexpenses=0;
-
-    if(mysqli_num_rows($query_run3) > 0)
-    { 
-        foreach($query_run3 as $expense)
-        {
-            $totalexpenses+=$expense["price"];
-        }
-    }
-
-    $query4 = "SELECT * FROM income WHERE MONTH(date) = MONTH(now())
-    and YEAR(date) = YEAR(now())";
-    $query_run4 = mysqli_query($conn, $query4);
-                         
-    $totalincomes=0;
-
-    if(mysqli_num_rows($query_run4) > 0)
-    { 
-        foreach($query_run4 as $income)
-        {
-            $totalincomes+=$income["price"];
-        }
-    }
-
-    $addresses = array();
-
-    $sql = "SELECT address FROM project WHERE finishDate > now()"; // Replace with your table name
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $addresses[] = $row["address"];
-        }
-    }
-
-    if(isset($_POST["submit"])){
-        
-        $description = $_POST['description'];
-
-        $stmt = $conn->prepare("insert into tasks(description) values(?)");
-        $stmt->bind_param("s", $description);
-
-        $execval = $stmt->execute();
-        if($execval){
-            echo "Adding successfully...";
-        } else {
-            die($conn->error . " " . $conn->errno);
-        }
-        echo $execval;
-        $stmt->close();
-
-        // Redirect to the same page to prevent re-submission
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-       
-
-    }
-
-    if(isset($_POST["delete"])){
-        
-        $id = $_POST['id'];
-
-        $query = "UPDATE tasks SET done='1' WHERE id='$id'";
-        $query_run = mysqli_query($conn, $query);
-
-        if($query_run)
-        {
-            echo "Delete successfully...";
-        }
-        else
-        {
-            die($conn->error . " " . $conn->errno);
-        }
-
-        // Redirect to the same page to prevent re-submission
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-       
-
-    }
-    // Query to retrieve incomes and order by date
-    $incomeQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM income GROUP BY month ORDER BY date ASC";
-    $incomeResult = $conn->query($incomeQuery);
-
-    // Check if the query was successful
-    if ($incomeResult) {
-        // Fetch rows from the result set
-        while ($incomeRow = $incomeResult->fetch_assoc()) {
-            $incomes[] = [
-                'date' => $incomeRow['month'],
-                'price' => $incomeRow['total_price']
-            ];
-        }
-
-        // Free the result set
-        $incomeResult->free();
+    if ($query_run) {
+        echo "Delete successfully...";
     } else {
-        // Handle error
-        echo 'Error executing query: ' . $conn->error;
+        die($conn->error . " " . $conn->errno);
     }
 
-    // Query to retrieve expenses and order by date
-    $expenseQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM expense GROUP BY month ORDER BY date ASC";
-    $expenseResult = $conn->query($expenseQuery);
+    // Redirect to the same page to prevent re-submission
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+// Query to retrieve incomes and order by date
+$incomeQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM income GROUP BY month ORDER BY date ASC";
+$incomeResult = $conn->query($incomeQuery);
 
-    // Check if the query was successful
-    if ($expenseResult) {
-        // Fetch rows from the result set
-        while ($expenseRow = $expenseResult->fetch_assoc()) {
-            $expenses[] = [
-                'date' => $expenseRow['month'],
-                'price' => $expenseRow['total_price']
-            ];
-        }
+// Check if the query was successful
+if ($incomeResult) {
+    // Fetch rows from the result set
+    while ($incomeRow = $incomeResult->fetch_assoc()) {
+        $incomes[] = [
+            'date' => $incomeRow['month'],
+            'price' => $incomeRow['total_price']
+        ];
+    }
 
-        // Free the result set
-        $expenseResult->free();
+    // Free the result set
+    $incomeResult->free();
+} else {
+    // Handle error
+    echo 'Error executing query: ' . $conn->error;
+}
+
+// Query to retrieve expenses and order by date
+$expenseQuery = "SELECT SUM(price) AS total_price, DATE_FORMAT(date, '%Y-%m') AS month FROM expense GROUP BY month ORDER BY date ASC";
+$expenseResult = $conn->query($expenseQuery);
+
+// Check if the query was successful
+if ($expenseResult) {
+    // Fetch rows from the result set
+    while ($expenseRow = $expenseResult->fetch_assoc()) {
+        $expenses[] = [
+            'date' => $expenseRow['month'],
+            'price' => $expenseRow['total_price']
+        ];
+    }
+
+    // Free the result set
+    $expenseResult->free();
+} else {
+    // Handle error
+    echo 'Error executing query: ' . $conn->error;
+}
+
+
+// Prepare the data for the chart
+$chartData = [];
+
+// Iterate over the incomes array and calculate the total income for each month
+foreach ($incomes as $income) {
+    $date = date('Y-m', strtotime($income['date']));
+    $price = $income['price'];
+
+    if (!isset($chartData[$date])) {
+        $chartData[$date] = ['income' => $price, 'expense' => 0];
     } else {
-        // Handle error
-        echo 'Error executing query: ' . $conn->error;
+        $chartData[$date]['income'] += $price;
     }
+}
 
-            
-    // Prepare the data for the chart
-    $chartData = [];
-    
-    // Iterate over the incomes array and calculate the total income for each month
-    foreach ($incomes as $income) {
-        $date = date('Y-m', strtotime($income['date']));
-        $price = $income['price'];
-    
-        if (!isset($chartData[$date])) {
-            $chartData[$date] = ['income' => $price, 'expense' => 0];
-        } else {
-            $chartData[$date]['income'] += $price;
-        }
+// Iterate over the expenses array and calculate the total expense for each month
+foreach ($expenses as $expense) {
+    $date = date('Y-m', strtotime($expense['date']));
+    $price = $expense['price'];
+
+    if (!isset($chartData[$date])) {
+        $chartData[$date] = ['income' => 0, 'expense' => $price];
+    } else {
+        $chartData[$date]['expense'] += $price;
     }
-    
-    // Iterate over the expenses array and calculate the total expense for each month
-    foreach ($expenses as $expense) {
-        $date = date('Y-m', strtotime($expense['date']));
-        $price = $expense['price'];
-    
-        if (!isset($chartData[$date])) {
-            $chartData[$date] = ['income' => 0, 'expense' => $price];
-        } else {
-            $chartData[$date]['expense'] += $price;
-        }
-    }
-    
-    // Calculate the revenue for each month
-    foreach ($chartData as &$data) {
-        $data['revenue'] = $data['income'] - $data['expense'];
-    }
-    
-    // Prepare the labels and data for the chart
-    $labels = [];
-    $incomeData = [];
-    $expenseData = [];
-    $revenueData = [];
-    
-    foreach ($chartData as $date => $data) {
-        $labels[] = date('F Y', strtotime($date));
-        $incomeData[] = $data['income'];
-        $expenseData[] = $data['expense'];
-        $revenueData[] = $data['revenue'];
-    }
-    
-    // Convert the data arrays to JSON format
-    $labelsJSON = json_encode($labels);
-    $incomeDataJSON = json_encode($incomeData);
-    $expenseDataJSON = json_encode($expenseData);
-    $revenueDataJSON = json_encode($revenueData);
+}
+
+// Calculate the revenue for each month
+foreach ($chartData as &$data) {
+    $data['revenue'] = $data['income'] - $data['expense'];
+}
+
+// Prepare the labels and data for the chart
+$labels = [];
+$incomeData = [];
+$expenseData = [];
+$revenueData = [];
+
+foreach ($chartData as $date => $data) {
+    $labels[] = date('F Y', strtotime($date));
+    $incomeData[] = $data['income'];
+    $expenseData[] = $data['expense'];
+    $revenueData[] = $data['revenue'];
+}
+
+// Convert the data arrays to JSON format
+$labelsJSON = json_encode($labels);
+$incomeDataJSON = json_encode($incomeData);
+$expenseDataJSON = json_encode($expenseData);
+$revenueDataJSON = json_encode($revenueData);
 
 
-    // ...pie chart
-   // Prepare and execute the query to fetch income data from the "income" table
-  // Prepare and execute the query to fetch expense data from the "expense" table
+// ...pie chart
+// Prepare and execute the query to fetch income data from the "income" table
+// Prepare and execute the query to fetch expense data from the "expense" table
 $query = "SELECT category, SUM(price) AS total_price FROM expense GROUP BY category";
 $result = $conn->query($query);
 
@@ -225,8 +227,8 @@ while ($row = $result->fetch_assoc()) {
 $categories = [];
 $prices = [];
 $colors = [
-    
-   
+
+
     'rgba(255, 206, 86, 0.6)',
     'rgba(75, 192, 192, 0.6)',
     'rgba(255, 99, 132, 0.6)',
@@ -260,12 +262,12 @@ $jsonChartData = json_encode($chartData);
 
 ?>
 
-<?php  $conn = require __DIR__ . "/database.php";?>
+<?php $conn = require __DIR__ . "/database.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="utf-8">
     <title>BuildTech</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -279,7 +281,7 @@ $jsonChartData = json_encode($chartData);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -299,7 +301,7 @@ $jsonChartData = json_encode($chartData);
 </head>
 
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0" >
+    <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -310,8 +312,8 @@ $jsonChartData = json_encode($chartData);
 
 
         <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -337,7 +339,7 @@ $jsonChartData = json_encode($chartData);
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -348,13 +350,13 @@ $jsonChartData = json_encode($chartData);
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -367,8 +369,8 @@ $jsonChartData = json_encode($chartData);
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -410,7 +412,7 @@ $jsonChartData = json_encode($chartData);
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -474,27 +476,27 @@ $jsonChartData = json_encode($chartData);
 
             <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4 text-end">
-    <div class="row g-4">
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-light text-center rounded p-4" style="height: 400px;">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a href=""></a>
-                    <h6 class="mb-0" style="font-weight: bold; font-size: 18px;">הכנסות, הוצאות ורווח</h6>  
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light text-center rounded p-4" style="height: 400px;">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <a href=""></a>
+                                <h6 class="mb-0" style="font-weight: bold; font-size: 18px;">הכנסות, הוצאות ורווח</h6>
+                            </div>
+                            <canvas id="barChart" style="height: 250px; width: 100%;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light text-center rounded p-4" style="height: 400px;">
+                            <div class="d-flex align-items-center justify-content-between mb-4" style="height: 5px;">
+                                <a href=""></a>
+                                <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הוצאה לפי קטגוריות</h6>
+                            </div>
+                            <canvas id="incomeChart" style="height: 100px; width: 50%;"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <canvas id="barChart" style="height: 250px; width: 100%;"></canvas>
             </div>
-        </div>
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-light text-center rounded p-4" style="height: 400px;">
-                <div class="d-flex align-items-center justify-content-between mb-4" style="height: 5px;">
-                    <a href=""></a>
-                    <h6 class="mb-0" style="font-weight: bold; font-size: 17px;">התפלגות הוצאה לפי קטגוריות</h6>
-                </div>
-                <canvas id="incomeChart" style="height: 100px; width: 50%;"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -512,7 +514,7 @@ $jsonChartData = json_encode($chartData);
                     </div>
                     <div class="table-responsive">
                         <table dir="rtl" class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead> 
+                            <thead>
                                 <tr class="text-white text-center" style="background-color: #2FA6D6;">
                                     <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
                                     <th scope="col">פרויקט</th>
@@ -521,66 +523,60 @@ $jsonChartData = json_encode($chartData);
                                     <th scope="col">כתובת</th>
                                     <th scope="col">אחוז סיום</th>
                                     <th scope="col">נשאר לתשלום</th>
-                              
+
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php 
-                                 $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM project ORDER BY startDate DESC";
-
-                                 $query_run = mysqli_query($conn, $query);
-                                
-                                $i=-1;
-
-                               if(mysqli_num_rows($query_run) > 0)
-                               {
-                                   foreach($query_run as $project)
-                                   {
-                                    $query2 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' AND finish = 'נגמר'";
-                                    $query3 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' ";
-          
-                                   $query_run2 = mysqli_query($conn, $query2);
-                                   $query_run3 = mysqli_query($conn, $query3);
-
-                                   $totalPayment = 0;
-
-                                   $totalpercent = 0;
-   
-                                   if(mysqli_num_rows($query_run2) > 0)
-                                   {
-                                       foreach($query_run2 as $projectstep)
-                                       {
-                                           $totalpercent+=$projectstep["projectsPercent"];
-                                       }
-                                   }
-
-                                   if(mysqli_num_rows($query_run3) > 0)
-                                   {
-                                       foreach($query_run3 as $projectstep)
-                                       {
-                                        $totalPayment += ($projectstep["paymentPercent"] / 100) * ($projectstep["projectsPercent"] / 100) * $project["totalPrice"];
-                                       }
-                                   }
-                                   $still = $project["totalPrice"] - $totalPayment;
-                                    $i++;
-                                    if ($i == 5) {
-                                        break;
-                                      }
-                                       ?>
-                                <tr class="text-center" style="color: black">
-                                    <!--<td><input class="form-check-input" type="checkbox"></td>-->
-                                    <td><?= $project["name"] ?></td>
-                                    <td><?= date('d.m.Y', strtotime($project["startDate"])) ?> </td>
-                                    <td><?= $project["clientName"] ?></td>
-                                    <td><?= $project["address"] ?></td>
-                                    <td><?= $totalpercent ?>%</td>
-                                    <td><?= number_format($still) ?>₪</td>
-                        
-                                </tr>
                                 <?php
-                                   
-                                 }
+                                $conn = require __DIR__ . "/database.php";
+                                $query = "SELECT * FROM project ORDER BY startDate DESC";
+
+                                $query_run = mysqli_query($conn, $query);
+
+                                $i = -1;
+
+                                if (mysqli_num_rows($query_run) > 0) {
+                                    foreach ($query_run as $project) {
+                                        $query2 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' AND finish = 'נגמר'";
+                                        $query3 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' ";
+
+                                        $query_run2 = mysqli_query($conn, $query2);
+                                        $query_run3 = mysqli_query($conn, $query3);
+
+                                        $totalPayment = 0;
+
+                                        $totalpercent = 0;
+
+                                        if (mysqli_num_rows($query_run2) > 0) {
+                                            foreach ($query_run2 as $projectstep) {
+                                                $totalpercent += $projectstep["projectsPercent"];
+                                            }
+                                        }
+
+                                        if (mysqli_num_rows($query_run3) > 0) {
+                                            foreach ($query_run3 as $projectstep) {
+                                                $totalPayment += ($projectstep["paymentPercent"] / 100) * ($projectstep["projectsPercent"] / 100) * $project["totalPrice"];
+                                            }
+                                        }
+                                        $still = $project["totalPrice"] - $totalPayment;
+                                        $i++;
+                                        if ($i == 5) {
+                                            break;
+                                        }
+                                ?>
+                                        <tr class="text-center" style="color: black">
+                                            <!--<td><input class="form-check-input" type="checkbox"></td>-->
+                                            <td><?= $project["name"] ?></td>
+                                            <td><?= date('d.m.Y', strtotime($project["startDate"])) ?> </td>
+                                            <td><?= $project["clientName"] ?></td>
+                                            <td><?= $project["address"] ?></td>
+                                            <td><?= $totalpercent ?>%</td>
+                                            <td><?= number_format($still) ?>₪</td>
+
+                                        </tr>
+                                <?php
+
+                                    }
                                 }
                                 ?>
                             </tbody>
@@ -589,70 +585,70 @@ $jsonChartData = json_encode($chartData);
                 </div>
             </div>
             <!-- Recent Sales End -->
-             
+
 
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row g-4"> 
-                <div class="col-sm-12 col-md-6 col-xl-4">
-                    <div class="bg-light rounded h-100 p-4">
-                            <div id="map" style="height: 400px; width: 100%;"></div> 
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="bg-light rounded h-100 p-4">
+                            <div id="map" style="height: 400px; width: 100%;"></div>
+                        </div>
                     </div>
-                </div>
 
-            
 
-            
+
+
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <a href=""> </a>
                                 <h6 class="mb-0">לוח שנה</h6>
-                            
+
                             </div>
                             <div id="calender"></div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
-                    <div class="h-100 bg-light rounded p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <a href=""></a>
-                            <h6 class="mb-0">רשימת מטלות</h6>
-                        </div>
-
-                        <form action="" method="post">
-                            <div class="d-flex mb-2">
-                                <input class="form-control bg-transparent" type="text" placeholder="הזן משימה" name="description" id="description">
-                                <button type="submit" name="submit" class="btn btn-primary ms-2" onclick="submitForm(event)">הוספה</button>
+                        <div class="h-100 bg-light rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <a href=""></a>
+                                <h6 class="mb-0">רשימת מטלות</h6>
                             </div>
-                        </form>
 
-                        <?php
-                        $conn = require __DIR__ . "/database.php";
-                        $query = "SELECT * FROM tasks WHERE done='0'";
-                        $query_run = mysqli_query($conn, $query);
+                            <form action="" method="post">
+                                <div class="d-flex mb-2">
+                                    <input class="form-control bg-transparent" type="text" placeholder="הזן משימה" name="description" id="description">
+                                    <button type="submit" name="submit" class="btn btn-primary ms-2" onclick="submitForm(event)">הוספה</button>
+                                </div>
+                            </form>
 
-                        if (mysqli_num_rows($query_run) > 0) {
-                            foreach ($query_run as $task) {
-                                ?>
-                                <form method="post">
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                    <input class="form-check-input m-0" type="checkbox" onchange="toggleTaskLine(event, <?php echo $task["id"]; ?>)">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <input type="hidden" name="id" id="id" value="<?= $task["id"]; ?>">
-                                                <span id="taskDescription<?= $task["id"]; ?>"><?= $task["description"]; ?></span>
-                                                <button type="submit" name="delete" class="btn btn-sm"><i class="fa fa-times"></i></button>
+                            <?php
+                            $conn = require __DIR__ . "/database.php";
+                            $query = "SELECT * FROM tasks WHERE done='0'";
+                            $query_run = mysqli_query($conn, $query);
+
+                            if (mysqli_num_rows($query_run) > 0) {
+                                foreach ($query_run as $task) {
+                            ?>
+                                    <form method="post">
+                                        <div class="d-flex align-items-center border-bottom py-2">
+                                            <input class="form-check-input m-0" type="checkbox" onchange="toggleTaskLine(event, <?php echo $task["id"]; ?>)">
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <input type="hidden" name="id" id="id" value="<?= $task["id"]; ?>">
+                                                    <span id="taskDescription<?= $task["id"]; ?>"><?= $task["description"]; ?></span>
+                                                    <button type="submit" name="delete" class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
-                                <?php
+                                    </form>
+                            <?php
+                                }
                             }
-                        }
-                        ?>
+                            ?>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
             <!-- Widgets End -->
@@ -663,13 +659,13 @@ $jsonChartData = json_encode($chartData);
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Bulid-Tech</a>, All Right Reserved. 
+                            &copy; <a href="#">Bulid-Tech</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                             Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        </br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                            </br>
+                            Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                         </div>
                     </div>
                 </div>
@@ -698,7 +694,7 @@ $jsonChartData = json_encode($chartData);
 
     <script>
         //projects number
-         var projectsNumber = "<?php echo $total; ?>";
+        var projectsNumber = "<?php echo $total; ?>";
         $('#projectsNumber').html(projectsNumber);
         //employees number
         var totalEmployee = "<?php echo $totalEmployee; ?>";
@@ -717,78 +713,80 @@ $jsonChartData = json_encode($chartData);
         paragraph.appendChild(text);
     </script>
 
-<script>
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 6, // Adjust the initial zoom level as needed
-            center: new google.maps.LatLng(31.5, 34.8),// Set the initial map center
-        });
-
-        // Use PHP to generate a JavaScript array from PHP array
-        var addresses = <?php echo json_encode($addresses); ?>;
-
-        geocodeAddresses(addresses, map);
-    }
-
-    function geocodeAddresses(addresses, map) {
-        var geocoder = new google.maps.Geocoder();
-
-        for (var i = 0; i < addresses.length; i++) {
-            geocoder.geocode({ 'address': addresses[i] }, function (results, status) {
-                if (status === 'OK') {
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location,
-                    });
-                } else {
-                    console.error('Geocode was not successful for the following reason: ' + status);
-                }
-            });
-        }
-    }
-</script>
-    
     <script>
-    // Retrieve the data from PHP variables
-    var labels = <?php echo $labelsJSON; ?>;
-    var incomeData = <?php echo $incomeDataJSON; ?>;
-    var expenseData = <?php echo $expenseDataJSON; ?>;
-    var revenueData = <?php echo $revenueDataJSON; ?>;
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6, // Adjust the initial zoom level as needed
+                center: new google.maps.LatLng(31.5, 34.8), // Set the initial map center
+            });
 
-    // Create the bar chart using Chart.js
-    var ctx = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'הכנסות',
-                data: incomeData,
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }, {
-                label: 'הוצאות',
-                data: expenseData,
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }, {
-                label: 'רווח',
-                data: revenueData,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+            // Use PHP to generate a JavaScript array from PHP array
+            var addresses = <?php echo json_encode($addresses); ?>;
+
+            geocodeAddresses(addresses, map);
+        }
+
+        function geocodeAddresses(addresses, map) {
+            var geocoder = new google.maps.Geocoder();
+
+            for (var i = 0; i < addresses.length; i++) {
+                geocoder.geocode({
+                    'address': addresses[i]
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                        });
+                    } else {
+                        console.error('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
             }
         }
-    });
+    </script>
+
+    <script>
+        // Retrieve the data from PHP variables
+        var labels = <?php echo $labelsJSON; ?>;
+        var incomeData = <?php echo $incomeDataJSON; ?>;
+        var expenseData = <?php echo $expenseDataJSON; ?>;
+        var revenueData = <?php echo $revenueDataJSON; ?>;
+
+        // Create the bar chart using Chart.js
+        var ctx = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'הכנסות',
+                    data: incomeData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'הוצאות',
+                    data: expenseData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'רווח',
+                    data: revenueData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
     <script>
         // Retrieve the chart data from PHP
@@ -828,15 +826,15 @@ $jsonChartData = json_encode($chartData);
         document.getElementById("totalincomes").textContent = formattedNumber;
     </script>
     <script>
-    function toggleTaskLine(event, taskId) {
-        var checkbox = event.target;
-        var taskDescription = document.getElementById("taskDescription" + taskId);
-        if (checkbox.checked) {
-            taskDescription.style.textDecoration = "line-through";
-        } else {
-            taskDescription.style.textDecoration = "none";
+        function toggleTaskLine(event, taskId) {
+            var checkbox = event.target;
+            var taskDescription = document.getElementById("taskDescription" + taskId);
+            if (checkbox.checked) {
+                taskDescription.style.textDecoration = "line-through";
+            } else {
+                taskDescription.style.textDecoration = "none";
+            }
         }
-    }
     </script>
 
 

@@ -1,18 +1,16 @@
-<?php 
+<?php
 
 $conn = require __DIR__ . "/database.php";
 
 
-if(isset($_GET['reportNumber']))
-{
+if (isset($_GET['reportNumber'])) {
 
     $reportNumber = mysqli_real_escape_string($conn, $_GET['reportNumber']);
 
     $query = "SELECT * FROM report WHERE reportNumber='$reportNumber'";
     $query_run = mysqli_query($conn, $query);
 
-    if(mysqli_num_rows($query_run) == 1)
-    {
+    if (mysqli_num_rows($query_run) == 1) {
         $report = mysqli_fetch_array($query_run);
 
         $res = [
@@ -22,9 +20,7 @@ if(isset($_GET['reportNumber']))
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 404,
             'message' => 'מ.ז הדו"ח לא נמצא'
@@ -32,11 +28,9 @@ if(isset($_GET['reportNumber']))
         echo json_encode($res);
         return;
     }
-
 }
 
-if(isset($_POST['update_report']))
-{
+if (isset($_POST['update_report'])) {
     $reportNumber = mysqli_real_escape_string($conn, $_POST['reportNumber']);
 
     $carNumber = mysqli_real_escape_string($conn, $_POST['carNumber']);
@@ -44,9 +38,8 @@ if(isset($_POST['update_report']))
     $price = mysqli_real_escape_string($conn, $_POST['price']);
     $paid = isset($_POST['paid']) ? 1 : 0;
     $notes = mysqli_real_escape_string($conn, $_POST['notes']);
-  
-    if($reportDate == NULL || $price == NULL)
-    {
+
+    if ($reportDate == NULL || $price == NULL) {
         $res = [
             'status' => 422,
             'message' => 'שדה חובה ריק'
@@ -66,17 +59,14 @@ if(isset($_POST['update_report']))
                 WHERE reportNumber='$reportNumber'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'הדו"ח עודכן בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'הדו"ח לא עודכן'
@@ -88,24 +78,20 @@ if(isset($_POST['update_report']))
 
 
 
-if(isset($_POST['delete_report']))
-{
+if (isset($_POST['delete_report'])) {
     $reportNumber = mysqli_real_escape_string($conn, $_POST['reportNumber']);
 
     $query = "DELETE FROM report WHERE reportNumber='$reportNumber'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'הדו"ח נמחק בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'הדו"ח לא נמחק'
@@ -114,10 +100,3 @@ if(isset($_POST['delete_report']))
         return;
     }
 }
-
-
-
-
-
-
-

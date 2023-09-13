@@ -30,4 +30,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["pdfFile"]) && isset(
     header('Content-Type: application/json');
     echo json_encode($response);
 }
-?>

@@ -8,56 +8,52 @@ $successMessage = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["fullName"]) || empty($_POST["address"]) || empty($_POST["id"]) || empty($_POST["gender"]) || empty($_POST["phoneNumber"])) {
         $errorMessage = "שדה חובה ריק";
-
-    }
-    else if (!is_numeric($_POST["id"])) {
+    } else if (!is_numeric($_POST["id"])) {
         $errorMessage = "מספר זיהוי חייב להיות מספר";
-    }  else  if (!empty($_POST["email"])&&(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))) {
+    } else  if (!empty($_POST["email"]) && (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))) {
         $errorMessage = "אימייל לא חוקי";
-    } else if( $_POST['gender'] === "בחר/י"){
+    } else if ($_POST['gender'] === "בחר/י") {
         $errorMessage = 'צריך לציין את המין.<br>';
-    }
-    else{
+    } else {
 
-    $fullName = $_POST['fullName'];
-	$adress = $_POST['address'];
-    $id =  $_POST['id'];
-    $gender = $_POST['gender'];
-    $phoneNumber = $_POST['phoneNumber'];
-    $phoneNumber2 = $_POST['phoneNumber2'];
-    $email = $_POST['email'];
- 
- 
-	
-    $conn = require __DIR__ . "/database.php";
+        $fullName = $_POST['fullName'];
+        $adress = $_POST['address'];
+        $id =  $_POST['id'];
+        $gender = $_POST['gender'];
+        $phoneNumber = $_POST['phoneNumber'];
+        $phoneNumber2 = $_POST['phoneNumber2'];
+        $email = $_POST['email'];
 
-    $stmt = $conn->prepare("insert into client(fullName, address, id, gender, phone, phone2, email) values(?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $fullName, $adress, $id, $gender, $phoneNumber, $phoneNumber2, $email);
-    try {
-        $execval = $stmt->execute();
-        if ($execval) {
-            $successMessage = "הלקוח נקלט בהצלחה";
-           
+
+
+        $conn = require __DIR__ . "/database.php";
+
+        $stmt = $conn->prepare("insert into client(fullName, address, id, gender, phone, phone2, email) values(?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $fullName, $adress, $id, $gender, $phoneNumber, $phoneNumber2, $email);
+        try {
+            $execval = $stmt->execute();
+            if ($execval) {
+                $successMessage = "הלקוח נקלט בהצלחה";
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) { // Error code for duplicate entry
+                $errorMessage = "כנראה שהלקוח כבר קיים במערכת";
+            } else {
+                $errorMessage = "Error: " . $e->getMessage();
+            }
         }
-    } catch (mysqli_sql_exception $e) {
-        if ($e->getCode() === 1062) { // Error code for duplicate entry
-            $errorMessage = "כנראה שהלקוח כבר קיים במערכת";
-        } else {
-            $errorMessage = "Error: " . $e->getMessage();
-        }
-    } 
-    
-    $stmt->close();
-    $conn->close();
+
+        $stmt->close();
+        $conn->close();
     }
 
-      // Store the messages in session variables
-      $_SESSION["successMessage"] = $successMessage;
-      $_SESSION["errorMessage"] = $errorMessage;
-  
-      // Redirect to the same page to prevent re-submission
-      header("Location: " . $_SERVER['REQUEST_URI']);
-      exit();
+    // Store the messages in session variables
+    $_SESSION["successMessage"] = $successMessage;
+    $_SESSION["errorMessage"] = $errorMessage;
+
+    // Redirect to the same page to prevent re-submission
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -77,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -93,22 +89,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link href="css/style.css" rel="stylesheet">
 
     <style>
-    .custom-form {
-        display: flex;
-        justify-content: center;
-    }
+        .custom-form {
+            display: flex;
+            justify-content: center;
+        }
 
-    .custom-form-container {
-        max-width: 500px;
-        width: 100%;
-        direction: rtl;
-        text-align: right;
-    }
+        .custom-form-container {
+            max-width: 500px;
+            width: 100%;
+            direction: rtl;
+            text-align: right;
+        }
 
-    .custom-form .form-floating {
-        text-align: right;
-    }
-</style>
+        .custom-form .form-floating {
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body>
@@ -122,9 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Spinner End -->
 
 
-          <!-- Sidebar Start -->
-          <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -150,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item active">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -161,13 +157,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -180,8 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -190,8 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -223,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -239,74 +235,67 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </nav>
             <!-- Navbar End -->
-      
+
 
 
             <div class="col-sm-12 custom-form">
-    <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
-           <h5 class="mb-4">הוספת לקוח</h6>
-                    <form method="post">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="fullName" name="fullName"
-                            placeholder="">
-                        <label for="fullName" class="position-absolute top-0 end-0">שם מלא</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="address" name="address"
-                            placeholder="">
-                        <label for="address" class="position-absolute top-0 end-0">כתובת</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="id" name="id"
-                            placeholder="">
-                        <label for="id" class="position-absolute top-0 end-0">ת"ז/ח.פ</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gender" name="gender"
-                            aria-label="Floating label select example">
-                            <option selected>בחר/י</option>
-                            <option>זכר</option>
-                            <option>נקבה</option>
-                        </select>
-                        <label for="gender" class="position-absolute top-0 end-0">מין</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                            placeholder="">
-                        <label for="phoneNumber" class="position-absolute top-0 end-0">מס' טלפון</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phoneNumber2" name="phoneNumber2"
-                            placeholder="">
-                        <label for="phoneNumber2" class="position-absolute top-0 end-0">מס' טלפון נוסף</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email" name="email"
-                            placeholder="">
-                        <label for="email" class="position-absolute top-0 end-0">אימייל</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">הוסף</button>
-                     <!-- Display error message -->
-                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?php echo $_SESSION["errorMessage"]; ?>
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">
+                    <h5 class="mb-4">הוספת לקוח</h6>
+                        <form method="post">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="">
+                                <label for="fullName" class="position-absolute top-0 end-0">שם מלא</label>
                             </div>
-                        <?php } ?>
-
-                        <!-- Display success message -->
-                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
-                            <div class="alert alert-success" role="alert">
-                                <?php echo $_SESSION["successMessage"]; ?>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="">
+                                <label for="address" class="position-absolute top-0 end-0">כתובת</label>
                             </div>
-                        <?php } ?>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="id" name="id" placeholder="">
+                                <label for="id" class="position-absolute top-0 end-0">ת"ז/ח.פ</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="gender" name="gender" aria-label="Floating label select example">
+                                    <option selected>בחר/י</option>
+                                    <option>זכר</option>
+                                    <option>נקבה</option>
+                                </select>
+                                <label for="gender" class="position-absolute top-0 end-0">מין</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="">
+                                <label for="phoneNumber" class="position-absolute top-0 end-0">מס' טלפון</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="phoneNumber2" name="phoneNumber2" placeholder="">
+                                <label for="phoneNumber2" class="position-absolute top-0 end-0">מס' טלפון נוסף</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="">
+                                <label for="email" class="position-absolute top-0 end-0">אימייל</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">הוסף</button>
+                            <!-- Display error message -->
+                            <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?php echo $_SESSION["errorMessage"]; ?>
+                                </div>
+                            <?php } ?>
 
-                          <!-- Clear session variables after displaying messages -->
-                          <?php
-                        unset($_SESSION["errorMessage"]);
-                        unset($_SESSION["successMessage"]);
-                        ?>
-                </form>
-                
+                            <!-- Display success message -->
+                            <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?php echo $_SESSION["successMessage"]; ?>
+                                </div>
+                            <?php } ?>
+
+                            <!-- Clear session variables after displaying messages -->
+                            <?php
+                            unset($_SESSION["errorMessage"]);
+                            unset($_SESSION["successMessage"]);
+                            ?>
+                        </form>
+
 
                 </div>
             </div>
@@ -317,7 +306,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->

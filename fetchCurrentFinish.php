@@ -25,4 +25,3 @@ if (isset($_POST['stepId'])) {
 }
 
 mysqli_close($conn);
-?>

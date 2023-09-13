@@ -1,10 +1,10 @@
 <?php
 
- $con = require __DIR__ . "/database.php";
+$con = require __DIR__ . "/database.php";
 
- $sqli = "SELECT * FROM material";
+$sqli = "SELECT * FROM material";
 
- $result = $con->query($sqli);
+$result = $con->query($sqli);
 
 ?>
 
@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -53,9 +53,9 @@
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -81,7 +81,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -92,13 +92,13 @@
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -111,8 +111,8 @@
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -121,8 +121,8 @@
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -154,7 +154,7 @@
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -171,93 +171,93 @@
             </nav>
             <!-- Navbar End -->
 
-<!-- Edit Material Modal -->
+            <!-- Edit Material Modal -->
             <div class="modal fade" id="materialEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">עריכת חומר</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="updateMaterial">
-                    <div class="modal-body">
-
-                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
-
-                        <input type="hidden" name="material_id" id="material_id" >
-
-                        <div class="mb-3">
-                        <label for="">שם </label>
-                        <input type="text" name="materialName" id="materialName" class="form-control" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">עריכת חומר</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <form id="updateMaterial">
+                            <div class="modal-body">
 
-                        <label for="">מחיר</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">₪</span>
-                            <input type="text" name="price" id="price" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="">כמות</label>
-                            <input type="number" name="amount" id="amount" class="form-control" />
-                        </div>
-                        <div class="form-floating mb-3">
-                        <select class="form-select" name="metrics" id="metrics"
-                            aria-label="Floating label select example">
-                            <option value="טון">טון</option>
-                            <option value="יחידה">יחידה</option>
-                            <option value="קוב">קוב</option>
-                            <option value="קילו">קילו</option>
-                            <option value="מטר אורך">מטר אורך</option>
-                            <option value="מטר ריבוע">מטר ריבוע</option>
-                        </select>
-                        <label for="metrics">מדדים</label>
-                    </div>
+                                <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
+                                <input type="hidden" name="material_id" id="material_id">
+
+                                <div class="mb-3">
+                                    <label for="">שם </label>
+                                    <input type="text" name="materialName" id="materialName" class="form-control">
+                                </div>
+
+                                <label for="">מחיר</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₪</span>
+                                    <input type="text" name="price" id="price" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="">כמות</label>
+                                    <input type="number" name="amount" id="amount" class="form-control" />
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" name="metrics" id="metrics" aria-label="Floating label select example">
+                                        <option value="טון">טון</option>
+                                        <option value="יחידה">יחידה</option>
+                                        <option value="קוב">קוב</option>
+                                        <option value="קילו">קילו</option>
+                                        <option value="מטר אורך">מטר אורך</option>
+                                        <option value="מטר ריבוע">מטר ריבוע</option>
+                                        <option value="קופסה = 5 קילו">קופסה = 5 קילו</option>
+                                    </select>
+                                    <label for="metrics">מדדים</label>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                                <button type="submit" class="btn btn-primary" id="updateMaterial1">עדכן חומר</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
-                        <button type="submit" class="btn btn-primary">עדכן חומר</button>
-                    </div>
-                </form>
                 </div>
             </div>
-        </div>
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4" dir="rtl">
                 <h1>החומרים </h1>
                 <div class="row g-4">
-                <?php
+                    <?php
 
-                 if ($result->num_rows > 0) {
-                       // output data of each row
-                       while($row = $result->fetch_assoc()) {
-                             echo "<div class='col col-sm-12 col-xl-6' >";
-                             echo "<form method = 'post' >";
-                             echo "<div class='bg-light rounded d-flex justify-content-between p-4'>";
-                            echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"]."</div>";
-                            echo "<div class='row mb-3' ><img src='data:image/jpeg;base64,".base64_encode($row["img"])."' height='200px' width='200px'></div>"; 
-                            echo "<div class='row mb-3'  style='font-size: 20px;'>מחיר : " . $row["price"]. "₪</div>";
-                            echo "<div class='row mb-3' style='font-size: 20px;'>יחידה :". $row["metrics"]."</div>";
-                            echo "<div class='row mb-3' style='font-size: 20px;'>כמות : ". $row["amount"]."</div><div class='row'>";
-                            echo "<button type='button' value='". $row["id"]."' class='editMaterialBtn btn btn-success btn-sm'>עדכון</button></div>";  
+                    if ($result->num_rows > 0) {
+                        // output data of each row
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<div class='col col-sm-12 col-xl-6' >";
+                            echo "<form method = 'post' >";
+                            echo "<div class='bg-light rounded d-flex justify-content-between p-4'>";
+                            echo "<div class='container'><div class='row mb-3' style='color:#009CFF; font-size: 30px;'>" . $row["name"] . "</div>";
+                            echo "<div class='row mb-3' ><img src='data:image/jpeg;base64," . base64_encode($row["img"]) . "' height='200px' width='200px'></div>";
+                            echo "<div class='row mb-3'  style='font-size: 20px;'>מחיר : " . $row["price"] . "₪</div>";
+                            echo "<div class='row mb-3' style='font-size: 20px;'>יחידה :" . $row["metrics"] . "</div>";
+                            echo "<div class='row mb-3' style='font-size: 20px;'>כמות : " . $row["amount"] . "</div><div class='row'>";
+                            echo "<button type='button' value='" . $row["id"] . "' class='editMaterialBtn btn btn-success btn-sm'>עדכון</button></div>";
                             echo "</div></div></form></div>";
-                           }
-                 } else {
-                          echo "";
-                     }
-?>
+                        }
+                    } else {
+                        echo "";
+                    }
+                    ?>
                 </div>
             </div>
             <!-- Table End -->
-                 
+
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -287,13 +287,13 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    
+
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
     <script>
-    $(document).on('click', '.editMaterialBtn', function () {
+        $(document).on('click', '.editMaterialBtn', function() {
 
             var material_id = $(this).val();
             //alert(supplier_id);
@@ -301,33 +301,37 @@
             $.ajax({
                 type: "GET",
                 url: "materialcode.php?material_id=" + material_id,
-                success: function (response) {
-                    var res = jQuery.parseJSON(response);
-                    if(res.status == 404) {
-
-                        alert(res.message);
-                    }else if(res.status == 200){
-                        
-                    
-                    $('#material_id').val(res.data.id);   
-                    $('#materialName').val(res.data.name);
-                    $('#price').val(res.data.price);
-                    $('#amount').val(res.data.amount);
-                    $('#metrics').val(res.data.metrics);
-                    $('#img').val(res.data.img);
-                    $('#materialEditModal').modal('show');
-                    
+                success: function(response) {
+                    try {
+                        var res = JSON.parse(response);
+                        if (res.status == 404) {
+                            alert(res.message);
+                        } else if (res.status == 200) {
+                            $('#material_id').val(res.data.id);
+                            $('#materialName').val(res.data.name);
+                            $('#price').val(res.data.price);
+                            $('#amount').val(res.data.amount);
+                            $('#metrics').val(res.data.metrics);
+                            $('#materialEditModal').modal('show');
+                        } else {
+                            console.error("Invalid status in response:", response);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing JSON response:", error);
                     }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error("AJAX request failed:", textStatus, errorThrown);
                 }
             });
-              
+
         });
 
-       $(document).on('submit', '#updateMaterial', function (e) {
+        $(document).on('submit', '#updateMaterial', function(e) {
             e.preventDefault();
 
             var formData = new FormData(this);
-            formData.append("update_material", true);
+            //formData.append("update_material", true);
 
             $.ajax({
                 type: "POST",
@@ -335,33 +339,33 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    
+                success: function(response) {
+
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
+                    if (res.status == 422) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
 
-                    }else if(res.status == 200){
+                    } else if (res.status == 200) {
 
                         $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
+                        alertify.set('notifier', 'position', 'top-right');
                         alertify.success(res.message);
-                        
+
                         $('#materialEditModal').modal('hide');
                         $('#updateMaterial')[0].reset();
 
                         $('#myTable').load(location.href + " #myTable");
 
-                    }else if(res.status == 500) {
+                    } else if (res.status == 500) {
                         alert(res.message);
                     }
                 }
             });
 
         });
-        </script>
+    </script>
 </body>
 
 </html>

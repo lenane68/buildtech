@@ -1,18 +1,16 @@
-<?php 
+<?php
 
 $conn = require __DIR__ . "/database.php";
 
 
-if(isset($_GET['employee_id']))
-{
+if (isset($_GET['employee_id'])) {
 
     $employee_id = mysqli_real_escape_string($conn, $_GET['employee_id']);
 
     $query = "SELECT * FROM employee WHERE id='$employee_id'";
     $query_run = mysqli_query($conn, $query);
 
-    if(mysqli_num_rows($query_run) == 1)
-    {
+    if (mysqli_num_rows($query_run) == 1) {
         $employee = mysqli_fetch_array($query_run);
 
         $res = [
@@ -22,9 +20,7 @@ if(isset($_GET['employee_id']))
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 404,
             'message' => 'מ.ז העובד לא נמצא'
@@ -32,7 +28,6 @@ if(isset($_GET['employee_id']))
         echo json_encode($res);
         return;
     }
-
 }
 
 if (isset($_POST['update_employee'])) {
@@ -59,7 +54,7 @@ if (isset($_POST['update_employee'])) {
         ];
         echo json_encode($res);
         return;
-    } 
+    }
 
     $query = "UPDATE employee SET fullName='$name', job='$job', startDate='$startDate', Gender='$job', startDate='$startDate', Gender='$gender', Active='$active', salary='$salary'
                 WHERE id='$employee_id'";
@@ -82,24 +77,20 @@ if (isset($_POST['update_employee'])) {
     }
 }
 
-if(isset($_POST['delete_employee']))
-{
+if (isset($_POST['delete_employee'])) {
     $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
 
     $query = "DELETE FROM employee WHERE id='$employee_id'";
     $query_run = mysqli_query($conn, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $res = [
             'status' => 200,
             'message' => 'העובד נמחק בהצלחה'
         ];
         echo json_encode($res);
         return;
-    }
-    else
-    {
+    } else {
         $res = [
             'status' => 500,
             'message' => 'העובד לא נמחק'
@@ -108,10 +99,3 @@ if(isset($_POST['delete_employee']))
         return;
     }
 }
-
-
-
-
-
-
-

@@ -16,4 +16,3 @@ if (isset($_POST['project_id'])) {
         echo "Error: " . mysqli_error($conn);
     }
 }
-?>

@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -42,9 +42,9 @@
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -70,7 +70,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.html" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.html" class="dropdown-item">עובד</a>
                             <a href="addClient.html" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -81,13 +81,13 @@
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח בנזין</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item">חומר</a>
                             <a href="" class="dropdown-item">פרויקט</a>
@@ -101,8 +101,8 @@
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -144,7 +144,7 @@
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -161,86 +161,80 @@
             </nav>
             <!-- Navbar End -->
             <h6 class="mb-4">חישוב שלד</h6>
-                <div class="bg-light rounded h-100 p-4">
-                    <form>
-                    <label for="batonclass">1. חישוב  בטון: מחיר לקוב 200 ש״ח</label>
-                        <div class="form-floating mb-3" id="batonclass">
-                        <select class="form-select" id="batonSelect"
-                                aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="1">בטון מוכן</option>
-                                <option value="2">בטון מזוין</option>
-                                <option value="3">בטון דיקורטיבי</option>
-                            </select>
-                            <label for="batonSelect">סוג בטון</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingInput"
-                                placeholder="">
-                            <label for="floatingInput">כמות קובים</label>
-                        </div>
+            <div class="bg-light rounded h-100 p-4">
+                <form>
+                    <label for="batonclass">1. חישוב בטון: מחיר לקוב 200 ש״ח</label>
+                    <div class="form-floating mb-3" id="batonclass">
+                        <select class="form-select" id="batonSelect" aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <option value="1">בטון מוכן</option>
+                            <option value="2">בטון מזוין</option>
+                            <option value="3">בטון דיקורטיבי</option>
+                        </select>
+                        <label for="batonSelect">סוג בטון</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="floatingInput" placeholder="">
+                        <label for="floatingInput">כמות קובים</label>
+                    </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
                         <span class="input-group-text">.00</span>
                     </div>
-                    </form>
+                </form>
 
-                    <form>
-                        <label for="barzelclass">2. חישוב  ברזל : מחיר לטון 999 ש״ח</label>
-                        <div class="form-floating mb-3" id="barzelclass">
-                        <select class="form-select" id="barzelSelect"
-                                aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="1">ברזל 6 מ״מ</option>
-                                <option value="2">ברזל 8 מ״מ</option>
-                                <option value="3">ברזל 10 מ״מ</option>
-                            </select>
-                            <label for="barzelSelect">סוג ברזל</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingInput"
-                                placeholder="">
-                            <label for="floatingInput">כמות טונים</label>
-                        </div>
+                <form>
+                    <label for="barzelclass">2. חישוב ברזל : מחיר לטון 999 ש״ח</label>
+                    <div class="form-floating mb-3" id="barzelclass">
+                        <select class="form-select" id="barzelSelect" aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <option value="1">ברזל 6 מ״מ</option>
+                            <option value="2">ברזל 8 מ״מ</option>
+                            <option value="3">ברזל 10 מ״מ</option>
+                        </select>
+                        <label for="barzelSelect">סוג ברזל</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="floatingInput" placeholder="">
+                        <label for="floatingInput">כמות טונים</label>
+                    </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
                         <span class="input-group-text">.00</span>
                     </div>
-                    </form>
+                </form>
 
-                    <form>
-                        <label for="blockclass">3. חישוב בלוק : מחיר לטון 29 ש״ח</label>
-                        <div class="form-floating mb-3" id="blockclass">
-                        <select class="form-select" id="blockSelect"
-                                aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="1">בלוק אדום 22</option>
-                                <option value="2">בלוק שחור</option>
-                                <option value="3">בלוק פומיס 22</option>
-                                <option value="4">בלוק איטונג</option>
-                                <option value="5">בלוק אשבונד</option>
-                                <option value="6">בלוק תעלה</option>
-                            </select>
-                            <label for="blockSelect">סוג בלוק</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingInput"
-                                placeholder="">
-                            <label for="floatingInput">כמות מטרים</label>
-                        </div>
+                <form>
+                    <label for="blockclass">3. חישוב בלוק : מחיר לטון 29 ש״ח</label>
+                    <div class="form-floating mb-3" id="blockclass">
+                        <select class="form-select" id="blockSelect" aria-label="Floating label select example">
+                            <option selected>בחר/י</option>
+                            <option value="1">בלוק אדום 22</option>
+                            <option value="2">בלוק שחור</option>
+                            <option value="3">בלוק פומיס 22</option>
+                            <option value="4">בלוק איטונג</option>
+                            <option value="5">בלוק אשבונד</option>
+                            <option value="6">בלוק תעלה</option>
+                        </select>
+                        <label for="blockSelect">סוג בלוק</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="floatingInput" placeholder="">
+                        <label for="floatingInput">כמות מטרים</label>
+                    </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">    
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
                         <span class="input-group-text">.00</span>
                     </div>
-                    </form>
+                </form>
             </div>
 
-          </div>
+        </div>
         <!-- Content End -->
-     
+
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

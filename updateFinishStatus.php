@@ -16,4 +16,3 @@ if (isset($_POST['updateStepId']) && isset($_POST['newFinish'])) {
 
     echo json_encode($updateResponse);
 }
-?>

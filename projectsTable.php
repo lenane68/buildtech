@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -44,9 +42,9 @@
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -72,7 +70,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -83,13 +81,13 @@
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -102,8 +100,8 @@
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -112,8 +110,8 @@
 
         <!-- Content Start -->
         <div class="content">
-              <!-- Navbar Start -->
-              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -145,7 +143,7 @@
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -163,12 +161,12 @@
             <!-- Navbar End -->
 
 
-             <!-- Recent Sales Start -->
-             <div class="container-fluid pt-4 px-4" dir="rtl">
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="bg-light text-center rounded p-4" dir="rtl">
                     <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
                         <h5 class="mb-0" dir="rtl" style="color: black; font-weight: bold; font-size: 20px;">פרויקטים</h5>
-                      
+
                     </div>
                     <div class="table-responsive" dir="rtl">
                         <table class="table text-start align-middle table-bordered table-hover mb-0" dir="rtl">
@@ -187,67 +185,61 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php 
-                                 $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM project ORDER BY startDate DESC";
-                          
-                                 $query_run = mysqli_query($conn, $query);
-                         
-                        
-                               if(mysqli_num_rows($query_run) > 0)
-                               {
-                                   foreach($query_run as $project)
-                                   {
-                                    $query2 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' AND finish = 'נגמר'";
-                                    $query3 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' ";
-          
-                                   $query_run2 = mysqli_query($conn, $query2);
-                                   $query_run3 = mysqli_query($conn, $query3);
-
-                                   $totalPayment = 0;
-
-                                   $totalpercent = 0;
-   
-                                   if(mysqli_num_rows($query_run2) > 0)
-                                   {
-                                       foreach($query_run2 as $projectstep)
-                                       {
-                                           $totalpercent+=$projectstep["projectsPercent"];
-                                       }
-                                   }
-
-                                   if(mysqli_num_rows($query_run3) > 0)
-                                   {
-                                       foreach($query_run3 as $projectstep)
-                                       {
-                                        $totalPayment += ($projectstep["paymentPercent"] / 100) * ($projectstep["projectsPercent"] / 100) * $project["totalPrice"];
-                                       }
-                                   }
-                                   $still = $project["totalPrice"] - $totalPayment;
-             
-                    
-                                       ?>
-                                <tr class="text-center" style="color: black">
-                                    <form action="project.php" method="post" target="">
-                                    <td> <?= $project["name"] ?> </td>
-                                    <td> <?= $project["type"] ?> </td>
-                                    <td> <?= date('d.m.Y', strtotime($project["startDate"])) ?></td>
-                                    <td><?= $project["clientName"] ?> </td>
-                                    <td><?= $project["address"] ?> </td>
-                                    <td><?= $totalpercent ?>%</td>
-                                    <td><?= number_format($still) ?>₪</td>
-                                    <input type="hidden" name="id" id="id" value="<?=$project['id'];?>" ></input>
-                                    <td><button type="submit" value="" class="btn btn-sm btn-primary border-0" name="project_generate" style="background-color:#6D7C78 ">הצג</button></td>
-                                    
-                                </form>
-                                <td>
-                                    <button value="" class="btn btn-sm btn-danger border-0" name="project_delete" onclick="deleteProject(this)" data-project-id="<?= $project['id']; ?>">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                    </td> 
-                                </tr>
                                 <?php
-                                   }
+                                $conn = require __DIR__ . "/database.php";
+                                $query = "SELECT * FROM project ORDER BY startDate DESC";
+
+                                $query_run = mysqli_query($conn, $query);
+
+
+                                if (mysqli_num_rows($query_run) > 0) {
+                                    foreach ($query_run as $project) {
+                                        $query2 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' AND finish = 'נגמר'";
+                                        $query3 = "SELECT * FROM projectstep WHERE projectId = '" . $project["id"] . "' ";
+
+                                        $query_run2 = mysqli_query($conn, $query2);
+                                        $query_run3 = mysqli_query($conn, $query3);
+
+                                        $totalPayment = 0;
+
+                                        $totalpercent = 0;
+
+                                        if (mysqli_num_rows($query_run2) > 0) {
+                                            foreach ($query_run2 as $projectstep) {
+                                                $totalpercent += $projectstep["projectsPercent"];
+                                            }
+                                        }
+
+                                        if (mysqli_num_rows($query_run3) > 0) {
+                                            foreach ($query_run3 as $projectstep) {
+                                                $totalPayment += ($projectstep["paymentPercent"] / 100) * ($projectstep["projectsPercent"] / 100) * $project["totalPrice"];
+                                            }
+                                        }
+                                        $still = $project["totalPrice"] - $totalPayment;
+
+
+                                ?>
+                                        <tr class="text-center" style="color: black">
+                                            <form action="project.php" method="post" target="">
+                                                <td> <?= $project["name"] ?> </td>
+                                                <td> <?= $project["type"] ?> </td>
+                                                <td> <?= date('d.m.Y', strtotime($project["startDate"])) ?></td>
+                                                <td><?= $project["clientName"] ?> </td>
+                                                <td><?= $project["address"] ?> </td>
+                                                <td><?= $totalpercent ?>%</td>
+                                                <td><?= number_format($still) ?>₪</td>
+                                                <input type="hidden" name="id" id="id" value="<?= $project['id']; ?>"></input>
+                                                <td><button type="submit" value="" class="btn btn-sm btn-primary border-0" name="project_generate" style="background-color:#6D7C78 ">הצג</button></td>
+
+                                            </form>
+                                            <td>
+                                                <button value="" class="btn btn-sm btn-danger border-0" name="project_delete" onclick="deleteProject(this)" data-project-id="<?= $project['id']; ?>">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
                                 }
                                 ?>
                             </tbody>
@@ -262,13 +254,13 @@
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Bulid-Tech</a>, All Right Reserved. 
+                            &copy; <a href="#">Bulid-Tech</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                             Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        </br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                            </br>
+                            Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                         </div>
                     </div>
                 </div>
@@ -307,14 +299,14 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "delete_project.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // Check the response from delete_project.php
                         if (xhr.responseText == "success") {
                             // Project deleted successfully, you can handle this as needed
                             // For example, remove the row from the table
-                            
-                           
+
+
                             var row = button.closest("tr");
                             row.remove();
                         } else {
@@ -326,7 +318,7 @@
                 xhr.send("project_id=" + projectId);
             }
         }
-        </script>
+    </script>
 </body>
 
 </html>

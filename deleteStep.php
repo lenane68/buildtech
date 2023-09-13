@@ -32,4 +32,3 @@ if (isset($_POST['deleteStepId'])) {
 
      echo json_encode($response);
 }
-?>

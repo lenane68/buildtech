@@ -1,4 +1,4 @@
-<?php 
+<?php
 $conn = require __DIR__ . "/database.php";
 
 $id = $_POST['id'];
@@ -90,23 +90,23 @@ $jsonChartData = json_encode($chartData);
 
 
 
- ?>
+?>
 
 
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <title>DASHMIN - Bootstrap Admin Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-     <!-- Bootstrap CSS -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 
     <!-- Favicon -->
@@ -116,7 +116,7 @@ $jsonChartData = json_encode($chartData);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -133,141 +133,146 @@ $jsonChartData = json_encode($chartData);
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&libraries=places"></script>
 
-   
-    
- 
-    <style> 
-.file-panel {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
 
-.file-details {
-    flex-grow: 1;
-    margin-right: 10px;
-    text-align: right;
-}
 
-.file-details a {
-    text-decoration: none;
-    color: #333;
-}
 
-.file-details a:hover {
-    text-decoration: underline;
-    color: #1EB6C1;
-}
+    <style>
+        .file-panel {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.file-icon {
-    flex-shrink: 0;
-    text-align: right;
-}
-.table-container {
+        .file-details {
+            flex-grow: 1;
+            margin-right: 10px;
+            text-align: right;
+        }
+
+        .file-details a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .file-details a:hover {
+            text-decoration: underline;
+            color: #1EB6C1;
+        }
+
+        .file-icon {
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        .table-container {
             overflow-y: auto;
-            max-height: 350px; /* Set the desired maximum height for the table */
-            direction: ltr; /* Set the text direction to right-to-left */
+            max-height: 350px;
+            /* Set the desired maximum height for the table */
+            direction: ltr;
+            /* Set the text direction to right-to-left */
         }
+
         .table-container table {
-            direction: rtl; /* Set the table direction back to left-to-right */
+            direction: rtl;
+            /* Set the table direction back to left-to-right */
         }
+
         .chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
 
-.my-div {
-    border-bottom: 8px solid #55BF96;
-    border-radius: 0.25rem;
-}
+        .my-div {
+            border-bottom: 8px solid #55BF96;
+            border-radius: 0.25rem;
+        }
 
-.my-div2 {
-    border-bottom: 8px solid #E04050;
-    border-radius: 0.25rem;
-}
+        .my-div2 {
+            border-bottom: 8px solid #E04050;
+            border-radius: 0.25rem;
+        }
 
-.button-container {
-    display: flex;
-    gap: 10px; /* Adjust the gap as needed */
-}
-
-
-</style>
+        .button-container {
+            display: flex;
+            gap: 10px;
+            /* Adjust the gap as needed */
+        }
+    </style>
 
 </head>
 
 <body>
-   
-<!-- Update Step Modal -->
-<div class="modal fade" id="updateStepModal" tabindex="-1" aria-labelledby="updateStepModalLabel" aria-hidden="true">
-    <div class="modal-dialog" dir="rtl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateStepModalLabel">עדכון</h5>
-                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="updateStepForm">
-                <div class="modal-body">
-                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
-                    <input type="hidden" name="updateStepId" id="updateStepId">
-                    <div class="mb-3">
-                        <label for="newFinish">עדכן סטטוס התקדמות שלב:</label>
-                        <select class="form-control" id="newFinish" name="newFinish">
-                            <option value="נגמר">נגמר</option>
-                            <option value="בעבודה">בעבודה</option>
-                            <option value="לא בוצע">לא בוצע</option>
-                        </select>
+
+    <!-- Update Step Modal -->
+    <div class="modal fade" id="updateStepModal" tabindex="-1" aria-labelledby="updateStepModalLabel" aria-hidden="true">
+        <div class="modal-dialog" dir="rtl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStepModalLabel">עדכון</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="updateStepForm">
+                    <div class="modal-body">
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+                        <input type="hidden" name="updateStepId" id="updateStepId">
+                        <div class="mb-3">
+                            <label for="newFinish">עדכן סטטוס התקדמות שלב:</label>
+                            <select class="form-control" id="newFinish" name="newFinish">
+                                <option value="נגמר">נגמר</option>
+                                <option value="בעבודה">בעבודה</option>
+                                <option value="לא בוצע">לא בוצע</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
-                    <button type="submit" class="btn btn-primary">עדכן</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">עדכן</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
 
-        <!-- Add Step Modal -->
-<div class="modal fade" id="stepAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" dir="rtl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">הוספת שלב חדש</h5>
-                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Add Step Modal -->
+    <div class="modal fade" id="stepAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" dir="rtl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">הוספת שלב חדש</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addStep">
+                    <div class="modal-body">
+                        <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                        <input type="hidden" name="projectid2" id="projectid2">
+
+
+                        <div class="mb-3">
+                            <label for="projectsPercent">אחוז מהפרויקט</label>
+                            <input type="number" name="projectsPercent" id="projectsPercent" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">תיאור</label>
+                            <textarea name="description" id="description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
+                        <button type="submit" class="btn btn-primary">הוסף שלב</button>
+                    </div>
+                </form>
             </div>
-            <form id="addStep">
-                <div class="modal-body">
-                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
-
-                    <input type="hidden" name="projectid2" id="projectid2" >
-
-                   
-                    <div class="mb-3">
-                        <label for="projectsPercent">אחוז מהפרויקט</label>
-                        <input type="number" name="projectsPercent" id="projectsPercent" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="description">תיאור</label>
-                        <textarea name="description" id="description" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
-                    <button type="submit" class="btn btn-primary">הוסף שלב</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
-     <!-- Payment Modal -->
-     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
-            <div class="modal-dialog">
-                <div class="modal-content">
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עדכון סטטוס תשלום</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -277,21 +282,21 @@ $jsonChartData = json_encode($chartData);
 
                         <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
-                        <input type="hidden" name="projectid" id="projectid" >
-                        <input type="hidden" name="projectstepid" id="projectstepid" >
-                       
+                        <input type="hidden" name="projectid" id="projectid">
+                        <input type="hidden" name="projectstepid" id="projectstepid">
+
                         <div class="mb-3">
-                        <label for="finish"> סטטוס התשלום</label>
-                        <select class="form-control" id="payment" name="payment">
-                            <option >שולם</option>
-                            <option >שולם חלקי</option>
-                            <option >לא שולם</option>
-                        </select>
+                            <label for="finish"> סטטוס התשלום</label>
+                            <select class="form-control" id="payment" name="payment">
+                                <option>שולם</option>
+                                <option>שולם חלקי</option>
+                                <option>לא שולם</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
                             <label for="">אחוז שולם מהשלב</label>
-                            <input type="number" name="paymentPercent" id="paymentPercent" class="form-control" ></input>
+                            <input type="number" name="paymentPercent" id="paymentPercent" class="form-control"></input>
                         </div>
 
                     </div>
@@ -300,9 +305,9 @@ $jsonChartData = json_encode($chartData);
                         <button type="submit" class="btn btn-primary">עדכון</button>
                     </div>
                 </form>
-                </div>
             </div>
         </div>
+    </div>
 
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
@@ -314,9 +319,9 @@ $jsonChartData = json_encode($chartData);
         <!-- Spinner End -->
 
 
-          <!-- Sidebar Start -->
-          <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -342,7 +347,7 @@ $jsonChartData = json_encode($chartData);
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -353,13 +358,13 @@ $jsonChartData = json_encode($chartData);
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -372,8 +377,8 @@ $jsonChartData = json_encode($chartData);
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -382,8 +387,8 @@ $jsonChartData = json_encode($chartData);
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -415,7 +420,7 @@ $jsonChartData = json_encode($chartData);
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -432,155 +437,150 @@ $jsonChartData = json_encode($chartData);
             </nav>
             <!-- Navbar End -->
 
-            
+
             <!-- Form Start -->
-           
+
             <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
-                        <form id="updateProject">
-                            <button type="submit" name="submit" class="btn btn-primary border-0" style="float: left; background-color: rgba(54, 162, 235, 1);"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
-                            <h6 class="mb-4" id="name" style="color: black; font-size: 20px;"></h6>
+                            <form id="updateProject">
+                                <button type="submit" name="submit" class="btn btn-primary border-0" style="float: left; background-color: rgba(54, 162, 235, 1);"><i class="fa fa-check me-2"></i>&nbsp עדכון </button>
+                                <h6 class="mb-4" id="name" style="color: black; font-size: 20px;"></h6>
 
-                            <input type="hidden" name="id" id="id" value="" ></input>
-                           
+                                <input type="hidden" name="id" id="id" value=""></input>
+
                                 <div class="col-lg-4 col-xlg-3 col-md-5">
-                                    <div >
+                                    <div>
                                         <div class="mb-4">
-                                            <div class="mb-3" style="text-align:center;"> <img src="img/2.jpg"  width="300" height="200" class="mb-3"/>
+                                            <div class="mb-3" style="text-align:center;"> <img src="img/2.jpg" width="300" height="200" class="mb-3" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">שם הפרויקט</label>
-                                    <input type="text" class="form-control" id="projectName" name="projectName"style="font-weight: bold; color: black;" readonly
-                                    > 
+                                    <input type="text" class="form-control" id="projectName" name="projectName" style="font-weight: bold; color: black;" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">המזמין </label>
-                                    <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;" require
-                                     > 
+                                    <input type="text" class="form-control" id="clientName" name="clientName" style="font-weight: bold; color: black;" require>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">כתובת </label>
-                                    <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;" require
-                                    > 
+                                    <input type="text" class="form-control" id="address" name="address" style="font-weight: bold; color: black;" require>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך התחלת הפרויקט</label>
-                                    <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;" require
-                                >
+                                    <input type="date" class="form-control" id="startDate" name="startDate" style="font-weight: bold; color: black;" require>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">תאריך סיום משוערך</label>
-                                    <input type="date" class="form-control" id="endDate" name="endDate" style="font-weight: bold; color: black;" require
-                                >
+                                    <input type="date" class="form-control" id="endDate" name="endDate" style="font-weight: bold; color: black;" require>
                                 </div>
-                                
+
                             </form>
-                 
+
                         </div>
                     </div>
 
-                    
+
                     <div class="col-sm-12 col-xl-6">
-    <div class="row">
-    <div class="col-sm-6">
-    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
-        <i class="fa fa-chart-line fa-3x" style="color: #55BF96;"></i>
-        <div class="ms-3">
-            <p class="mb-2">הכנסות</p>
-            <h6 id="penefit" class="mb-0"></h6>
-        </div>
-    </div>
-</div>
-        <div class="col-sm-6">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div2">
-                <i class="fa fa-chart-bar fa-3x" style="color: #E04050;"></i>
-                <div class="ms-3">
-                    <p class="mb-2">הוצאות</p>
-                    <h6 id="expenses" class="mb-0"></h6>
-                </div>
-            </div>
-        </div>
-    </div>
-        <br>
-        
-        <div class="bg-light rounded h-100 p-4">
-    <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
-    <div class="d-flex align-items-center justify-content-between mb-4"></div>
-    <div class="chart-container" style="width: 300px; height: 250px; display: flex; justify-content: center; align-items: center;">
-        <canvas id="incomeChart"></canvas>
-    </div>
-    <br>
-    <br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
+                                    <i class="fa fa-chart-line fa-3x" style="color: #55BF96;"></i>
+                                    <div class="ms-3">
+                                        <p class="mb-2">הכנסות</p>
+                                        <h6 id="penefit" class="mb-0"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div2">
+                                    <i class="fa fa-chart-bar fa-3x" style="color: #E04050;"></i>
+                                    <div class="ms-3">
+                                        <p class="mb-2">הוצאות</p>
+                                        <h6 id="expenses" class="mb-0"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="bg-light rounded h-100 p-4">
+                            <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
+                            <div class="d-flex align-items-center justify-content-between mb-4"></div>
+                            <div class="chart-container" style="width: 300px; height: 250px; display: flex; justify-content: center; align-items: center;">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                            <br>
+                            <br>
 
 
-        <div class="table-container" id="myTable">
-            <table class="table" >
-                <thead>
-                    <tr style="background-color: #95A29F;" class="text-white text-center">
-                        <th scope="col">#</th>
-                        <th scope="col">שלב</th>
-                        <th scope="col">אחוז</th>
-                        <th scope="col">שולם</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
+                            <div class="table-container" id="myTable">
+                                <table class="table">
+                                    <thead>
+                                        <tr style="background-color: #95A29F;" class="text-white text-center">
+                                            <th scope="col">#</th>
+                                            <th scope="col">שלב</th>
+                                            <th scope="col">אחוז</th>
+                                            <th scope="col">שולם</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        <?php
+                                        $i = 1;
+                                        $conn = require __DIR__ . "/database.php";
+                                        $query = "SELECT * FROM projectstep WHERE projectId='$id'";
+                                        $query_run = mysqli_query($conn, $query);
+
+                                        if (mysqli_num_rows($query_run) > 0) {
+                                            while ($projectstep = mysqli_fetch_assoc($query_run)) {
+                                        ?>
+                                                <tr>
+                                                    <th scope="row"><?= $i ?></th>
+                                                    <td><?= $projectstep["description"] ?></td>
+                                                    <td><?= $projectstep["projectsPercent"] ?>%</td>
+                                                    <td><?= $projectstep["payment"] ?></td>
+                                                    <td>
+                                                        <div class="button-container">
+                                                            <button type="button" value="<?= $projectstep["id"] ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button>
+                                                            <button type="button" value="<?= $projectstep["id"] ?>" class="deleteStepBtn btn btn-danger border-0" style="background-color: red;"><i class="fas fa-trash"></i></button>
+                                                            <button type="button" value="<?= $projectstep["id"] ?>" class="updateStepBtn btn btn-success border-0" style="background-color: green;"><i class="fas fa-edit"></i></button>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                        <?php
+                                                $i++;
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <div class="d-flex justify-content-between">
+                                <button type="button" value="<?= $id ?>" class="addStepBtn btn btn-primary border-0" style="background-color:  rgba(54, 162, 235, 1);">הוספת שלב/ים </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                     <?php
-                    $i = 1;
-                    $conn = require __DIR__ . "/database.php";
-                    $query = "SELECT * FROM projectstep WHERE projectId='$id'";
-                    $query_run = mysqli_query($conn, $query);
+                    // Fetch the address from the database
+                    //$address = "רחוב שטורמן, הרצליה, ישראל"; // Replace with your code to fetch the address from MySQL
 
-                    if (mysqli_num_rows($query_run) > 0) {
-                        while ($projectstep = mysqli_fetch_assoc($query_run)) {
-                    ?>
-                            <tr>
-                                <th scope="row"><?= $i ?></th>
-                                <td><?= $projectstep["description"] ?></td>
-                                <td><?= $projectstep["projectsPercent"] ?>%</td>
-                                <td><?= $projectstep["payment"] ?></td>
-                                <td>
-                                    <div class="button-container">
-                                        <button type="button" value="<?= $projectstep["id"] ?>" class="insertPaymentBtn btn btn-primary border-0" style="background-color: #F15156;"><i class="fas fa-piggy-bank"></i></button>
-                                        <button type="button" value="<?= $projectstep["id"] ?>" class="deleteStepBtn btn btn-danger border-0" style="background-color: red;"><i class="fas fa-trash"></i></button>
-                                        <button type="button" value="<?= $projectstep["id"] ?>" class="updateStepBtn btn btn-success border-0" style="background-color: green;"><i class="fas fa-edit"></i></button>
-   
-                                    </div>      
-                                </td>
-                            </tr>
-                    <?php
-                            $i++;
-                        }
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <div class="d-flex justify-content-between">
-             <button type="button" value="<?= $id ?>" class="addStepBtn btn btn-primary border-0" style="background-color:  rgba(54, 162, 235, 1);">הוספת שלב/ים </button>  
-           
-         </div>
-    </div>
-</div>
+                    // Construct the embedded map URL
+                    $mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&q=" . urlencode($address);
 
-                       
-
-                
-                                <?php
-                                // Fetch the address from the database
-                                //$address = "רחוב שטורמן, הרצליה, ישראל"; // Replace with your code to fetch the address from MySQL
-
-                                // Construct the embedded map URL
-                                $mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0&q=" . urlencode($address);
-
-                                // Output the HTML with the embedded map
-                                echo '
+                    // Output the HTML with the embedded map
+                    echo '
                                 <div class="col-sm-12 col-xl-6">
                                         <div class="bg-light rounded h-100 p-4">
                                             <h3 class="mb-1" style="color: black;  font-size: 18px;">מיקום הפרויקט</h3>
@@ -591,50 +591,50 @@ $jsonChartData = json_encode($chartData);
                                         </div>
                                     </div>
                                     ';
-                                ?>
+                    ?>
 
-<div class="col-sm-12 col-xl-6">
-    <div class="bg-light rounded h-100 p-4">
-   
-    <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="mb-0" style="color: black; font-size: 18px;">קבצים מצורפים</h3>
-            <button class="btn btn-success add-file-button" onclick="showFileInput()">
-                <i class="fas fa-plus"></i>
-            </button>
-            <input type="file" id="fileInput" style="display: none;" onchange="uploadFile(this)" accept=".pdf">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light rounded h-100 p-4">
 
-        </div>
-        <?php
-        if (mysqli_num_rows($fileResult) > 0) {
-            while ($file = mysqli_fetch_assoc($fileResult)) {
-                $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
-                $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
-        ?>
-                <div class="file-panel" style="display: flex; align-items: center; justify-content: space-between;">
-                    <div class="file-details" style="display: flex; align-items: center;">
-                        <div class="file-icon">
-                            <i class="<?= $iconClass ?> fa-3x" style="color: red;"></i>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="mb-0" style="color: black; font-size: 18px;">קבצים מצורפים</h3>
+                                <button class="btn btn-success add-file-button" onclick="showFileInput()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <input type="file" id="fileInput" style="display: none;" onchange="uploadFile(this)" accept=".pdf">
+
+                            </div>
+                            <?php
+                            if (mysqli_num_rows($fileResult) > 0) {
+                                while ($file = mysqli_fetch_assoc($fileResult)) {
+                                    $extension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+                                    $iconClass = ($extension === 'pdf') ? 'far fa-file-pdf' : 'far fa-file';
+                            ?>
+                                    <div class="file-panel" style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div class="file-details" style="display: flex; align-items: center;">
+                                            <div class="file-icon">
+                                                <i class="<?= $iconClass ?> fa-3x" style="color: red;"></i>
+                                            </div>
+                                            <p style="margin: 0;">
+                                                <a href="<?= $file['filename'] ?>" target="_blank"><?= basename($file['filename']) ?></a>
+                                            </p>
+                                        </div>
+                                        <a href="#" class="btn btn-danger delete-button" onclick="deleteFile(<?= $file['id'] ?>)">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                            <?php
+                                }
+                            } else {
+                                echo 'אין קבצים עבור הפרויקט הזה.';
+                            }
+                            ?>
                         </div>
-                        <p style="margin: 0;">
-                            <a href="<?= $file['filename'] ?>" target="_blank"><?= basename($file['filename']) ?></a>
-                        </p>
                     </div>
-                    <a href="#" class="btn btn-danger delete-button" onclick="deleteFile(<?= $file['id'] ?>)">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
-        <?php
-            }
-        } else {
-            echo 'אין קבצים עבור הפרויקט הזה.';
-        }
-        ?>
-    </div>
-</div>
 
                 </div>
             </div>
-    
+
             <!-- Form End -->
 
 
@@ -643,7 +643,7 @@ $jsonChartData = json_encode($chartData);
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -669,7 +669,7 @@ $jsonChartData = json_encode($chartData);
 
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-    
+
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
@@ -690,41 +690,39 @@ $jsonChartData = json_encode($chartData);
         document.getElementById("id").value = projectId;
         document.getElementById("projectid").value = projectId;
         document.getElementById("projectid2").value = projectId;
-
-       
     </script>
 
     <script>
-        $(document).on('click', '.insertPaymentBtn', function () {
-            
+        $(document).on('click', '.insertPaymentBtn', function() {
+
             var projectid = $(this).val();
 
-            $('#projectstepid').val(projectid); 
-            
+            $('#projectstepid').val(projectid);
+
             $.ajax({
                 type: "GET",
                 url: "insertPayment.php?projectid=" + projectid,
-                success: function (response) {
+                success: function(response) {
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 404) {
+                    if (res.status == 404) {
 
                         alert(res.message);
-                    }else if(res.status == 200){
-                        
-                    
+                    } else if (res.status == 200) {
 
-                    $('#payment').val(res.data.payment);
-                    $('#paymentPercent').val(res.data.paymentPercent);
-                    
-                  
-                    $('#paymentModal').modal('show');
-                    
+
+
+                        $('#payment').val(res.data.payment);
+                        $('#paymentPercent').val(res.data.paymentPercent);
+
+
+                        $('#paymentModal').modal('show');
+
                     }
                 }
             });
         });
 
-        $(document).on('submit', '#insertPayment', function (e) {
+        $(document).on('submit', '#insertPayment', function(e) {
             e.preventDefault();
 
             var formData = new FormData(this);
@@ -736,20 +734,20 @@ $jsonChartData = json_encode($chartData);
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    
+                success: function(response) {
+
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
+                    if (res.status == 422) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
 
-                    }else if(res.status == 200){
+                    } else if (res.status == 200) {
 
                         $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
+                        alertify.set('notifier', 'position', 'top-right');
                         alertify.success(res.message);
-                        
+
                         $('#paymentModal').modal('hide');
                         $('#insertPayment')[0].reset();
 
@@ -758,8 +756,8 @@ $jsonChartData = json_encode($chartData);
                         }, 2000); // 2000 milliseconds = 2 seconds
                         //$('#myTable').load(location.href + " #myTable");
 
-                        
-                    }else if(res.status == 500) {
+
+                    } else if (res.status == 500) {
                         alert(res.message);
                     }
                 }
@@ -767,11 +765,11 @@ $jsonChartData = json_encode($chartData);
 
         });
 
-        $(document).on('click', '.addStepBtn', function () {
+        $(document).on('click', '.addStepBtn', function() {
             $('#stepAddModal').modal('show');
         });
 
-        $(document).on('submit', '#addStep', function (e) {
+        $(document).on('submit', '#addStep', function(e) {
             e.preventDefault();
 
             var formData = new FormData(this);
@@ -783,20 +781,20 @@ $jsonChartData = json_encode($chartData);
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    
+                success: function(response) {
+
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
+                    if (res.status == 422) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
 
-                    }else if(res.status == 200){
+                    } else if (res.status == 200) {
 
                         $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
+                        alertify.set('notifier', 'position', 'top-right');
                         alertify.success(res.message);
-                        
+
                         $('#stepAddModal').modal('hide');
                         $('#addStep')[0].reset();
 
@@ -805,7 +803,7 @@ $jsonChartData = json_encode($chartData);
                         setTimeout(function() {
                             refreshPage();
                         }, 2000); // 2000 milliseconds = 2 seconds
-                    }else if(res.status == 500) {
+                    } else if (res.status == 500) {
                         alert(res.message);
                     }
                 }
@@ -818,13 +816,15 @@ $jsonChartData = json_encode($chartData);
 
             $.ajax({
                 type: "POST",
-                url: "deleteStep.php", 
-                data: { deleteStepId: deleteStepId }, // Send the step ID as data
+                url: "deleteStep.php",
+                data: {
+                    deleteStepId: deleteStepId
+                }, // Send the step ID as data
                 success: function(response) {
                     var res = jQuery.parseJSON(response);
                     if (res.status == 200) {
                         alertify.success(res.message);
-                        
+
                         //$('#myTable').load(location.href + " #myTable");
                         setTimeout(function() {
                             refreshPage();
@@ -842,14 +842,16 @@ $jsonChartData = json_encode($chartData);
 
             // Populate the modal form fields with stepId data or perform any additional actions
 
-           $('#updateStepId').val(stepId); // Assuming you have an input field with ID "updateStepId"
-           
-           
+            $('#updateStepId').val(stepId); // Assuming you have an input field with ID "updateStepId"
+
+
             // Get the current status value
             $.ajax({
                 type: "POST",
                 url: "fetchCurrentFinish.php", // Replace with the actual PHP file's URL
-                data: { stepId: stepId },
+                data: {
+                    stepId: stepId
+                },
                 success: function(response) {
                     var currentFinish = response;
                     $('#newFinish').val(currentFinish); // Set the selected value in the select element
@@ -859,131 +861,128 @@ $jsonChartData = json_encode($chartData);
         });
 
         $('#updateStepForm').submit(function(event) {
-        event.preventDefault(); // Prevent form from submitting normally
-        var formData = $(this).serialize(); // Serialize the form data
-        $.ajax({
-            type: 'POST',
-            url: 'updateFinishStatus.php', // Replace with the actual PHP file's URL
-            data: formData,
-            success: function(response) {
-                var res = jQuery.parseJSON(response);
-                if (res.status == 200) {
-                    // Update the table here
-                    // You can either refresh the entire table or update the specific row
-                    
-                    // Close the modal
-                    $('#updateStepModal').modal('hide');
-                    alertify.success(res.message);
+            event.preventDefault(); // Prevent form from submitting normally
+            var formData = $(this).serialize(); // Serialize the form data
+            $.ajax({
+                type: 'POST',
+                url: 'updateFinishStatus.php', // Replace with the actual PHP file's URL
+                data: formData,
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 200) {
+                        // Update the table here
+                        // You can either refresh the entire table or update the specific row
 
-                    setTimeout(function() {
+                        // Close the modal
+                        $('#updateStepModal').modal('hide');
+                        alertify.success(res.message);
+
+                        setTimeout(function() {
                             refreshPage();
                         }, 2000); // 2000 milliseconds = 2 seconds
-                    //$('#myTable').load(location.href + " #myTable");
+                        //$('#myTable').load(location.href + " #myTable");
 
-                } else {
-                    // Handle error case
-                    console.log(res.message);
-                    alertify.error(res.message);
+                    } else {
+                        // Handle error case
+                        console.log(res.message);
+                        alertify.error(res.message);
                     }
                 }
             });
         });
 
         function deleteFile(fileId) {
-        if (confirm('האם אתה פתוח שרוצה למחוק את הקובץ הזה?')) {
-            // Make an AJAX request to deleteFile.php
-            $.ajax({
-                url: 'deleteFile.php',
-                type: 'POST',
-                data: { file_id: fileId },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        // Optional: Update UI to reflect the deletion
-                        $('#errorMessageUpdate').addClass('d-none');
+            if (confirm('האם אתה פתוח שרוצה למחוק את הקובץ הזה?')) {
+                // Make an AJAX request to deleteFile.php
+                $.ajax({
+                    url: 'deleteFile.php',
+                    type: 'POST',
+                    data: {
+                        file_id: fileId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            // Optional: Update UI to reflect the deletion
+                            $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
-                        alertify.success("הקובץ נמחק בהצלחה");
+                            alertify.set('notifier', 'position', 'top-right');
+                            alertify.success("הקובץ נמחק בהצלחה");
 
-                        setTimeout(function() {
-                            refreshPage();
-                        }, 2000); // 2000 milliseconds = 2 seconds
-                    } else {
-                        alert('שגיאה במחיקת הקובץ');
+                            setTimeout(function() {
+                                refreshPage();
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        } else {
+                            alert('שגיאה במחיקת הקובץ');
+                        }
+                    },
+                    error: function() {
+                        alert('שגיאה במחיקת הקובץ .');
                     }
-                },
-                error: function() {
-                    alert('שגיאה במחיקת הקובץ .');
-                }
-            });
+                });
             }
         }
 
-    function refreshPage() {
-        window.location.reload();
-    }
+        function refreshPage() {
+            window.location.reload();
+        }
 
-    function showFileInput() {
-        const fileInput = document.getElementById('fileInput');
-        fileInput.click();
-    }
+        function showFileInput() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.click();
+        }
 
-    function uploadFile(input) {
-        const formData = new FormData();
-        formData.append('pdfFile', input.files[0]);
-        formData.append('projectName', '<?php echo $name; ?>'); // Replace with your PHP code
+        function uploadFile(input) {
+            const formData = new FormData();
+            formData.append('pdfFile', input.files[0]);
+            formData.append('projectName', '<?php echo $name; ?>'); // Replace with your PHP code
 
-        fetch('insertFile.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the JSON response data here
-            console.log(data);
-            $('#errorMessageUpdate').addClass('d-none');
+            fetch('insertFile.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the JSON response data here
+                    console.log(data);
+                    $('#errorMessageUpdate').addClass('d-none');
 
-            alertify.set('notifier','position', 'top-right');
-            alertify.success("הקובץ הועלה בהצלחה");
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.success("הקובץ הועלה בהצלחה");
 
-            setTimeout(function() {
-                refreshPage();
-            }, 2000); // 2000 milliseconds = 2 seconds
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-
-
-
-
+                    setTimeout(function() {
+                        refreshPage();
+                    }, 2000); // 2000 milliseconds = 2 seconds
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     </script>
 
-<script>
-    // Get the element by its ID
-    var penefitElement = document.getElementById("penefit");
+    <script>
+        // Get the element by its ID
+        var penefitElement = document.getElementById("penefit");
 
-    // Set the number value
-    var number = "<?php echo $total; ?>"; // Replace with your actual number
+        // Set the number value
+        var number = "<?php echo $total; ?>"; // Replace with your actual number
 
-    // Add commas to the number and update the element content
-    penefitElement.textContent = Number(number).toLocaleString() + "₪" ;
-</script>
+        // Add commas to the number and update the element content
+        penefitElement.textContent = Number(number).toLocaleString() + "₪";
+    </script>
 
-<script>
-    // Get the element by its ID
-    var penefitElement = document.getElementById("expenses");
+    <script>
+        // Get the element by its ID
+        var penefitElement = document.getElementById("expenses");
 
-    // Set the number value
-    var number = "<?php echo $totalexpenses; ?>"; // Replace with your actual number
+        // Set the number value
+        var number = "<?php echo $totalexpenses; ?>"; // Replace with your actual number
 
-    // Add commas to the number and update the element content
-    penefitElement.textContent = Number(number).toLocaleString() + "₪" ;
-</script>
+        // Add commas to the number and update the element content
+        penefitElement.textContent = Number(number).toLocaleString() + "₪";
+    </script>
 
-<script>
+    <script>
         // Retrieve the chart data from PHP
         var chartData = <?php echo $jsonChartData; ?>;
 
@@ -998,10 +997,10 @@ $jsonChartData = json_encode($chartData);
             }
         });
 
-        
 
 
-        $(document).on('submit', '#updateProject', function (e) {
+
+        $(document).on('submit', '#updateProject', function(e) {
             e.preventDefault();
 
             var formData = new FormData(this);
@@ -1013,49 +1012,47 @@ $jsonChartData = json_encode($chartData);
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    
+                success: function(response) {
+
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
+                    if (res.status == 422) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
                         alertify.error(res.message);
-                    }else if(res.status == 200){
+                    } else if (res.status == 200) {
 
                         $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
+                        alertify.set('notifier', 'position', 'top-right');
                         alertify.success(res.message);
-                        
-                       // $('#updateProject')[0].reset();
+
+                        // $('#updateProject')[0].reset();
 
                         //$('#myTable').load(location.href + " #myTable");
 
-                    }else if(res.status == 500) {
+                    } else if (res.status == 500) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
-                      
+
                         alertify.error(res.message);
                     }
                 }
             });
 
         });
-
     </script>
 
-<script>
-    function initializeAutocomplete() {
-        var locationInput = document.getElementById('address');
-        var autocomplete = new google.maps.places.Autocomplete(locationInput);
-    }
-  
-    // Call the initializeAutocomplete function when the page loads
-    google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
+    <script>
+        function initializeAutocomplete() {
+            var locationInput = document.getElementById('address');
+            var autocomplete = new google.maps.places.Autocomplete(locationInput);
+        }
+
+        // Call the initializeAutocomplete function when the page loads
+        google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
     </script>
 
 
 </body>
 
 </html>
-

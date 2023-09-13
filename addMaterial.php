@@ -126,10 +126,3 @@ error_reporting(E_ALL);
         echo "Please fill in all required fields.";
     }
 }
-?>
-
-
-  
-
-
-

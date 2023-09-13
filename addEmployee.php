@@ -3,7 +3,7 @@
 session_start();
 
 //if (!isset($_SESSION['loaded'])) {
-  //  $_SESSION['loaded'] = true;
+//  $_SESSION['loaded'] = true;
 //}
 
 $errorMessage = "";
@@ -11,51 +11,48 @@ $successMessage = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["fullName"]) || empty($_POST["job"]) || empty($_POST["startDate"]) || empty($_POST["Gender"]) || empty($_POST["daySalary"])) {
         $errorMessage = "כל השדות חובה";
-
     } else if (!is_numeric($_POST["daySalary"])) {
         $errorMessage = "המשכורת חייבת להיות מספר";
-    } else if( $_POST['job'] === "בחר/י"){
+    } else if ($_POST['job'] === "בחר/י") {
         $errorMessage = 'צריך לבחור תפקיד מהרשימה.<br>';
-    } else if( $_POST['Gender'] === "בחר/י"){
+    } else if ($_POST['Gender'] === "בחר/י") {
         $errorMessage = 'צריך לציין את המין.<br>';
-    } else{
-    $fullName = $_POST['fullName'];
-    $job = $_POST['job'];
-    $startDate = $_POST['startDate'];
-    $Gender = $_POST['Gender'];
-    $daySalary = $_POST['daySalary'];
-	
-    $conn = require __DIR__ . "/database.php";
+    } else {
+        $fullName = $_POST['fullName'];
+        $job = $_POST['job'];
+        $startDate = $_POST['startDate'];
+        $Gender = $_POST['Gender'];
+        $daySalary = $_POST['daySalary'];
 
-    $stmt = $conn->prepare("insert into employee(fullName, job, startDate, Gender, salary) values(?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssd", $fullName, $job, $startDate, $Gender, $daySalary);
-    try {
-        $execval = $stmt->execute();
-        if ($execval) {
-            $successMessage = "העובד נקלט בהצלחה";
-            // You can optionally refresh the page after successful insertion
-            //echo '<meta http-equiv="refresh" content="2">';
+        $conn = require __DIR__ . "/database.php";
+
+        $stmt = $conn->prepare("insert into employee(fullName, job, startDate, Gender, salary) values(?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssd", $fullName, $job, $startDate, $Gender, $daySalary);
+        try {
+            $execval = $stmt->execute();
+            if ($execval) {
+                $successMessage = "העובד נקלט בהצלחה";
+                // You can optionally refresh the page after successful insertion
+                //echo '<meta http-equiv="refresh" content="2">';
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) { // Error code for duplicate entry
+                $errorMessage = "כנראה שהעובד כבר קיים במערכת";
+            } else {
+                $errorMessage = "Error: " . $e->getMessage();
+            }
         }
-    } catch (mysqli_sql_exception $e) {
-        if ($e->getCode() === 1062) { // Error code for duplicate entry
-            $errorMessage = "כנראה שהעובד כבר קיים במערכת";
-        } else {
-            $errorMessage = "Error: " . $e->getMessage();
-        }
-    }
-    $stmt->close();
-    $conn->close();
-
+        $stmt->close();
+        $conn->close();
     }
 
-      // Store the messages in session variables
+    // Store the messages in session variables
     $_SESSION["successMessage"] = $successMessage;
     $_SESSION["errorMessage"] = $errorMessage;
 
     // Redirect to the same page to prevent re-submission
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit();
-  
 }
 ?>
 
@@ -71,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 
     <!-- Favicon -->
@@ -81,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -97,24 +94,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link href="css/style.css" rel="stylesheet">
 
     <style>
-    .custom-form {
-        display: flex;
-        justify-content: center;
-    }
+        .custom-form {
+            display: flex;
+            justify-content: center;
+        }
 
-    .custom-form-container {
-        max-width: 500px;
-        width: 100%;
-        direction: rtl;
-        text-align: right;
-    }
+        .custom-form-container {
+            max-width: 500px;
+            width: 100%;
+            direction: rtl;
+            text-align: right;
+        }
 
-    .custom-form .form-floating {
-        text-align: right;
-    }
-</style>
+        .custom-form .form-floating {
+            text-align: right;
+        }
+    </style>
 
-   
+
 </head>
 
 
@@ -130,9 +127,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Spinner End -->
 
 
-         <!-- Sidebar Start -->
-         <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -158,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item active">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item active">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -169,13 +166,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -188,8 +185,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -199,8 +196,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Content Start -->
         <div class="content">
-              <!-- Navbar Start -->
-              <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -232,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -251,9 +248,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
             <div class="col-sm-12 custom-form">
-    <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
-          <h5 class="mb-4">הוספת עובד</h5>
-                    <form  method="post" dir="rtl" >
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">
+                    <h5 class="mb-4">הוספת עובד</h5>
+                    <form method="post" dir="rtl">
                         <div class="form-floating mb-3 position-relative">
                             <input type="text" class="form-control" id="fullName" name="fullName" placeholder="">
                             <label for="fullName" class="position-absolute top-0 end-0">שם מלא</label>
@@ -284,7 +281,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </select>
                             <label for="Gender" class="position-absolute top-0 end-0">מין</label>
                         </div>
-                        
+
                         <button class="btn btn-primary">הוסף</button>
                         <!-- Display error message -->
                         <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
@@ -306,25 +303,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         unset($_SESSION["successMessage"]);
                         ?>
                     </form>
-                   
+
                     <!-- Clearing form inputs after refreshing the page submission -->
                     <script>
-                        if ($successMessage !== ""){
+                        if ($successMessage !== "") {
                             document.addEventListener("DOMContentLoaded", function() {
-                        document.getElementById("fullName").value = "";
-                        document.getElementById("job").value = "";
-                        document.getElementById("startDate").value = "";
-                        document.getElementById("Gender").value = "";
-                        document.getElementById("daySalary").value = "";
-                        document.getElementById("errorMessage").textContent = "";
-                        document.getElementById("successMessage").textContent = "";
-                    });
+                                document.getElementById("fullName").value = "";
+                                document.getElementById("job").value = "";
+                                document.getElementById("startDate").value = "";
+                                document.getElementById("Gender").value = "";
+                                document.getElementById("daySalary").value = "";
+                                document.getElementById("errorMessage").textContent = "";
+                                document.getElementById("successMessage").textContent = "";
+                            });
 
-                    }
-                </script>
+                        }
+                    </script>
                 </div>
             </div>
-            
+
 
 
             <!-- Footer Start -->
@@ -332,7 +329,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->

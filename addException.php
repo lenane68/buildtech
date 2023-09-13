@@ -1,51 +1,51 @@
-<?php 
+<?php
 
 session_start();
 
 $errorMessage = "";
 $successMessage = "";
 
- $conn = require __DIR__ . "/database.php";
+$conn = require __DIR__ . "/database.php";
 
- $sql = "SELECT * FROM project";
+$sql = "SELECT * FROM project";
 
- $result = $conn->query($sql);
-    
+$result = $conn->query($sql);
 
 
- if ($_SERVER["REQUEST_METHOD"] === "POST"){
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["projectName"]) || empty($_POST["description"]) || empty($_POST["price"])) {
         $errorMessage = "שדה חובה ריק";
-    }else if (!is_numeric($_POST["price"])) {
+    } else if (!is_numeric($_POST["price"])) {
         $errorMessage = " המחיר חייב להיות מספר";
-    } else if( $_POST['projectName'] === "בחר/י"){
+    } else if ($_POST['projectName'] === "בחר/י") {
         $errorMessage = 'צריך לבחור שם הפרויקט מהרשימה.<br>';
     } else {
 
-    $projectName = $_POST['projectName'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
-
-   
-    $stmt = $conn->prepare("insert into exception(projectName, description, price) values(?, ?, ?)");
-    $stmt->bind_param("ssd", $projectName, $description, $price);
+        $projectName = $_POST['projectName'];
+        $description = $_POST['description'];
+        $price = $_POST['price'];
 
 
-    try {
-    $execval = $stmt->execute();
-    if($execval){
-        $successMessage = "החריגה נקלטה בהצלחה";
-    } 
-    } catch(mysqli_sql_exception $e) {
-        if ($e->getCode() === 1062) { // Error code for duplicate entry
-            $errorMessage = "כנראה שהחריגה כבר קיימת במערכת";
-        } else {
-            $errorMessage = "Error: " . $e->getMessage();
+        $stmt = $conn->prepare("insert into exception(projectName, description, price) values(?, ?, ?)");
+        $stmt->bind_param("ssd", $projectName, $description, $price);
+
+
+        try {
+            $execval = $stmt->execute();
+            if ($execval) {
+                $successMessage = "החריגה נקלטה בהצלחה";
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) { // Error code for duplicate entry
+                $errorMessage = "כנראה שהחריגה כבר קיימת במערכת";
+            } else {
+                $errorMessage = "Error: " . $e->getMessage();
+            }
         }
-    }
-   
-    $stmt->close();
-    $conn->close();
+
+        $stmt->close();
+        $conn->close();
     }
 
     // Store the messages in session variables
@@ -55,9 +55,8 @@ $successMessage = "";
     // Redirect to the same page to prevent re-submission
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit();
+}
 
- }
-   
 
 ?>
 
@@ -78,7 +77,7 @@ $successMessage = "";
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -93,22 +92,22 @@ $successMessage = "";
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
-    .custom-form {
-        display: flex;
-        justify-content: center;
-    }
+        .custom-form {
+            display: flex;
+            justify-content: center;
+        }
 
-    .custom-form-container {
-        max-width: 500px;
-        width: 100%;
-        direction: rtl;
-        text-align: right;
-    }
+        .custom-form-container {
+            max-width: 500px;
+            width: 100%;
+            direction: rtl;
+            text-align: right;
+        }
 
-    .custom-form .form-floating {
-        text-align: right;
-    }
-</style>
+        .custom-form .form-floating {
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body>
@@ -122,9 +121,9 @@ $successMessage = "";
         <!-- Spinner End -->
 
 
-          <!-- Sidebar Start -->
-          <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -150,7 +149,7 @@ $successMessage = "";
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -161,13 +160,13 @@ $successMessage = "";
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -180,8 +179,8 @@ $successMessage = "";
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -191,8 +190,8 @@ $successMessage = "";
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -224,7 +223,7 @@ $successMessage = "";
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -243,36 +242,33 @@ $successMessage = "";
 
 
             <div class="col-sm-12 custom-form">
-                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">      
-            <h5 class="mb-4">הוספת חריגה</h5>
+                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">
+                    <h5 class="mb-4">הוספת חריגה</h5>
                     <form method="post">
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="projectName" name="projectName"
-                                aria-label="Floating label select example">
+                            <select class="form-select" id="projectName" name="projectName" aria-label="Floating label select example">
                                 <option selected>בחר/י</option>
-                                <?php 
-                                            foreach($result as $row)
-                                            {
-                                                echo '<option value="'.$row["name"].'">'.$row["name"].'</option>';
-                                            }
+                                <?php
+                                foreach ($result as $row) {
+                                    echo '<option value="' . $row["name"] . '">' . $row["name"] . '</option>';
+                                }
                                 ?>
                             </select>
                             <label for="projectName" class="position-absolute top-0 end-0">פרויקט</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder=""
-                                id="description" name ="description" style="height: 150px;"></textarea>
+                            <textarea class="form-control" placeholder="" id="description" name="description" style="height: 150px;"></textarea>
                             <label for="description" class="position-absolute top-0 end-0">תיאור חריגה</label>
                         </div>
-                    <div class="input-group mb-3">
-                    <span class="input-group-text">00.</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="מחיר" id="price" name="price">    
-                        
-                        <span class="input-group-text">₪</span>
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
-                     <!-- Display error message -->
-                     <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">00.</span>
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="מחיר" id="price" name="price">
+
+                            <span class="input-group-text">₪</span>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-primary">הוסף</button>
+                        <!-- Display error message -->
+                        <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
                             <div class="alert alert-danger" role="alert">
                                 <?php echo $_SESSION["errorMessage"]; ?>
                             </div>
@@ -285,14 +281,14 @@ $successMessage = "";
                             </div>
                         <?php } ?>
 
-                          <!-- Clear session variables after displaying messages -->
-                          <?php
+                        <!-- Clear session variables after displaying messages -->
+                        <?php
                         unset($_SESSION["errorMessage"]);
                         unset($_SESSION["successMessage"]);
                         ?>
-                </form>
+                    </form>
                 </div>
-                
+
             </div>
 
 
@@ -302,7 +298,7 @@ $successMessage = "";
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->

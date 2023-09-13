@@ -10,7 +10,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 
     <!-- Favicon -->
@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -34,8 +34,8 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-   
-   
+
+
 </head>
 
 <body>
@@ -43,37 +43,37 @@
     <div class="modal fade" id="supplierViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">הצגת ספק</h5>
-                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">הצגת ספק</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
 
-                <div class="mb-3">
-                            <label for="">שם מלא</label>
-                            <p  id="view_supplierName" class="form-control" ></p>
-                            </div>
+                    <div class="mb-3">
+                        <label for="">שם מלא</label>
+                        <p id="view_supplierName" class="form-control"></p>
+                    </div>
 
-                            <div class="mb-3">
-                                <label for="">כתובת</label>
-                                <p  id="view_address" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">ת.ז/ ח.פ/ ע.מ</label>
-                                <p id="view_id" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">אימיל</label>
-                                <p id="view_email" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">טלפון</label>
-                                <p  id="view_phone" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">טלפון 2</label>
-                                <p  id="view_phone2" class="form-control" ></p>
-                            </div>
+                    <div class="mb-3">
+                        <label for="">כתובת</label>
+                        <p id="view_address" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">ת.ז/ ח.פ/ ע.מ</label>
+                        <p id="view_id" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">אימיל</label>
+                        <p id="view_email" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">טלפון</label>
+                        <p id="view_phone" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">טלפון 2</label>
+                        <p id="view_phone2" class="form-control"></p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
@@ -82,10 +82,10 @@
         </div>
     </div>
 
-     <!-- Edit Supplier Modal -->
-     <div class="modal fade" id="supplierEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
-            <div class="modal-dialog">
-                <div class="modal-content">
+    <!-- Edit Supplier Modal -->
+    <div class="modal fade" id="supplierEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת ספק</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -95,11 +95,11 @@
 
                         <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
-                        <input type="hidden" name="supplier_id" id="supplier_id" >
+                        <input type="hidden" name="supplier_id" id="supplier_id">
 
                         <div class="mb-3">
-                        <label for="">שם מלא</label>
-                        <input type="text" name="supplierName" id="supplierName" class="form-control" >
+                            <label for="">שם מלא</label>
+                            <input type="text" name="supplierName" id="supplierName" class="form-control">
                         </div>
 
                         <div class="mb-3">
@@ -122,18 +122,18 @@
                             <label for="">טלפון 2</label>
                             <input type="text" name="phone2" id="phone2" class="form-control" />
                         </div>
-                    
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
                         <button type="submit" class="btn btn-primary">עדכן ספק</button>
                     </div>
                 </form>
-                </div>
             </div>
         </div>
+    </div>
 
-        
+
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -145,8 +145,8 @@
 
 
         <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -172,7 +172,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -183,13 +183,13 @@
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -202,8 +202,8 @@
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -211,8 +211,8 @@
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -244,7 +244,7 @@
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -264,57 +264,55 @@
 
             <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4">
-                            <h5 class="mb-4">טבלת ספקים</h5>
-                        
-                            
-                            <table class="table" id="myTable" dir="rtl">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">שם מלא</th>
-                                        <th scope="col">מס' טלפון</th>
-                                        <th scope="col">כתובת</th>
-                                        <th scope="col">פעולה</th>
-                                    </tr>
-                                </thead> 
-                             
-                                <tbody>   
-                               <?php 
+                    <div class="bg-light rounded h-100 p-4">
+                        <h5 class="mb-4">טבלת ספקים</h5>
 
-                                 $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM supplier";
-                          
-                                 $query_run = mysqli_query($conn, $query);
-                         
-                        
-                               if(mysqli_num_rows($query_run) > 0)
-                               {
-                                   foreach($query_run as $supplier)
-                                   {
-                    
-                                       ?>
+
+                        <table class="table" id="myTable" dir="rtl">
+                            <thead>
                                 <tr>
-                                    <th scope="row"></th>
-                                    <td> <?= $supplier["name"] ?> </td>
-                                    <td> <?= $supplier["phone"] ?> </td>
-                                    <td> <?= $supplier["address"] ?> </td>
-                                    <td>
-                                            <button type="button" value="<?=$supplier['serialNumber'];?>" class="viewSupplierBtn btn btn-info btn-sm">הצג</button>
-                                            <button type="button" value="<?=$supplier['serialNumber'];?>" class="editSupplierBtn btn btn-success btn-sm">עדכון</button>
-                                            <button type="button" value="<?=$supplier['serialNumber'];?>" class="deleteSupplierBtn btn btn-danger btn-sm">מחיקה</button>
-                                    </td>
-                               </tr>
-                              <?php
-                         }
-                     }
-                     ?>
-                        </tbody>
-                    </table>
-                </div>             
+                                    <th scope="col">#</th>
+                                    <th scope="col">שם מלא</th>
+                                    <th scope="col">מס' טלפון</th>
+                                    <th scope="col">כתובת</th>
+                                    <th scope="col">פעולה</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <?php
+
+                                $conn = require __DIR__ . "/database.php";
+                                $query = "SELECT * FROM supplier";
+
+                                $query_run = mysqli_query($conn, $query);
+
+
+                                if (mysqli_num_rows($query_run) > 0) {
+                                    foreach ($query_run as $supplier) {
+
+                                ?>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td> <?= $supplier["name"] ?> </td>
+                                            <td> <?= $supplier["phone"] ?> </td>
+                                            <td> <?= $supplier["address"] ?> </td>
+                                            <td>
+                                                <button type="button" value="<?= $supplier['serialNumber']; ?>" class="viewSupplierBtn btn btn-info btn-sm">הצג</button>
+                                                <button type="button" value="<?= $supplier['serialNumber']; ?>" class="editSupplierBtn btn btn-success btn-sm">עדכון</button>
+                                                <button type="button" value="<?= $supplier['serialNumber']; ?>" class="deleteSupplierBtn btn btn-danger btn-sm">מחיקה</button>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-        
+
 
 
 
@@ -323,7 +321,7 @@
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -336,7 +334,7 @@
         </div>
         <!-- Content End -->
 
-       
+
 
 
         <!-- Back to Top -->
@@ -349,45 +347,45 @@
 
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-    
+
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
     <script>
-        $(document).on('click', '.editSupplierBtn', function () {
-            
+        $(document).on('click', '.editSupplierBtn', function() {
+
             var supplier_id = $(this).val();
             //alert(supplier_id);
 
             $.ajax({
                 type: "GET",
                 url: "suppliercode.php?supplier_id=" + supplier_id,
-                success: function (response) {
+                success: function(response) {
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 404) {
+                    if (res.status == 404) {
 
                         alert(res.message);
-                    }else if(res.status == 200){
-                        
-                    
-                    $('#supplier_id').val(res.data.serialNumber);   
-                    $('#supplierName').val(res.data.name);
-                    $('#address').val(res.data.address);
-                    $('#id').val(res.data.id);
-                    $('#email').val(res.data.email);
-                    $('#phone').val(res.data.phone);
-                    $('#phone2').val(res.data.phone2);
-                   
+                    } else if (res.status == 200) {
 
-                    $('#supplierEditModal').modal('show');
-                    
+
+                        $('#supplier_id').val(res.data.serialNumber);
+                        $('#supplierName').val(res.data.name);
+                        $('#address').val(res.data.address);
+                        $('#id').val(res.data.id);
+                        $('#email').val(res.data.email);
+                        $('#phone').val(res.data.phone);
+                        $('#phone2').val(res.data.phone2);
+
+
+                        $('#supplierEditModal').modal('show');
+
                     }
                 }
             });
-              
+
         });
 
-        $(document).on('submit', '#updateSupplier', function (e) {
+        $(document).on('submit', '#updateSupplier', function(e) {
             e.preventDefault();
 
             var formData = new FormData(this);
@@ -399,26 +397,26 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    
+                success: function(response) {
+
                     var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
+                    if (res.status == 422) {
                         $('#errorMessageUpdate').removeClass('d-none');
                         $('#errorMessageUpdate').text(res.message);
 
-                    }else if(res.status == 200){
+                    } else if (res.status == 200) {
 
                         $('#errorMessageUpdate').addClass('d-none');
 
-                        alertify.set('notifier','position', 'top-right');
+                        alertify.set('notifier', 'position', 'top-right');
                         alertify.success(res.message);
-                        
+
                         $('#supplierEditModal').modal('hide');
                         $('#updateSupplier')[0].reset();
 
                         $('#myTable').load(location.href + " #myTable");
 
-                    }else if(res.status == 500) {
+                    } else if (res.status == 500) {
                         alert(res.message);
                     }
                 }
@@ -426,38 +424,37 @@
 
         });
 
-        $(document).on('click', '.viewSupplierBtn', function () {
+        $(document).on('click', '.viewSupplierBtn', function() {
             var supplier_id = $(this).val();
             $.ajax({
-            type: "GET",
-            url: "suppliercode.php?supplier_id=" + supplier_id,
-            success: function (response) {
+                type: "GET",
+                url: "suppliercode.php?supplier_id=" + supplier_id,
+                success: function(response) {
 
-            var res = jQuery.parseJSON(response);
-            if(res.status == 404) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
 
-                alert(res.message);
-            }else if(res.status == 200){
+                        alert(res.message);
+                    } else if (res.status == 200) {
 
-                $('#view_supplierName').text(res.data.name);
-                $('#view_address').text(res.data.address);
-                $('#view_id').text(res.data.id);
-                $('#view_email').text(res.data.email);
-                $('#view_phone').text(res.data.phone);
-                $('#view_phone2').text(res.data.phone2);
-              
+                        $('#view_supplierName').text(res.data.name);
+                        $('#view_address').text(res.data.address);
+                        $('#view_id').text(res.data.id);
+                        $('#view_email').text(res.data.email);
+                        $('#view_phone').text(res.data.phone);
+                        $('#view_phone2').text(res.data.phone2);
 
-                $('#supplierViewModal').modal('show');
+
+                        $('#supplierViewModal').modal('show');
+                    }
                 }
-            }
-         });
+            });
         });
 
-        $(document).on('click', '.deleteSupplierBtn', function (e) {
+        $(document).on('click', '.deleteSupplierBtn', function(e) {
             e.preventDefault();
 
-            if(confirm('האם אתה בטוח שברצונך למחוק את הנתונים האלה?'))
-            {
+            if (confirm('האם אתה בטוח שברצונך למחוק את הנתונים האלה?')) {
                 var supplier_id = $(this).val();
                 $.ajax({
                     type: "POST",
@@ -466,14 +463,14 @@
                         'delete_supplier': true,
                         'supplier_id': supplier_id
                     },
-                    success: function (response) {
+                    success: function(response) {
 
                         var res = jQuery.parseJSON(response);
-                        if(res.status == 500) {
+                        if (res.status == 500) {
 
                             alert(res.message);
-                        }else{
-                            alertify.set('notifier','position', 'top-right');
+                        } else {
+                            alertify.set('notifier', 'position', 'top-right');
                             alertify.success(res.message);
 
                             $('#myTable').load(location.href + " #myTable");
@@ -484,7 +481,7 @@
         });
     </script>
 
-    
+
 
 
 </body>

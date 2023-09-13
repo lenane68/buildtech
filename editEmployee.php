@@ -10,7 +10,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 
     <!-- Favicon -->
@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -41,41 +41,41 @@
     <div class="modal fade" id="employeeViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">הצגת עובד</h5>
-                <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">הצגת עובד</h5>
+                    <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
 
-                <div class="mb-3">
-                            <label for="">שם מלא</label>
-                            <p  id="view_employeeName" class="form-control" ></p>
-                            </div>
+                    <div class="mb-3">
+                        <label for="">שם מלא</label>
+                        <p id="view_employeeName" class="form-control"></p>
+                    </div>
 
 
-                            <div class="mb-3">
-                                <label for="">תפקיד</label>
-                                <p id="view_job" class="form-control" ></p>
-                            </div>
+                    <div class="mb-3">
+                        <label for="">תפקיד</label>
+                        <p id="view_job" class="form-control"></p>
+                    </div>
 
-                            <div class="mb-3">
-                                <label for="">מגדר</label>
-                                <p id="view_gender" class="form-control" ></p>
-                            </div>
-    
-                            <div class="mb-3">
-                                <label for=""> תאריך התחלת עבודה</label>
-                                <p  id="view_startDate" class="form-control"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">עדיין עובד</label>
-                                <p id="view_active" class="form-control" ></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">שכר</label>
-                                <p id="view_salary" class="form-control" ></p>
-                            </div>
-                
+                    <div class="mb-3">
+                        <label for="">מגדר</label>
+                        <p id="view_gender" class="form-control"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for=""> תאריך התחלת עבודה</label>
+                        <p id="view_startDate" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">עדיין עובד</label>
+                        <p id="view_active" class="form-control"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="">שכר</label>
+                        <p id="view_salary" class="form-control"></p>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button>
@@ -84,10 +84,10 @@
         </div>
     </div>
 
-     <!-- Edit Employee Modal -->
-     <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
-            <div class="modal-dialog">
-                <div class="modal-content" >
+    <!-- Edit Employee Modal -->
+    <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" dir="rtl">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">עריכת עובד</h5>
                     <button type="button" class="btn-close btn-close-left" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -97,23 +97,23 @@
 
                         <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
-                        <input type="hidden" name="employee_id" id="employee_id" >
+                        <input type="hidden" name="employee_id" id="employee_id">
 
                         <div class="mb-3">
-                        <label for="">שם מלא</label>
-                        <input type="text" name="employeeName" id="employeeName" class="form-control" readonly>
+                            <label for="">שם מלא</label>
+                            <input type="text" name="employeeName" id="employeeName" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="">תפקיד</label>
                             <select class="form-select" id="job" name="job" aria-label="Floating label select example">
-    
+
                                 <option value="מנהל">מנהל</option>
                                 <option value="עובד">עובד</option>
                                 <option value="מזכירה">מזכירה</option>
                             </select>
-                           
+
                         </div>
-     
+
                         <div class="mb-3">
                             <label for="">מגדר</label>
                             <select class="form-select" id="gender" name="gender" aria-label="Floating label select example">
@@ -141,9 +141,9 @@
                         <button type="submit" class="btn btn-primary">עדכן עובד</button>
                     </div>
                 </form>
-                </div>
             </div>
         </div>
+    </div>
 
 
     <div class="container-xxl position-relative bg-white d-flex p-0">
@@ -156,9 +156,9 @@
         <!-- Spinner End -->
 
 
-          <!-- Sidebar Start -->
-          <div class="sidebar pe-4 pb-3" >
-            <nav class="navbar bg-light navbar-light" >
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">אבו רפיק גבארין</h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
@@ -184,7 +184,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="addEmployee.php" class="dropdown-item">עובד</a>
+                            <a href="addEmployee.php" class="dropdown-item">עובד</a>
                             <a href="addClient.php" class="dropdown-item">לקוח</a>
                             <a href="addMaterial.html" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
@@ -195,13 +195,13 @@
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
                             <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
-                            
+
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-edit me-2"></i>עריכה & מחיקה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                        <a href="editEmployee.php" class="dropdown-item active">עובד</a>
+                            <a href="editEmployee.php" class="dropdown-item active">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item" style="color: red;">חומר</a>
                             <a href="editShift.php" class="dropdown-item">משמרת</a>
@@ -214,8 +214,8 @@
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
-                   
-                    
+
+
                 </div>
             </nav>
         </div>
@@ -223,8 +223,8 @@
 
         <!-- Content Start -->
         <div class="content">
-             <!-- Navbar Start -->
-             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
@@ -256,7 +256,7 @@
                                 <small>לפני 22 דקות</small>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="notifications.html" class="dropdown-item text-center">הצגת כל ההתראות</a>
+                            <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -275,240 +275,237 @@
 
             <div class="container-fluid pt-4 px-4" dir="rtl">
                 <div class="row g-4">
-                          <div class="bg-light rounded h-100 p-4">
-                            <h5 class="mb-4">טבלת עובדים</h5>
-                        
-                            
-                            <table class="table" id="myTable" dir="rtl">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">שם מלא</th>
-                                        <th scope="col">תאריך התחלת עבודה</th>
-                                        <th scope="col">שכר</th>
-                                        <th scope="col">פעולה</th>
-                                    </tr>
-                                </thead> 
-                             
-                                <tbody>   
-                               <?php 
+                    <div class="bg-light rounded h-100 p-4">
+                        <h5 class="mb-4">טבלת עובדים</h5>
 
-                                 $conn = require __DIR__ . "/database.php";
-                                 $query = "SELECT * FROM employee";
-                          
-                                 $query_run = mysqli_query($conn, $query);
-                         
-                        
-                               if(mysqli_num_rows($query_run) > 0)
-                               {
-                                   foreach($query_run as $employee)
-                                   {
-                    
-                                       ?>
+
+                        <table class="table" id="myTable" dir="rtl">
+                            <thead>
                                 <tr>
-                                    <th scope="row"></th>
-                                    <td> <?= $employee["fullName"] ?> </td>
-                                    <td class="date-cell"> <?= $employee["startDate"] ?> </td>
-                                    <td> <?= $employee["salary"] ?> </td>
-                                    <td>
-                                            <button type="button" value="<?=$employee['id'];?>" class="viewEmployeeBtn btn btn-info btn-sm">הצג</button>
-                                            <button type="button" value="<?=$employee['id'];?>" class="editEmployeeBtn btn btn-success btn-sm">עדכון</button>
-                                            <button type="button" value="<?=$employee['id'];?>" class="deleteEmployeeBtn btn btn-danger btn-sm">מחיקה</button>
-                                    </td>
-                               </tr>
-                              <?php
-                         }
-                     }
-                     ?>
-                        </tbody>
-                    </table>
-                </div>             
-            </div>
+                                    <th scope="col">#</th>
+                                    <th scope="col">שם מלא</th>
+                                    <th scope="col">תאריך התחלת עבודה</th>
+                                    <th scope="col">שכר</th>
+                                    <th scope="col">פעולה</th>
+                                </tr>
+                            </thead>
 
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            <tbody>
+                                <?php
+
+                                $conn = require __DIR__ . "/database.php";
+                                $query = "SELECT * FROM employee";
+
+                                $query_run = mysqli_query($conn, $query);
+
+
+                                if (mysqli_num_rows($query_run) > 0) {
+                                    foreach ($query_run as $employee) {
+
+                                ?>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td> <?= $employee["fullName"] ?> </td>
+                                            <td class="date-cell"> <?= $employee["startDate"] ?> </td>
+                                            <td> <?= $employee["salary"] ?> </td>
+                                            <td>
+                                                <button type="button" value="<?= $employee['id']; ?>" class="viewEmployeeBtn btn btn-info btn-sm">הצג</button>
+                                                <button type="button" value="<?= $employee['id']; ?>" class="editEmployeeBtn btn btn-success btn-sm">עדכון</button>
+                                                <button type="button" value="<?= $employee['id']; ?>" class="deleteEmployeeBtn btn btn-danger btn-sm">מחיקה</button>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Footer Start -->
+                <div class="container-fluid pt-4 px-4">
+                    <div class="bg-light rounded-top p-4">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 text-center text-sm-start">
+                                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                            </div>
+                            <div class="col-12 col-sm-6 text-center text-sm-end">
+                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Footer End -->
             </div>
-            <!-- Footer End -->
+            <!-- Content End -->
+
+
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
         </div>
-        <!-- Content End -->
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
 
-     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            $(document).on('click', '.editEmployeeBtn', function() {
 
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-
-    
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-
-    <script>
-        $(document).on('click', '.editEmployeeBtn', function () {
-            
-            var employee_id = $(this).val();
-
-
-            $.ajax({
-                type: "GET",
-                url: "employeecode.php?employee_id=" + employee_id,
-                success: function (response) {
-                    var res = jQuery.parseJSON(response);
-                    if(res.status == 404) {
-
-                        alert(res.message);
-                    }else if(res.status == 200){
-                        
-                    
-                    $('#employee_id').val(res.data.id);   
-                    $('#employeeName').val(res.data.fullName);
-                    $('#address').val(res.data.Address);
-                    $('#phone').val(res.data.phoneNumber);
-                    $('#job').val(res.data.job);
-                    $('#startDate').val(res.data.startDate);
-                    $('#gender').val(res.data.Gender);
-                    $('#active').prop('checked', res.data.Active == 1);
-                    $('#salary').val(res.data.salary);
-
-                    $('#employeeEditModal').modal('show');
-                    
-                    }
-                }
-            });
-              
-        });
-
-        $(document).on('submit', '#updateEmployee', function (e) {
-            e.preventDefault();
-
-            var formData = new FormData(this);
-            formData.append("update_employee", true);
-
-            $.ajax({
-                type: "POST",
-                url: "employeecode.php",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    
-                    var res = jQuery.parseJSON(response);
-                    if(res.status == 422) {
-                        $('#errorMessageUpdate').removeClass('d-none');
-                        $('#errorMessageUpdate').text(res.message);
-
-                    }else if(res.status == 200){
-
-                        $('#errorMessageUpdate').addClass('d-none');
-
-                        alertify.set('notifier','position', 'top-right');
-                        alertify.success(res.message);
-                        
-                        $('#employeeEditModal').modal('hide');
-                        $('#updateEmployee')[0].reset();
-
-                        $('#myTable').load(location.href + " #myTable");
-
-                    }else if(res.status == 500) {
-                        alert(res.message);
-                    }
-                }
-            });
-
-        });
-
-        $(document).on('click', '.viewEmployeeBtn', function () {
-            var employee_id = $(this).val();
-            $.ajax({
-            type: "GET",
-            url: "employeecode.php?employee_id=" + employee_id,
-            success: function (response) {
-
-            var res = jQuery.parseJSON(response);
-            if(res.status == 404) {
-
-                alert(res.message);
-            }else if(res.status == 200){
-
-                $('#view_employeeName').text(res.data.fullName);
-                $('#view_job').text(res.data.job);
-                $('#view_startDate').text(res.data.startDate);
-                $('#view_gender').text(res.data.Gender);
-                $('#view_active').text(res.data.Active);
-                $('#view_salary').text(res.data.salary);
-
-                $('#employeeViewModal').modal('show');
-                }
-            }
-         });
-        });
-
-        $(document).on('click', '.deleteEmployeeBtn', function (e) {
-            e.preventDefault();
-
-            if(confirm('האם אתה בטוח שברצונך למחוק את הנתונים האלה?'))
-            {
                 var employee_id = $(this).val();
-                $.ajax({
-                    type: "POST",
-                    url: "employeecode.php",
-                    data: {
-                        'delete_employee': true,
-                        'employee_id': employee_id
-                    },
-                    success: function (response) {
 
+
+                $.ajax({
+                    type: "GET",
+                    url: "employeecode.php?employee_id=" + employee_id,
+                    success: function(response) {
                         var res = jQuery.parseJSON(response);
-                        if(res.status == 500) {
+                        if (res.status == 404) {
 
                             alert(res.message);
-                        }else{
-                            alertify.set('notifier','position', 'top-right');
-                            alertify.success(res.message);
+                        } else if (res.status == 200) {
 
-                            $('#myTable').load(location.href + " #myTable");
+
+                            $('#employee_id').val(res.data.id);
+                            $('#employeeName').val(res.data.fullName);
+                            $('#address').val(res.data.Address);
+                            $('#phone').val(res.data.phoneNumber);
+                            $('#job').val(res.data.job);
+                            $('#startDate').val(res.data.startDate);
+                            $('#gender').val(res.data.Gender);
+                            $('#active').prop('checked', res.data.Active == 1);
+                            $('#salary').val(res.data.salary);
+
+                            $('#employeeEditModal').modal('show');
+
                         }
                     }
                 });
+
+            });
+
+            $(document).on('submit', '#updateEmployee', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+                formData.append("update_employee", true);
+
+                $.ajax({
+                    type: "POST",
+                    url: "employeecode.php",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+
+                        var res = jQuery.parseJSON(response);
+                        if (res.status == 422) {
+                            $('#errorMessageUpdate').removeClass('d-none');
+                            $('#errorMessageUpdate').text(res.message);
+
+                        } else if (res.status == 200) {
+
+                            $('#errorMessageUpdate').addClass('d-none');
+
+                            alertify.set('notifier', 'position', 'top-right');
+                            alertify.success(res.message);
+
+                            $('#employeeEditModal').modal('hide');
+                            $('#updateEmployee')[0].reset();
+
+                            $('#myTable').load(location.href + " #myTable");
+
+                        } else if (res.status == 500) {
+                            alert(res.message);
+                        }
+                    }
+                });
+
+            });
+
+            $(document).on('click', '.viewEmployeeBtn', function() {
+                var employee_id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "employeecode.php?employee_id=" + employee_id,
+                    success: function(response) {
+
+                        var res = jQuery.parseJSON(response);
+                        if (res.status == 404) {
+
+                            alert(res.message);
+                        } else if (res.status == 200) {
+
+                            $('#view_employeeName').text(res.data.fullName);
+                            $('#view_job').text(res.data.job);
+                            $('#view_startDate').text(res.data.startDate);
+                            $('#view_gender').text(res.data.Gender);
+                            $('#view_active').text(res.data.Active);
+                            $('#view_salary').text(res.data.salary);
+
+                            $('#employeeViewModal').modal('show');
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.deleteEmployeeBtn', function(e) {
+                e.preventDefault();
+
+                if (confirm('האם אתה בטוח שברצונך למחוק את הנתונים האלה?')) {
+                    var employee_id = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "employeecode.php",
+                        data: {
+                            'delete_employee': true,
+                            'employee_id': employee_id
+                        },
+                        success: function(response) {
+
+                            var res = jQuery.parseJSON(response);
+                            if (res.status == 500) {
+
+                                alert(res.message);
+                            } else {
+                                alertify.set('notifier', 'position', 'top-right');
+                                alertify.success(res.message);
+
+                                $('#myTable').load(location.href + " #myTable");
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>
+            // Get all elements with the "date-cell" class
+            var dateCells = document.querySelectorAll('.date-cell');
+
+            // Iterate through each element and format the date
+            dateCells.forEach(function(cell) {
+                var originalDate = cell.textContent.trim(); // Get the original date from the cell
+                var formattedDate = formatDateString(originalDate); // Format the date
+                cell.textContent = formattedDate; // Update the cell with the formatted date
+            });
+
+            // Function to format a date string from YYYY-MM-DD to DD/MM/YYYY
+            function formatDateString(dateString) {
+                var parts = dateString.split('-');
+                if (parts.length === 3) {
+                    return parts[2] + '/' + parts[1] + '/' + parts[0];
+                } else {
+                    return dateString; // Return the original date if it's not in the expected format
+                }
             }
-        });
-    </script>
-    <script>
-    // Get all elements with the "date-cell" class
-    var dateCells = document.querySelectorAll('.date-cell');
-
-    // Iterate through each element and format the date
-    dateCells.forEach(function(cell) {
-        var originalDate = cell.textContent.trim(); // Get the original date from the cell
-        var formattedDate = formatDateString(originalDate); // Format the date
-        cell.textContent = formattedDate; // Update the cell with the formatted date
-    });
-
-    // Function to format a date string from YYYY-MM-DD to DD/MM/YYYY
-    function formatDateString(dateString) {
-        var parts = dateString.split('-');
-        if (parts.length === 3) {
-            return parts[2] + '/' + parts[1] + '/' + parts[0];
-        } else {
-            return dateString; // Return the original date if it's not in the expected format
-        }
-    }
-</script>
+        </script>
 
 </body>
 

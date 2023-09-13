@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -32,19 +31,21 @@
     <link href="css/style.css" rel="stylesheet">
 
     <style>
-    .custom-form-check {
-        display: flex;
-        align-items: center;
-    }
-    
-    .form-check-input {
-        margin-left: 10px; /* Adjust the margin as needed */
-    }
+        .custom-form-check {
+            display: flex;
+            align-items: center;
+        }
 
-    .form-check-label {
-    margin-right: 30px; /* Adjust the margin as needed */
-}
-</style>
+        .form-check-input {
+            margin-left: 10px;
+            /* Adjust the margin as needed */
+        }
+
+        .form-check-label {
+            margin-right: 30px;
+            /* Adjust the margin as needed */
+        }
+    </style>
 </head>
 
 <body>
@@ -59,7 +60,7 @@
 
 
         <!-- Sign In Start -->
-        <div class="container-fluid" >
+        <div class="container-fluid">
             <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
@@ -70,37 +71,37 @@
                             <h3> התחברות</h3>
                         </div>
                         <form action="login.php" method="post" dir="rtl">
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" >
-                            <label for="email" > אימייל</label>
-                        </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-                            <label for="password" >סיסמה</label>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <div class="form-check custom-form-check">
-                                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
-                                <label class="form-check-label" for="rememberMe">זכור אותי</label>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+                                <label for="email"> אימייל</label>
                             </div>
-                            
-                        </div>
-                        <button class="btn btn-primary py-3 w-100 mb-4">התחברות</button>
-                       
-                      <!-- Display error messages here -->
-<?php
-if (isset($_GET["error"])) {
-    $error = $_GET["error"];
-    
-    if ($error === "email") {
-        echo '<div class="alert alert-danger" dir="rtl">אימייל שגוי, נסה שוב.</div>';
-    } elseif ($error === "password") {
-        echo '<div class="alert alert-danger" dir="rtl">סיסמה שגויה, נסה שוב.</div>';
-    }
-}
-?>
+                            <div class="form-floating mb-4">
+                                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                                <label for="password">סיסמה</label>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="form-check custom-form-check">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
+                                    <label class="form-check-label" for="rememberMe">זכור אותי</label>
+                                </div>
 
-                    </form>
+                            </div>
+                            <button class="btn btn-primary py-3 w-100 mb-4">התחברות</button>
+
+                            <!-- Display error messages here -->
+                            <?php
+                            if (isset($_GET["error"])) {
+                                $error = $_GET["error"];
+
+                                if ($error === "email") {
+                                    echo '<div class="alert alert-danger" dir="rtl">אימייל שגוי, נסה שוב.</div>';
+                                } elseif ($error === "password") {
+                                    echo '<div class="alert alert-danger" dir="rtl">סיסמה שגויה, נסה שוב.</div>';
+                                }
+                            }
+                            ?>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -108,7 +109,7 @@ if (isset($_GET["error"])) {
         <!-- Sign In End -->
     </div>
 
-     
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
