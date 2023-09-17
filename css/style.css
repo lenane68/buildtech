@@ -68,7 +68,7 @@
 .sidebar {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     bottom: 0;
     width: 250px;
     height: 100vh;
@@ -79,7 +79,7 @@
 }
 
 .content {
-    margin-left: 250px;
+    margin-right: 250px;
     min-height: 100vh;
     background: #FFFFFF;
     transition: 0.5s;
@@ -87,11 +87,11 @@
 
 @media (min-width: 992px) {
     .sidebar {
-        margin-left: 0;
+        margin-right: 0;
     }
 
     .sidebar.open {
-        margin-left: -250px;
+        margin-right: -250px;
     }
 
     .content {
@@ -100,7 +100,7 @@
 
     .content.open {
         width: 100%;
-        margin-left: 0;
+        margin-right: 0;
     }
 }
 
@@ -211,6 +211,7 @@
     transform: rotate(-180deg);
 }
 
+
 @media (max-width: 575.98px) {
     .content .navbar .navbar-nav .nav-link {
         margin-left: 15px;
@@ -288,14 +289,9 @@
     .cd-pricing-container {
         margin: 4em auto;
     }
+
     .cd-pricing-container.cd-full-width {
         width: 100%;
         max-width: none;
     }
 }
-
-
-
-
-
-

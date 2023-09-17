@@ -1,10 +1,71 @@
 <?php
 $conn = require __DIR__ . "/database.php";
 
+session_start();
+if (!isset($_SESSION["email"])) {
+    // Redirect to the login page if the user is not logged in
+    header('Location: index.php');
+    exit();
+}
+$email = mysqli_real_escape_string($conn, $_SESSION['email']);
+$query = "SELECT * FROM account WHERE email='$email'";
+$result = mysqli_query($conn, $query);
+
+if ($row = mysqli_fetch_assoc($result)) {
+    $name = $row['userName'];
+    $password = $row['password'];
+    $phone = $row['phoneNum'];
+    $role = $row['role'];
+} else {
+    // Handle case where email is not found in the database
+    $name = '';
+    $password = '';
+    $phone = '';
+    $role = '';
+}
+
+$sqli_notify = "SELECT * FROM notification WHERE DATE(date) >= (DATE(NOW()) - INTERVAL 90 DAY) ORDER BY date DESC LIMIT 5";
+
+$result_notify = $conn->query($sqli_notify);
+
+$query_notify1 = "SELECT * FROM car where testDate <= (DATE(NOW()) + INTERVAL 30 DAY) and testDate >= DATE(NOW())";
+$query_notify2 = "SELECT * FROM checks where checkDate <= (DATE(NOW()) + INTERVAL 30 DAY) and checkDate >= DATE(NOW())";
+
+$result_car = $conn->query($query_notify1);
+$result_checks = $conn->query($query_notify2);
+
+if ($result_car->num_rows > 0) {
+    while ($row_car = $result_car->fetch_assoc()) {
+        $stmt = $conn->prepare("INSERT INTO notification (id, title, full_message) VALUES (?, ?, ?)");
+
+        $id = (int) $row_car["number"];
+        $title = "טסט רכב";
+        $full_message = "תאריך סיום הטסט ברכב שמספרו : " . $row_car["number"] . " הוא : " . $row_car["testDate"];
+
+        $stmt->bind_param("iss", $id, $title, $full_message);
+
+        $stmt->execute();
+    }
+}
+
+if ($result_checks->num_rows > 0) {
+    while ($row_checks = $result_checks->fetch_assoc()) {
+        $stmt = $conn->prepare("INSERT INTO notification (id, title, full_message) VALUES (?, ?, ?)");
+
+        $id = (int) $row_checks["id"];
+        $title = "פרעון צק";
+        $full_message = "התאריך לפירעון הצק שמספרו : " . $row_checks["id"] . " הוא : " . $row_car["checkDate"];
+
+        $stmt->bind_param("iss", $id, $title, $full_message);
+
+        $stmt->execute();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
-<html dir="rtl">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -50,8 +111,8 @@ $conn = require __DIR__ . "/database.php";
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary">אבו רפיק גבארין</h3>
+                <a href="index.php" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary">אבו <?php echo $name ?></h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -60,24 +121,26 @@ $conn = require __DIR__ . "/database.php";
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">רפיק גבארין</h6>
-                        <span>מנהל ראשי</span>
+                        <h6 class="mb-0"><?php echo $name ?></h6>
+                        <span><?php echo $role ?></span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="home.php" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid.html" class="nav-item nav-link active"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid1.php" class="nav-item nav-link active"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
+                    <a href="notifications.php" class="nav-item nav-link"><i class="far fa-bell me-2 me-2"></i>התראות</a>
+                    <a href="profile.php" class="nav-item nav-link"><i class="far fa-user me-2 me-2"></i>עדכון פרופיל</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="addEmployee.html" class="dropdown-item">עובד</a>
                             <a href="addClient.html" class="dropdown-item">לקוח</a>
-                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
+                            <a href="addmaterial.php" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
                             <a href="addSupplier.html" class="dropdown-item">ספק</a>
@@ -118,188 +181,191 @@ $conn = require __DIR__ . "/database.php";
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
+                <div class="navbar-nav me-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><?php echo $name ?></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="profile.php" class="dropdown-item">הפרופיל שלי</a>
+                            <a href="logOut.php" class="dropdown-item">יציאה</a>
+                        </div>
+                    </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">התראות</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">נוסף עובד חדש</h6>
-                                <small>לפני 15 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">משמרת עובד נקלטה</h6>
-                                <small>לפני 20 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">הסיסמה שונתה</h6>
-                                <small>לפני 22 דקות</small>
-                            </a>
+                            <?php
+                            if ($result_notify->num_rows <= 0) {
+                                echo "";
+                            } else {
+                                while (($row_notify = $result_notify->fetch_assoc())) {
+                                    echo "<a href='#' class='dropdown-item'>";
+                                    echo "<h6 class='fw-normal mb-0'>" . $row_notify["title"] . "</h6>";
+                                    echo "<small>" . $row_notify["date"] . "</small>";
+                                    echo "</a>";
+                                }
+                            }
+                            ?>
                             <hr class="dropdown-divider">
                             <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">רפיק גבארין</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="profile.html" class="dropdown-item">הפרופיל שלי</a>
-                            <a href="index.html" class="dropdown-item">יציאה</a>
-                        </div>
-                    </div>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <form class="d-none d-md-flex" style="justify-content: flex-end;">
+                        <input class="form-control border-0" type="search" placeholder="Search">
+                    </form>
+                    <a href="#" class="sidebar-toggler flex-shrink-0 ms-2">
+                        <i class="fa fa-bars"></i>
+                    </a>
                 </div>
             </nav>
             <!-- Navbar End -->
-            <h6 class="mb-4">חישוב שלד</h6>
-            <div class="bg-light rounded h-100 p-4">
-                <form id="bid_batoon">
-                    <label for="batonclass">1. חישוב בטון: </label>
-                    <div class="form-floating mb-3" id="batonclass">
-                        <select class="form-select" id="batonSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_batoon')">
-                            <option selected>בחר/י</option>
-                            <?php
-                            $sqli = "SELECT * FROM materials_bid WHERE name = 'batoon'";
-                            $result = $conn->query($sqli);
+            <div class="container-fluid pt-4 px-4" dir="rtl">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h4 class="mb-4" dir="rtl">חישוב שלד</h4>
+                        <div class="bg-light rounded h-100 p-4">
+                            <form id="bid_batoon">
+                                <label for="batonclass">1. חישוב בטון: </label>
+                                <div class="form-floating mb-3" id="batonclass">
+                                    <select class="form-select" id="batonSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_batoon')">
+                                        <option selected>בחר/י</option>
+                                        <?php
+                                        $sqli = "SELECT * FROM materials_bid WHERE name = 'batoon'";
+                                        $result = $conn->query($sqli);
 
-                            if ($result->num_rows > 0) {
-                                // output data of each row
-                                while ($row = $result->fetch_assoc()) {
+                                        if ($result->num_rows > 0) {
+                                            // output data of each row
+                                            while ($row = $result->fetch_assoc()) {
 
-                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
-                                }
-                            } else {
-                                echo "";
-                            }
-                            ?>
-                        </select>
-                        <label for=" batonSelect">סוג בטון</label>
+                                                echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                            }
+                                        } else {
+                                            echo "";
+                                        }
+                                        ?>
+                                    </select>
+                                    <label for=" batonSelect">סוג בטון</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <!--   <input type="hidden" class="form-control" id="price_batoon" placeholder=""> -->
+                                    <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_batoon')">
+                                    <label for="floatingInput">כמות קובים</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₪</span>
+                                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </form>
+
+                            <form id="bid_barzel">
+                                <label for="barzelclass">2. חישוב ברזל:</label>
+                                <div class="form-floating mb-3" id="barzelclass">
+                                    <select class="form-select" id="barzelSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_barzel')">
+                                        <option selected>בחר/י</option>
+                                        <?php
+                                        $sqli2 = "SELECT * FROM materials_bid WHERE name = 'ברזל'";
+                                        $result2 = $conn->query($sqli2);
+
+                                        if ($result2->num_rows > 0) {
+                                            // output data of each row
+                                            while ($row = $result2->fetch_assoc()) {
+
+                                                echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                            }
+                                        } else {
+                                            echo "";
+                                        }
+                                        ?>
+                                    </select>
+                                    <label for=" barzelSelect">סוג ברזל</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <!-- <input type="hidden" class="form-control" id="price_barzel" placeholder=""> -->
+                                    <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_barzel')">
+                                    <label for="floatingInput">כמות יחידות</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₪</span>
+                                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </form>
+
+                            <form id="bid_block">
+                                <label for="blockclass">3. חישוב בלוק :</label>
+                                <div class="form-floating mb-3" id="blockclass">
+                                    <select class="form-select" id="blockSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_block')">
+                                        <option selected>בחר/י</option>
+                                        <?php
+                                        $sqli3 = "SELECT * FROM materials_bid WHERE name = 'בלוק'";
+                                        $result3 = $conn->query($sqli3);
+
+                                        if ($result3->num_rows > 0) {
+                                            // output data of each row
+                                            while ($row = $result3->fetch_assoc()) {
+
+                                                echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
+                                            }
+                                        } else {
+                                            echo "";
+                                        }
+                                        ?>
+                                    </select>
+                                    <label for=" blockSelect">סוג בלוק</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <!--   <input type="hidden" class="form-control" id="price_block" placeholder=""> -->
+                                    <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_block')">
+                                    <label for="floatingInput">כמות יחידות</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₪</span>
+                                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
-                    <div class="form-floating mb-3">
-                        <!--   <input type="hidden" class="form-control" id="price_batoon" placeholder=""> -->
-                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_batoon')">
-                        <label for="floatingInput">כמות קובים</label>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
-                        <span class="input-group-text">.00</span>
-                    </div>
-                </form>
-
-                <form id="bid_barzel">
-                    <label for="barzelclass">2. חישוב ברזל:</label>
-                    <div class="form-floating mb-3" id="barzelclass">
-                        <select class="form-select" id="barzelSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_barzel')">
-                            <option selected>בחר/י</option>
-                            <?php
-                            $sqli2 = "SELECT * FROM materials_bid WHERE name = 'ברזל'";
-                            $result2 = $conn->query($sqli2);
-
-                            if ($result2->num_rows > 0) {
-                                // output data of each row
-                                while ($row = $result2->fetch_assoc()) {
-
-                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
-                                }
-                            } else {
-                                echo "";
-                            }
-                            ?>
-                        </select>
-                        <label for=" barzelSelect">סוג ברזל</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <!-- <input type="hidden" class="form-control" id="price_barzel" placeholder=""> -->
-                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_barzel')">
-                        <label for="floatingInput">כמות יחידות</label>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
-                        <span class="input-group-text">.00</span>
-                    </div>
-                </form>
-
-                <form id="bid_block">
-                    <label for="blockclass">3. חישוב בלוק :</label>
-                    <div class="form-floating mb-3" id="blockclass">
-                        <select class="form-select" id="blockSelect" aria-label="Floating label select example" onchange="calculateTotalPrice('bid_block')">
-                            <option selected>בחר/י</option>
-                            <?php
-                            $sqli3 = "SELECT * FROM materials_bid WHERE name = 'בלוק'";
-                            $result3 = $conn->query($sqli3);
-
-                            if ($result3->num_rows > 0) {
-                                // output data of each row
-                                while ($row = $result3->fetch_assoc()) {
-
-                                    echo "<option value='" . $row["price"] . "'>" . $row["type"] . "</option>";
-                                }
-                            } else {
-                                echo "";
-                            }
-                            ?>
-                        </select>
-                        <label for=" blockSelect">סוג בלוק</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <!--   <input type="hidden" class="form-control" id="price_block" placeholder=""> -->
-                        <input type="number" class="form-control" id="floatingInput" placeholder="" onchange="calculateTotalPrice('bid_block')">
-                        <label for="floatingInput">כמות יחידות</label>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">₪</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="המחיר :">
-                        <span class="input-group-text">.00</span>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-        <!-- Content End -->
+                    <!-- Content End -->
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
+                    <!-- Back to Top -->
+                    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+                </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+                <!-- JavaScript Libraries -->
+                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="lib/chart/chart.min.js"></script>
+                <script src="lib/easing/easing.min.js"></script>
+                <script src="lib/waypoints/waypoints.min.js"></script>
+                <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+                <script src="lib/tempusdominus/js/moment.min.js"></script>
+                <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+                <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-    <script>
-        function calculateTotalPrice(formId) {
-            var price = $("#" + formId + " select").val(); // Get selected price from dropdown
-            var quantity = $("#" + formId + " input[type='number']").val(); // Get quantity
+                <!-- Template Javascript -->
+                <script src="js/main.js"></script>
+                <script>
+                    function calculateTotalPrice(formId) {
+                        var price = $("#" + formId + " select").val(); // Get selected price from dropdown
+                        var quantity = $("#" + formId + " input[type='number']").val(); // Get quantity
 
-            var totalPrice = quantity * price;
-            $("#" + formId + " .input-group input[type='text']").val(totalPrice); // Set total price in the input field
-        }
-    </script>
+                        var totalPrice = quantity * price;
+                        $("#" + formId + " .input-group input[type='text']").val(totalPrice); // Set total price in the input field
+                    }
+                </script>
 </body>
 
 </html>

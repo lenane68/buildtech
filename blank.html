@@ -46,8 +46,10 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary">אבו רפיק גבארין</h3>
+                <a href="index.php" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary">אבו
+                        <?php echo $name ?>
+                    </h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -58,14 +60,18 @@
                         </div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">רפיק גבארין</h6>
-                        <span>מנהל ראשי</span>
+                        <h6 class="mb-0">
+                            <?php echo $name ?>
+                        </h6>
+                        <span>
+                            <?php echo $role ?>
+                        </span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
+                    <a href="index.php" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.html" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid1.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.html" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
@@ -106,7 +112,7 @@
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -122,20 +128,18 @@
                             <span class="d-none d-lg-inline-flex">התראות</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">נוסף עובד חדש</h6>
-                                <small>לפני 15 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">משמרת עובד נקלטה</h6>
-                                <small>לפני 20 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">הסיסמה שונתה</h6>
-                                <small>לפני 22 דקות</small>
-                            </a>
+                            <?php
+                            if ($result_notify->num_rows <= 0) {
+                                echo "";
+                            } else {
+                                while (($row_notify = $result_notify->fetch_assoc())) {
+                                    echo "<a href='#' class='dropdown-item'>";
+                                    echo "<h6 class='fw-normal mb-0'>" . $row_notify["title"] . "</h6>";
+                                    echo "<small>" . $row_notify["date"] . "</small>";
+                                    echo "</a>";
+                                }
+                            }
+                            ?>
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
@@ -144,7 +148,9 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="img/user.jpg" alt=""
                                 style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">רפיק גבארין</span>
+                            <span class="d-none d-lg-inline-flex">
+                                <?php echo $name ?>
+                            </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">הפרופיל שלי</a>

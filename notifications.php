@@ -2,11 +2,32 @@
 
 $conn = require __DIR__ . "/database.php";
 
-$sqli = "SELECT * FROM notification WHERE DATE(date) >= (DATE(NOW()) - INTERVAL 90 DAY) ORDER BY date DESC";
-$sqli2 = "SELECT * FROM notification WHERE DATE(date) >= (DATE(NOW()) - INTERVAL 90 DAY) ORDER BY date DESC LIMIT 5";
+session_start();
+if (!isset($_SESSION["email"])) {
+    // Redirect to the login page if the user is not logged in
+    header('Location: index.php');
+    exit();
+}
+$email = mysqli_real_escape_string($conn, $_SESSION['email']);
+$query = "SELECT * FROM account WHERE email='$email'";
+$result = mysqli_query($conn, $query);
 
-$result = $conn->query($sqli);
-$result2 = $conn->query($sqli2);
+if ($row = mysqli_fetch_assoc($result)) {
+    $name = $row['userName'];
+    $password = $row['password'];
+    $phone = $row['phoneNum'];
+    $role = $row['role'];
+} else {
+    // Handle case where email is not found in the database
+    $name = '';
+    $password = '';
+    $phone = '';
+    $role = '';
+}
+
+$sqli_notify = "SELECT * FROM notification WHERE DATE(date) >= (DATE(NOW()) - INTERVAL 90 DAY) ORDER BY date DESC LIMIT 5";
+
+$result_notify = $conn->query($sqli_notify);
 
 $query_notify1 = "SELECT * FROM car where testDate <= (DATE(NOW()) + INTERVAL 30 DAY) and testDate >= DATE(NOW())";
 $query_notify2 = "SELECT * FROM checks where checkDate <= (DATE(NOW()) + INTERVAL 30 DAY) and checkDate >= DATE(NOW())";
@@ -41,6 +62,11 @@ if ($result_checks->num_rows > 0) {
         $stmt->execute();
     }
 }
+
+$sqli = "SELECT * FROM notification WHERE DATE(date) >= (DATE(NOW()) - INTERVAL 90 DAY) ORDER BY date DESC";
+
+
+$result = $conn->query($sqli);
 
 ?>
 
@@ -91,8 +117,8 @@ if ($result_checks->num_rows > 0) {
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary">אבו רפיק גבארין</h3>
+                <a href="index.php" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary">אבו <?php echo $name ?></h3>
                     <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -101,24 +127,26 @@ if ($result_checks->num_rows > 0) {
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">רפיק גבארין</h6>
-                        <span>מנהל ראשי</span>
+                        <h6 class="mb-0"><?php echo $name ?></h6>
+                        <span><?php echo $role ?></span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100" style="float:right;">
-                    <a href="home.php" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
+                    <a href="home.php" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid.html" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid1.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
                     <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
+                    <a href="notifications.php" class="nav-item nav-link active"><i class="far fa-bell me-2 me-2"></i>התראות</a>
+                    <a href="profile.php" class="nav-item nav-link"><i class="far fa-user me-2 me-2"></i>עדכון פרופיל</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="addEmployee.html" class="dropdown-item">עובד</a>
                             <a href="addClient.html" class="dropdown-item">לקוח</a>
-                            <a href="addMaterial.html" class="dropdown-item">חומר</a>
+                            <a href="addmaterial.php" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
                             <a href="addSupplier.html" class="dropdown-item">ספק</a>
@@ -159,16 +187,20 @@ if ($result_checks->num_rows > 0) {
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
+                <div class="navbar-nav me-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><?php echo $name ?></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="profile.php" class="dropdown-item">הפרופיל שלי</a>
+                            <a href="logOut.php" class="dropdown-item">יציאה</a>
+                        </div>
+                    </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
@@ -176,45 +208,29 @@ if ($result_checks->num_rows > 0) {
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <?php
-                            if ($result2->num_rows <= 0) {
+                            if ($result_notify->num_rows <= 0) {
                                 echo "";
                             } else {
-                                while (($row2 = $result2->fetch_assoc())) {
+                                while (($row_notify = $result_notify->fetch_assoc())) {
                                     echo "<a href='#' class='dropdown-item'>";
-                                    echo "<h6 class='fw-normal mb-0'>" . $row2["title"] . "</h6>";
-                                    echo "<small>" . $row2["date"] . "</small>";
+                                    echo "<h6 class='fw-normal mb-0'>" . $row_notify["title"] . "</h6>";
+                                    echo "<small>" . $row_notify["date"] . "</small>";
                                     echo "</a>";
                                 }
                             }
                             ?>
-                            <!--<a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">נוסף עובד חדש</h6>
-                                <small>לפני 15 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">משמרת עובד נקלטה</h6>
-                                <small>לפני 20 דקות</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">הסיסמה שונתה</h6>
-                                <small>לפני 22 דקות</small>
-                            </a>-->
                             <hr class="dropdown-divider">
                             <a href="notifications.php" class="dropdown-item text-center">הצגת כל ההתראות</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">רפיק גבארין</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="profile.html" class="dropdown-item">הפרופיל שלי</a>
-                            <a href="index.html" class="dropdown-item">יציאה</a>
-                        </div>
-                    </div>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <form class="d-none d-md-flex" style="justify-content: flex-end;">
+                        <input class="form-control border-0" type="search" placeholder="Search">
+                    </form>
+                    <a href="#" class="sidebar-toggler flex-shrink-0 ms-2">
+                        <i class="fa fa-bars"></i>
+                    </a>
                 </div>
             </nav>
             <!-- Navbar End -->

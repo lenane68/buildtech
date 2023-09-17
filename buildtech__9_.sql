@@ -44,7 +44,7 @@ INSERT INTO `account` (`userName`, `email`, `password`) VALUES
 ('ni', 'nrmeen.ra.123@gmail.com', '$2y$10$k2AFNdhUvYeX3'),
 ('no', 'test@gmail.com', '$2y$10$vmX6MpHWOGtrQ'),
 ('s', 's@gmail.com', '12345678a'),
-('רפיק גבארין', 'rafeekja@gmail.com', '12345678a');
+('<?php echo $name ?>', 'rafeekja@gmail.com', '12345678a');
 
 -- --------------------------------------------------------
 

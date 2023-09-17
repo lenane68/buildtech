@@ -1,11 +1,4 @@
 <?php
-
-session_start();
-
-//if (!isset($_SESSION['loaded'])) {
-//  $_SESSION['loaded'] = true;
-//}
-
 $conn = require __DIR__ . "/database.php";
 
 session_start();
@@ -67,57 +60,7 @@ if ($result_checks->num_rows > 0) {
 
         $stmt->execute();
     }
-}
-
-$errorMessage = "";
-$successMessage = "";
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (empty($_POST["fullName"]) || empty($_POST["job"]) || empty($_POST["startDate"]) || empty($_POST["Gender"]) || empty($_POST["daySalary"])) {
-        $errorMessage = "כל השדות חובה";
-    } else if (!is_numeric($_POST["daySalary"])) {
-        $errorMessage = "המשכורת חייבת להיות מספר";
-    } else if ($_POST['job'] === "בחר/י") {
-        $errorMessage = 'צריך לבחור תפקיד מהרשימה.<br>';
-    } else if ($_POST['Gender'] === "בחר/י") {
-        $errorMessage = 'צריך לציין את המין.<br>';
-    } else {
-        $fullName = $_POST['fullName'];
-        $job = $_POST['job'];
-        $startDate = $_POST['startDate'];
-        $Gender = $_POST['Gender'];
-        $daySalary = $_POST['daySalary'];
-
-
-        $stmt = $conn->prepare("insert into employee(fullName, job, startDate, Gender, salary) values(?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssd", $fullName, $job, $startDate, $Gender, $daySalary);
-        try {
-            $execval = $stmt->execute();
-            if ($execval) {
-                $successMessage = "העובד נקלט בהצלחה";
-                // You can optionally refresh the page after successful insertion
-                //echo '<meta http-equiv="refresh" content="2">';
-            }
-        } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() === 1062) { // Error code for duplicate entry
-                $errorMessage = "כנראה שהעובד כבר קיים במערכת";
-            } else {
-                $errorMessage = "Error: " . $e->getMessage();
-            }
-        }
-        $stmt->close();
-        $conn->close();
-    }
-
-    // Store the messages in session variables
-    $_SESSION["successMessage"] = $successMessage;
-    $_SESSION["errorMessage"] = $errorMessage;
-
-    // Redirect to the same page to prevent re-submission
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit();
-}
-?>
-
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -127,11 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
-
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -154,31 +92,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
-    <style>
-        .custom-form {
-            display: flex;
-            justify-content: center;
-        }
-
-        .custom-form-container {
-            max-width: 500px;
-            width: 100%;
-            direction: rtl;
-            text-align: right;
-        }
-
-        .custom-form .form-floating {
-            text-align: right;
-        }
-    </style>
-
-
 </head>
 
-
-
-<body>
+<body style="justify-content: center;">
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -199,36 +115,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
                         <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                        </div>
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0"><?php echo $name ?></h6>
                         <span><?php echo $role ?></span>
                     </div>
                 </div>
-                <div class="navbar-nav w-100" style="float:right;">
-                    <a href="home.php" class="nav-item nav-link "><i class="fa fa-home me-2"></i>ראשי</a>
+                <div class="navbar-nav w-100">
+                    <a href="home.php" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ראשי</a>
                     <a href="projectsTable.php" class="nav-item nav-link"><i class="fa fa-map me-2"></i>פרויקטים</a>
-                    <a href="bid1.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
+                    <a href="bid1.php" class="nav-item nav-link active"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.php" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.php" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
-                    <a href="addShift.php" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
+                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <a href="notifications.php" class="nav-item nav-link"><i class="far fa-bell me-2 me-2"></i>התראות</a>
                     <a href="profile.php" class="nav-item nav-link"><i class="far fa-user me-2 me-2"></i>עדכון פרופיל</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="addEmployee.php" class="dropdown-item active">עובד</a>
-                            <a href="addClient.php" class="dropdown-item">לקוח</a>
+                            <a href="addEmployee.html" class="dropdown-item">עובד</a>
+                            <a href="addClient.html" class="dropdown-item">לקוח</a>
                             <a href="addmaterial.php" class="dropdown-item">חומר</a>
                             <a href="addProject.php" class="dropdown-item">פרויקט</a>
                             <a href="addException.php" class="dropdown-item">חריגה</a>
-                            <a href="addSupplier.php" class="dropdown-item">ספק</a>
+                            <a href="addSupplier.html" class="dropdown-item">ספק</a>
                             <a href="addVehicle.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
-                            <a href="addCheck.php" class="dropdown-item">צ'יק</a>
+                            <a href="" class="dropdown-item">צ'יק</a>
                             <a href="addReport.php" class="dropdown-item">דו"ח תנועה</a>
-                            <a href="addFuel.php" class="dropdown-item">דיווח דלק</a>
+                            <a href="addFuel.php" class="dropdown-item">דיווח בנזין</a>
                             <a href="carFix.php" class="dropdown-item">טיפול רכב</a>
 
                         </div>
@@ -239,13 +156,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <a href="editEmployee.php" class="dropdown-item">עובד</a>
                             <a href="editClient.php" class="dropdown-item">לקוח</a>
                             <a href="editMaterial.php" class="dropdown-item">חומר</a>
-                            <a href="editShift.php" class="dropdown-item">משמרת</a>
+                            <a href="" class="dropdown-item">פרויקט</a>
+                            <a href="" class="dropdown-item">משמרת</a>
                             <a href="editException.php" class="dropdown-item">חריגה</a>
                             <a href="editSupplier.php" class="dropdown-item">ספק</a>
                             <a href="editCar.php" class="dropdown-item">רכב & ציוד צמ"ה</a>
-                            <a href="editCheck.php" class="dropdown-item">צ'יק</a>
+                            <a href="" class="dropdown-item">צ'יק</a>
                             <a href="editReport.php" class="dropdown-item">דו"ח תנועה</a>
-                            <a href="editFuel.php" class="dropdown-item">דיווח דלק</a>
+                            <a href="editFuel.php" class="dropdown-item">דיווח בנזין</a>
                             <a href="editFixing.php" class="dropdown-item">טיפול רכב</a>
                         </div>
                     </div>
@@ -257,9 +175,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Sidebar End -->
 
 
-
         <!-- Content Start -->
-        <div class="content">
+        <div class="content justify-content-center">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
@@ -310,120 +227,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </nav>
             <!-- Navbar End -->
 
-
-            <div class="col-sm-12 custom-form">
-                <div class="bg-light rounded p-4 custom-form-container" dir="rtl">
-                    <h5 class="mb-4">הוספת עובד</h5>
-                    <form method="post" dir="rtl">
-                        <div class="form-floating mb-3 position-relative">
-                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="">
-                            <label for="fullName" class="position-absolute top-0 end-0">שם מלא</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="job" name="job" aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="מנהל">מנהל</option>
-                                <option value="עובד">עובד</option>
-                                <option value="מזכירה">מזכירה</option>
-                            </select>
-                            <label for="job" class="position-absolute top-0 end-0">תפקיד</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="daySalary" name="daySalary" placeholder="">
-                            <label for="daySalary" class="position-absolute top-0 end-0">משכורת בחודש</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="startDate" name="startDate" placeholder="">
-                            <label for="startDate" class="position-absolute top-0 end-0">תאריך התחלת עבודה</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="Gender" name="Gender" aria-label="Floating label select example">
-                                <option selected>בחר/י</option>
-                                <option value="זכר">זכר</option>
-                                <option value="נקבה">נקבה</option>
-                            </select>
-                            <label for="Gender" class="position-absolute top-0 end-0">מין</label>
-                        </div>
-
-                        <button class="btn btn-primary">הוסף</button>
-                        <!-- Display error message -->
-                        <?php if (isset($_SESSION["errorMessage"]) && !empty($_SESSION["errorMessage"])) { ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?php echo $_SESSION["errorMessage"]; ?>
-                            </div>
-                        <?php } ?>
-
-                        <!-- Display success message -->
-                        <?php if (isset($_SESSION["successMessage"]) && !empty($_SESSION["successMessage"])) { ?>
-                            <div class="alert alert-success" role="alert">
-                                <?php echo $_SESSION["successMessage"]; ?>
-                            </div>
-                        <?php } ?>
-
-                        <!-- Clear session variables after displaying messages -->
-                        <?php
-                        unset($_SESSION["errorMessage"]);
-                        unset($_SESSION["successMessage"]);
-                        ?>
-                    </form>
-
-                    <!-- Clearing form inputs after refreshing the page submission -->
-                    <script>
-                        if ($successMessage !== "") {
-                            document.addEventListener("DOMContentLoaded", function() {
-                                document.getElementById("fullName").value = "";
-                                document.getElementById("job").value = "";
-                                document.getElementById("startDate").value = "";
-                                document.getElementById("Gender").value = "";
-                                document.getElementById("daySalary").value = "";
-                                document.getElementById("errorMessage").textContent = "";
-                                document.getElementById("successMessage").textContent = "";
-                            });
-
-                        }
-                    </script>
-                </div>
-            </div>
-
-
-
-            <!-- Footer Start -->
+            <!--Content-->
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <!--<div class="container justify-content-center"> -->
+                        <div class="row mt-3 text-center" style="color:#009CFF; font-size: 40px;">
+                            <div class="col bid_col">
+                                <a href="bid2.php" style="width: 400px; height: 400px; padding: 0;align-items: center;justify-content: center;font-weight: normal;border-radius: 200px;">
+                                    <div><i class="bi bi-file-earmark-arrow-down" style="font-size: 250px; color:#009CFF;"></i>
+                                    </div>
+                                    הפקת הצעת מחיר
+                                </a>
+                            </div>
+                            <div class="col bid_col">
+                                <a href="bid.php" style="width: 400px; height: 400px; padding: 0;align-items: center;justify-content: center;font-weight: normal;border-radius: 200px;">
+                                    <div><i class="bi bi-calculator" style="font-size: 250px; color:#009CFF;"></i></div>
+                                    מחשבון מחיר
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Content End -->
+                <!-- Footer Start -->
+                <div class="container-fluid pt-4 px-4">
+                    <div class="bg-light rounded-top p-4">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 text-center text-sm-start">
+                                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                            </div>
+                            <div class="col-12 col-sm-6 text-center text-sm-end">
+                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to Top -->
+                <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
             </div>
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
 
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="lib/chart/chart.min.js"></script>
+            <script src="lib/easing/easing.min.js"></script>
+            <script src="lib/waypoints/waypoints.min.js"></script>
+            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+            <script src="lib/tempusdominus/js/moment.min.js"></script>
+            <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+            <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+            <!-- Template Javascript -->
+            <script src="js/main.js"></script>
 </body>
 
 </html>
