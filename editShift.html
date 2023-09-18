@@ -74,7 +74,7 @@
                     <a href="bid1.php" class="nav-item nav-link"><i class="fa fa-superscript"></i>הצעת מחיר</a>
                     <a href="economic.html" class="nav-item nav-link"><i class="fa fa-university me-2"></i>כלכלי</a>
                     <a href="inventory.html" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>מחסן</a>
-                    <a href="addShift.html" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
+                    <a href="addshift.php" class="nav-item nav-link"><i class="fa fa-book me-2"></i>דיווח משמרת</a>
                     <a href="reports.html" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
@@ -124,7 +124,10 @@
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
+                            <i class="fa fa-bell me-lg-2"></i><span
+                                class="position-absolute top-45 start-50 translate-middle badge rounded-pill bg-danger">
+                                <?php echo $unread_notification_count; ?>
+                            </span>
                             <span class="d-none d-lg-inline-flex">התראות</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">

@@ -205,3 +205,19 @@
 
 })(jQuery);
 
+function sendAJAXRequest() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Handle the response from the server
+            // This is where you update your page with new data
+            // Example: document.getElementById("notification-container").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", "notify.php", true); // Replace with the actual path
+    xhttp.send();
+}
+
+setInterval(sendAJAXRequest, 5000);
+
+
