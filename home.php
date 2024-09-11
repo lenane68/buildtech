@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 $conn = require __DIR__ . "/database.php";
@@ -473,9 +474,6 @@ if ($row = mysqli_fetch_assoc($result)) {
                     </div>
                 </div>
                 <div class="navbar-nav ms-auto">
-                    <form class="d-none d-md-flex" style="justify-content: flex-end;">
-                        <input class="form-control border-0" type="search" placeholder="Search">
-                    </form>
                     <a href="#" class="sidebar-toggler flex-shrink-0 ms-2">
                         <i class="fa fa-bars"></i>
                     </a>
@@ -582,6 +580,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                             </thead>
                             <tbody>
                                 <?php
+
                                 $conn = require __DIR__ . "/database.php";
 
                                 if (!isset($_SESSION["email"])) {
@@ -839,6 +838,23 @@ if ($row = mysqli_fetch_assoc($result)) {
     <script src="js/main.js"></script>
 
     <script>
+        function search() {
+            var query = document.getElementById('searchInput').value;
+            if (query.length > 0) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'search.php?query=' + query, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        document.getElementById('dropdownContent').innerHTML = xhr.responseText;
+                        document.getElementById('dropdownContent').parentNode.classList.add('show');
+                    }
+                };
+                xhr.send();
+            } else {
+                document.getElementById('dropdownContent').innerHTML = '';
+                document.getElementById('dropdownContent').parentNode.classList.remove('show');
+            }
+        }
         //projects number
         var projectsNumber = "<?php echo $total; ?>";
         $('#projectsNumber').html(projectsNumber);

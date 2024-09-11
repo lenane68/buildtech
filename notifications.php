@@ -191,9 +191,7 @@ $result = $conn->query($sqli);
                     </div>
                 </div>
                 <div class="navbar-nav ms-auto">
-                    <form class="d-none d-md-flex" style="justify-content: flex-end;">
-                        <input class="form-control border-0" type="search" placeholder="Search">
-                    </form>
+
                     <a href="#" class="sidebar-toggler flex-shrink-0 ms-2">
                         <i class="fa fa-bars"></i>
                     </a>
