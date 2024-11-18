@@ -4,4 +4,4 @@ setcookie("email", "", time() - 3600); //send browser command remove sid from co
 setcookie("password", "", time() - 3600);
 session_destroy(); //remove sid-login from server storage
 session_write_close();
-header('Location: index.php');
+header('Location: no_log_in.php');

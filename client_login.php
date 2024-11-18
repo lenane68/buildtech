@@ -1,16 +1,3 @@
-<?php
-
-
-session_start();
-
-$conn = require __DIR__ . "/database.php";
-
-session_start();
-if (isset($_SESSION["email"])) {
-    // Redirect to the login page if the user is not logged in
-    header('Location: home.php');
-    exit();
-}?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,33 +73,16 @@ if (isset($_SESSION["email"])) {
                         <form action="login.php" method="post" dir="rtl">
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
-                                <label for="email"> אימייל</label>
+                                <label for="email">מס פרויקט</label>
                             </div>
                             <div class="form-floating mb-4">
                                 <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-                                <label for="password">סיסמה</label>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <div class="form-check custom-form-check">
-                                    <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
-                                    <label class="form-check-label" for="rememberMe">זכור אותי</label>
-                                </div>
-
+                                <label for="password">תעודת זהות</label>
                             </div>
                             <button class="btn btn-primary py-3 w-100 mb-4">התחברות</button>
 
                             <!-- Display error messages here -->
-                            <?php
-                            if (isset($_GET["error"])) {
-                                $error = $_GET["error"];
-
-                                if ($error === "email") {
-                                    echo '<div class="alert alert-danger" dir="rtl">אימייל שגוי, נסה שוב.</div>';
-                                } elseif ($error === "password") {
-                                    echo '<div class="alert alert-danger" dir="rtl">סיסמה שגויה, נסה שוב.</div>';
-                                }
-                            }
-                            ?>
+                            
 
                         </form>
                     </div>
