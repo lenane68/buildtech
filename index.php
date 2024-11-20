@@ -100,6 +100,7 @@ if (isset($_SESSION["email"])) {
 
                             </div>
                             <button class="btn btn-primary py-3 w-100 mb-4">התחברות</button>
+                            
 
                             <!-- Display error messages here -->
                             <?php
@@ -115,6 +116,7 @@ if (isset($_SESSION["email"])) {
                             ?>
 
                         </form>
+                        <button onclick="window.history.back()" class="btn btn-primary py-3 w-100 mb-4">חזור</button>
                     </div>
                 </div>
             </div>

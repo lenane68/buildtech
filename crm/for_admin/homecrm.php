@@ -10,11 +10,10 @@ session_start();
 
 if (!isset($_SESSION["email"])) {
     // Redirect to the login page if the user is not logged in
-    header('Location: ../../index.php');
+    //header('Location: ../../index.php');
     exit();
 }
 
-//include_once 'notify.php';
 $email = mysqli_real_escape_string($conn, $_SESSION['email']);
 $query = "SELECT * FROM account WHERE email='$email'";
 $result = mysqli_query($conn, $query);
@@ -43,8 +42,8 @@ if ($row = mysqli_fetch_assoc($result)) {
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="../../img/favicon.ico" rel="icon">
+    <!-- Favicon >
+    <link href="img/favicon.ico" rel="icon" >
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,6 +157,33 @@ if ($row = mysqli_fetch_assoc($result)) {
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/easing/easing.min.js"></script>
+    <script src="../../lib/waypoints/waypoints.min.js"></script>
+    <script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../../lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../../lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="../../js/main.js"></script>
+    <script>
+    // Wait until the window is fully loaded
+    window.onload = function() {
+        // Hide the spinner
+        document.getElementById("spinner").classList.remove("show");
+    };
+
+    function toggleTaskLine(event, taskId) {
+            var checkbox = event.target;
+            var taskDescription = document.getElementById("taskDescription" + taskId);
+            if (checkbox.checked) {
+                taskDescription.style.textDecoration = "line-through";
+            } else {
+                taskDescription.style.textDecoration = "none";
+            }
+        }
+</script>
 </body>
 
 </html>

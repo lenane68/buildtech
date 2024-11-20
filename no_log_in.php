@@ -1,26 +1,18 @@
 <?php
-
-
 session_start();
-
 $conn = require __DIR__ . "/database.php";
 
-session_start();
-if (isset($_SESSION["email"])) {
-    // Redirect to the login page if the user is not logged in
-    header('Location: home.php');
-    exit();
-}?>
-<!DOCTYPE html>
-<html lang="en">
+?>
 
+
+<!DOCTYPE html>
+<html lang="he">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <meta charset="utf-8">
-    <title>BuildTech</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דף נחיתה</title>
+    <link href="css/style2.css" rel="stylesheet">
+
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -47,105 +39,86 @@ if (isset($_SESSION["email"])) {
     <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyD4pla3F8iMPajljQ3XL2GM5Tbs6G7T5Y0" defer></script>
 
 </head>
-
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">בית</a></li>
+                <li><a href="#about">אודות</a></li>
+                <li><a href="#services">שירותים</a></li>
+                <li><a href="#contact">צור קשר</a></li>
+                <li><a href="index.php">כניסת מנהל</a></li>
+                <li><a href="client_login.php">כניסת לקוח</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="home">
+        <h1>ניהול אתרי בנייה ולקוחות בצורה חכמה, נוחה ויעילה</h1>
+        <p>המערכת המושלמת לניהול אתרי בנייה – כל מה שאתה צריך במקום אחד</p>
+        <a href="#about" class="btn">למידע נוסף</a>
+    </section>
+    <section id="about">
+        <h2>אודותינו</h2>
+        <p>המערכת שלנו מאפשרת לך לנהל את כל האתרים שלך, לעקוב אחרי התקדמות העבודה, לנהל לקוחות, תשלומים, משימות וצוותים – כל זה בממשק אחד פשוט וידידותי.</p>
+    </section>
+    <section id="services">
+        <h2>השירותים שלנו</h2>
+        <ul>
+            <li>ניהול פרויקטים בזמן אמת – עקוב אחרי כל פרויקט בעזרת לוחות זמנים וסטטוסים עדכניים.</li>
+            <li>מעקב אחרי עובדים ולקוחות – נהל את הצוותים והלקוחות שלך במקום אחד.</li>
+            <li>דוחות וסטטיסטיקות חכמות – קבל תמונה ברורה על כל פרויקט עם דוחות בזמן אמת.</li>
+            <li>חווית משתמש פשוטה וידידותית – מערכת אינטרנטית קלה לשימוש, לא נדרשת התקנה.</li>
+            <li>ניהול תקציב והוצאות – מעקב אחרי התקציב וההוצאות בכל פרויקט.</li>
+        </ul>
+    </section>
+    <section id="demo">
+        <h2>הדגמת מערכת</h2>
+        <video controls>
+            <source src="img/my_clip.mp4" type="video/mp4">
+            הדפדפן שלך אינו תומך בתג וידאו.
+        </video>
+        <div class="screenshots">
+            <img src="img/ss1.png" alt="תמונת מסך 1">
+            <img src="img/ss2.png" alt="תמונת מסך 2">
         </div>
-        <!-- Spinner End -->
+    </section>
+    <section id="contact">
+        <h2>צור קשר</h2>
+        <form id="leadForm">
+            <label for="name">שם:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">אימייל:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">טלפון:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="message">הודעה:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">שלח</button>
+        <div id="response"></div>
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2024 החברה שלך. כל הזכויות שמורות.</p>
+    </footer>
 
+    <script>
+        document.getElementById('leadForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting the traditional way
 
-        <!-- Content Start -->
-        <div class="content open">
-            <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-                </a>
-                <div class="navbar-nav me-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="d-none d-lg-inline-flex">התחברות</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="index.php" class="dropdown-item">כניסה לבעל עסק</a>
-                            <a href="client_login.php" class="dropdown-item">כניסה ללקוחות</a>
-                        </div>
-                    </div>
-                    
-                </div>
-               
-            </nav>
-            <!-- Navbar End -->
+    const formData = new FormData(this);
 
-
-            <!-- Sale & Revenue Start -->
-            <div class="container-fluid pt-4 px-4">
-                <h1 style="text-align: center">ניהול פרויקטי בניה</h1>
-            </div>
-
-            <!-- Sales Chart End -->
-
-
-            <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4" dir="rtl">
-                        <h6 class="mb-0" style="font-weight: bold; font-size: 18px;"></h6>
-                       
-                    </div>
-                </div>
-            </div>
-            <!-- Recent Sales End -->
-
-
-           
-
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Bulid-Tech</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            </br>
-                            Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-
-
-
-
+    fetch('submit_lead.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('response').innerText = data;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+    </script>
 </body>
-
 </html>
