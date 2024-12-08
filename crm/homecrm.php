@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-$conn = require __DIR__ . "/../../database.php";
+$conn = require __DIR__ . "/../database.php";
 
 session_start();
 
@@ -30,6 +30,14 @@ if ($row = mysqli_fetch_assoc($result)) {
     $phone = '';
     $role = '';
 }
+// Fetch lead status counts from the database 
+$leads_status_query = "SELECT status, COUNT(*) as count FROM leads GROUP BY status"; 
+$leads_status_result = mysqli_query($conn, $leads_status_query); 
+$statuses = []; 
+$counts = []; 
+while ($row = mysqli_fetch_assoc($leads_status_result)) { 
+    $statuses[] = $row['status']; 
+    $counts[] = $row['count']; }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,14 +63,14 @@ if ($row = mysqli_fetch_assoc($result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="../../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 
 
 </head>
@@ -81,13 +89,13 @@ if ($row = mysqli_fetch_assoc($result)) {
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-light navbar-light">
-        <a href="../../index.php" class="navbar-brand mx-4 mb-3">
+        <a href="../index.php" class="navbar-brand mx-4 mb-3">
             <h3 class="text-primary">אבו <?php echo $name ?></h3>
             <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BUILD-TECH</h3>
         </a>
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
-                <img class="rounded-circle" src="../../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                <img class="rounded-circle" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
                 <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
             </div>
             <div class="ms-3">
@@ -96,7 +104,11 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
         </div>
         <div class="navbar-nav w-100" style="float:right;">
-            <a href="#" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>ראשי</a>
+            <a href="#" class="nav-item nav-link active"><i class="fa fa-home me-2"></i>לוח בקרה</a>
+            <a href="leads_m.php" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ניהול לידים</a>
+            <a href="#" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ניהול לקוחות</a>
+            <a href="#" class="nav-item nav-link"><i class="fa fa-home me-2"></i>ניהול משתמשים</a>
+            <a href="#" class="nav-item nav-link"><i class="fa fa-home me-2"></i>תמיכה ועזרה</a>
         </div>
     </nav>
 </div>
@@ -114,12 +126,12 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <div class="navbar-nav me-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="../../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex"><?php echo $name ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="../../profile.php" class="dropdown-item">הפרופיל שלי</a>
-                            <a href="../../logOut.php" class="dropdown-item">יציאה</a>
+                            <a href="../profile.php" class="dropdown-item">הפרופיל שלי</a>
+                            <a href="../logOut.php" class="dropdown-item">יציאה</a>
                         </div>
                     </div>
                    
@@ -131,7 +143,15 @@ if ($row = mysqli_fetch_assoc($result)) {
                 </div>
             </nav>
             <!-- Navbar End -->
-
+            <div class="container" dir="rtl"> 
+            <h2>לידים לפי סטטוס</h2> 
+            <canvas id="leadsStatusChart"></canvas> 
+        </div> 
+        <script> 
+        var ctx = document.getElementById('leadsStatusChart').getContext('2d'); 
+        var leadsStatusChart = new Chart(ctx, { type: 'bar', data: { 
+            labels: <?php echo json_encode($statuses); ?>, datasets: [{ label: 'מספר לידים', data: <?php echo json_encode($counts); ?>, backgroundColor: 'rgba(75, 192, 192, 0.2)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }] }, options: { scales: { y: { beginAtZero: true } } } }); 
+            </script>
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
@@ -160,13 +180,13 @@ if ($row = mysqli_fetch_assoc($result)) {
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../lib/easing/easing.min.js"></script>
-    <script src="../../lib/waypoints/waypoints.min.js"></script>
-    <script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../../lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../../lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="../../js/main.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/waypoints/waypoints.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="../js/main.js"></script>
     <script>
     // Wait until the window is fully loaded
     window.onload = function() {
