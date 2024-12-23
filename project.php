@@ -33,7 +33,7 @@ $id = $_POST['id'];
 $select = "SELECT * FROM project WHERE id = '$id'";
 $query = mysqli_query($conn, $select);
 
-
+$_SESSION['project_id'] = $id;
 
 
 while ($row = mysqli_fetch_array($query)) {
@@ -535,7 +535,12 @@ $jsonChartData = json_encode($chartData);
                             </div>
                         </div>
                         <br>
-
+                        <div class="bg-light rounded p-4">
+                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
+                        <a href="upload_image.php" class="btn btn-primary border-0" style="background-color: rgba(54, 162, 235, 1);"> <i class="fa fa-upload me-2"></i>העלאת תמונה לבדיקה </a>
+                                    </div>
+                             
+                        </div>
                         <div class="bg-light rounded h-100 p-4">
                             <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
                             <div class="d-flex align-items-center justify-content-between mb-4"></div>

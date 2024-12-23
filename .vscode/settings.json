@@ -1,0 +1,5 @@
+{
+    "python.condaPath": "/Users/yourusername/miniconda3/bin/conda",
+    "python.pythonPath": "/Users/yourusername/miniconda3/envs/myenv/bin/python"
+  }
+  
