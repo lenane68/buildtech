@@ -1,0 +1,14 @@
+Project: אחווה 6
+Image: img/after_analyzing/with_boxes1.jpg
+Image: img/after_analyzing/with_boxes2.jpg
+Image: img/after_analyzing/with_boxes3.jpg
+Image: img/after_analyzing/with_boxes4.jpg
+
+-------------------------
+
+Project: מימי
+Image: img/after_analyzing/with_boxes5.jpg
+Image: img/after_analyzing/with_boxes6.jpg
+Image: img/after_analyzing/with_boxes7.jpg
+Image: img/after_analyzing/with_boxes8.jpg
+

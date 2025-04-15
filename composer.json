@@ -22,7 +22,12 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "phpmailer/phpmailer": "^6.9",
+        "setasign/fpdf": "^1.8",
+        "fpdf/fpdf": "^1.86",
+        "dompdf/dompdf": "^3.1",
+        "mpdf/mpdf": "^8.2"
     },
     "autoload": {
         "classmap": [

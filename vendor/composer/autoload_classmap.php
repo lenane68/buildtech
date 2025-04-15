@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Datamatrix' => $baseDir . '/include/barcodes/datamatrix.php',
+    'Dompdf\\Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
+    'FPDF' => $vendorDir . '/setasign/fpdf/fpdf.php',
     'PDF417' => $baseDir . '/include/barcodes/pdf417.php',
     'QRcode' => $baseDir . '/include/barcodes/qrcode.php',
     'TCPDF' => $baseDir . '/tcpdf.php',

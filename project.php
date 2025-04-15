@@ -1,4 +1,6 @@
 <?php
+
+// @format
 $conn = require __DIR__ . "/database.php";
 
 session_start();
@@ -25,7 +27,6 @@ if ($row = mysqli_fetch_assoc($result)) {
     $phone = '';
     $role = '';
 }
-
 
 
 $id = $_POST['id'];
@@ -114,7 +115,6 @@ $chartData = [
 
 // Encode the chart data as JSON
 $jsonChartData = json_encode($chartData);
-
 
 
 ?>
@@ -536,10 +536,25 @@ $jsonChartData = json_encode($chartData);
                         </div>
                         <br>
                         <div class="bg-light rounded p-4">
+
+                        <!--<div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
+                            <a href="upload_image.php" class="btn btn-primary border-0" style="background-color: rgba(54, 162, 235, 1);"> <i class="fa fa-upload me-2"></i>העלאת תמונה לבדיקה </a>
+                        </div> -->
+
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
-                        <a href="upload_image.php" class="btn btn-primary border-0" style="background-color: rgba(54, 162, 235, 1);"> <i class="fa fa-upload me-2"></i>העלאת תמונה לבדיקה </a>
-                                    </div>
-                             
+                        <form id="imageUploadForm" enctype="multipart/form-data">
+                        <input type="hidden" name="project_id" value="<?php echo $id; ?>">
+    <input type="file" name="images[]" multiple class="form-control mb-3" required>
+    <button type="submit" class="btn btn-primary border-0" style="background-color: rgba(54, 162, 235, 1);">
+        <i class="fa fa-upload me-2"></i> העלאת תמונות לבדיקה
+    </button>
+</form>
+
+<div id="uploadResponse" class="mt-3"></div>
+
+</div>
+
+
                         </div>
                         <div class="bg-light rounded h-100 p-4">
                             <h3 class="mb-4" style="color: black;  font-size: 18px;">שלבי הפרויקט</h3>
@@ -772,6 +787,28 @@ $jsonChartData = json_encode($chartData);
     </script>
 
     <script>
+        document.getElementById('imageUploadForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(this);
+
+    fetch('upload_handler.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include' // Important for session persistence
+    })
+    .then(response => response.text()) // Expect HTML response now
+    .then(html => {
+        const uploadResponse = document.getElementById('uploadResponse');
+        uploadResponse.innerHTML = html; // Directly insert the HTML response
+    })
+    .catch(error => {
+        document.getElementById('uploadResponse').innerHTML = 
+            `<div class="alert alert-danger">Error: ${error.message}</div>`;
+    });
+});
+
+
         $(document).on('click', '.insertPaymentBtn', function() {
 
             var projectid = $(this).val();
@@ -1037,6 +1074,7 @@ $jsonChartData = json_encode($chartData);
                     console.error('Error:', error);
                 });
         }
+
     </script>
 
     <script>

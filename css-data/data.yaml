@@ -1,0 +1,6 @@
+train: /Applications/XAMPP/xamppfiles/htdocs/buildtech/css-data/train/images
+val: /Applications/XAMPP/xamppfiles/htdocs/buildtech/css-data/valid/images
+test: /Applications/XAMPP/xamppfiles/htdocs/buildtech/css-data/test/images
+
+nc: 10  # Number of classes
+names: ['Hardhat', 'Mask', 'NO-Hardhat', 'NO-Mask', 'NO-Safety Vest', 'Person', 'Safety Cone', 'Safety Vest', 'machinery', 'vehicle']
