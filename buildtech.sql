@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 23, 2025 at 09:23 AM
+-- Generation Time: Apr 15, 2025 at 11:39 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -660,7 +660,7 @@ CREATE TABLE `project` (
   `space` int(11) NOT NULL,
   `cup` int(11) NOT NULL,
   `totalPrice` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `project`
@@ -740,8 +740,31 @@ CREATE TABLE `project_images` (
   `project_id` int(11) NOT NULL,
   `image_path` varchar(200) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `path_after_analyzing` varchar(200) DEFAULT NULL
+  `path_after_analyzing` varchar(200) DEFAULT NULL,
+  `upload_date` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `project_images`
+--
+
+INSERT INTO `project_images` (`id`, `project_id`, `image_path`, `status`, `path_after_analyzing`, `upload_date`) VALUES
+(119, 65, 'img/safety/img1.jpg', 'analyzed', 'img/after_analyzing/with_boxes1.jpg', '2025-04-14 13:40:03'),
+(120, 65, 'img/safety/img2.jpg', 'analyzed', 'img/after_analyzing/with_boxes1.jpg', '2025-04-14 13:45:48'),
+(121, 65, 'img/safety/img3.jpg', 'analyzed', 'img/after_analyzing/with_boxes2.jpg\", 2]', '2025-04-14 13:58:39'),
+(122, 65, 'img/safety/img4.jpg', 'analyzed', 'img/after_analyzing/with_boxes3.jpg\", 0]', '2025-04-14 14:12:42'),
+(123, 65, 'img/safety/img5.jpg', 'analyzed', 'img/after_analyzing/with_boxes4.jpg', '2025-04-14 14:16:53'),
+(124, 65, 'img/safety/img6.jpg', 'analyzed', 'img/after_analyzing/with_boxes5.jpg', '2025-04-14 14:18:46'),
+(125, 65, 'img/safety/img7.jpg', 'analyzed', 'img/after_analyzing/with_boxes7.jpg\", 1]', '2025-04-14 14:22:08'),
+(126, 65, 'img/safety/img8.jpg', 'analyzed', 'img/after_analyzing/with_boxes8.jpg\", 0]', '2025-04-15 08:25:53'),
+(127, 65, 'img/safety/img9.jpg', 'analyzed', 'img/after_analyzing/with_boxes9.jpg\", 3]', '2025-04-15 08:32:11'),
+(128, 65, 'img/safety/img10.jpg', 'analyzed', 'img/after_analyzing/with_boxes11.jpg\", 0]', '2025-04-15 08:33:08'),
+(129, 20, 'img/safety/img11.jpg', 'analyzed', 'img/after_analyzing/with_boxes10.jpg\", 0]', '2025-04-15 08:33:24'),
+(130, 20, 'img/safety/img12.jpg', 'analyzed', 'img/after_analyzing/with_boxes12.jpg\", 4]', '2025-04-15 08:47:25'),
+(131, 65, 'img/safety/img13.jpg', 'analyzed', 'img/after_analyzing/with_boxes13.jpg\", 0]', '2025-04-15 08:47:36'),
+(132, 65, 'img/safety/img14.jpg', 'analyzed', 'img/after_analyzing/with_boxes14.jpg\", 0]', '2025-04-15 08:47:36'),
+(133, 65, 'img/safety/img15.jpg', 'analyzed', 'img/after_analyzing/with_boxes15.jpg\", 0]', '2025-04-15 08:47:36'),
+(134, 65, 'img/safety/img16.jpg', 'analyzed', 'img/after_analyzing/with_boxes16.jpg\", 0]', '2025-04-15 08:47:36');
 
 -- --------------------------------------------------------
 
@@ -1139,7 +1162,7 @@ ALTER TABLE `projectstep`
 -- AUTO_INCREMENT for table `project_images`
 --
 ALTER TABLE `project_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT for table `shift`
