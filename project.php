@@ -537,9 +537,7 @@ $jsonChartData = json_encode($chartData);
                         <br>
                         <div class="bg-light rounded p-4">
 
-                        <!--<div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
-                            <a href="upload_image.php" class="btn btn-primary border-0" style="background-color: rgba(54, 162, 235, 1);"> <i class="fa fa-upload me-2"></i>העלאת תמונה לבדיקה </a>
-                        </div> -->
+                        
                         <h3 class="mb-4" style="color: black;  font-size: 18px;">העלאת תמונות לבדיקת בטיחות</h3>
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 my-div">
                         <form id="imageUploadForm" enctype="multipart/form-data">

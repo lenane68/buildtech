@@ -73,7 +73,7 @@ $stmt->bind_param("iss", $id, $relativePath, $status);
     }
 
     if (empty($errors)) {
-        echo "<p style='color: green;'>Success: All images uploaded successfully!</p>";
+        echo "<p style='color: green;'>התמונות נשמרו בהצלחה!</p>";
     } else {
         echo "<p style='color: red;'>Error: " . implode('<br>', $errors) . "</p>";
     }
