@@ -37,7 +37,7 @@ if (!isset($_SESSION["email"])) {
     header('Location: index.php');
     exit();
 }
-include_once 'notify.php';
+
 $email = mysqli_real_escape_string($conn, $_SESSION['email']);
 $query = "SELECT * FROM account WHERE email='$email'";
 $result = mysqli_query($conn, $query);

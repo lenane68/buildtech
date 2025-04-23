@@ -5,7 +5,6 @@ session_start();
 
 $conn = require __DIR__ . "/database.php";
 
-session_start();
 if (isset($_SESSION["email"])) {
     // Redirect to the login page if the user is not logged in
     header('Location: home.php');

@@ -8,7 +8,7 @@ if (!isset($_SESSION["email"])) {
     header('Location: index.php');
     exit();
 }
-include_once 'notify.php';
+
 $email = mysqli_real_escape_string($conn, $_SESSION['email']);
 $query = "SELECT * FROM account WHERE email='$email'";
 $result = mysqli_query($conn, $query);
@@ -110,7 +110,7 @@ $result = $conn->query($sqli);
                     <a href="reports.php" class="nav-item nav-link"><i class="far fa-file-alt me-2 me-2"></i>דוחות</a>
                     <a href="notifications.php" class="nav-item nav-link"><i class="far fa-bell me-2 me-2"></i>התראות</a>
                     <a href="profile.php" class="nav-item nav-link"><i class="far fa-user me-2 me-2"></i>עדכון פרופיל</a>
-            <a href="crm/homecrm.php" class="nav-item nav-link"><i class="fa fa-address-book me-2"></i>CRM</a>
+            
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus-square me-2"></i>הוספה</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -172,7 +172,7 @@ $result = $conn->query($sqli);
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i><span class="position-absolute top-45 start-50 translate-middle badge rounded-pill bg-danger"><?php echo $unread_notification_count; ?></span>
+                            <i class="fa fa-bell me-lg-2"></i><span class="position-absolute top-45 start-50 translate-middle badge rounded-pill bg-danger"></span>
                             <span class="d-none d-lg-inline-flex">התראות</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">

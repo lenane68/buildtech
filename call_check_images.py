@@ -21,5 +21,4 @@ while True:
     except requests.exceptions.RequestException as e:
         print(f"Error while calling PHP page: {e}")
 
-    # Wait for 10 minutes before calling the PHP page again
-    time.sleep(3600)  # 600 seconds = 10 minutes
+    time.sleep(3600)  
