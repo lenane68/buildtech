@@ -1,9 +1,12 @@
 import time
 import requests
+import os
 
-# URL of the PHP page you want to call (adjust the path as needed)
-php_url = "http://localhost/buildtech/check_images.php"
+# Get the folder name where the script is located
+project_folder_name = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 
+# Construct the URL dynamically
+php_url = f"http://localhost/{project_folder_name}/check_images.php"
 # Infinite loop to keep calling the PHP page
 while True:
     try:
@@ -19,4 +22,4 @@ while True:
         print(f"Error while calling PHP page: {e}")
 
     # Wait for 10 minutes before calling the PHP page again
-    time.sleep(600)  # 600 seconds = 10 minutes
+    time.sleep(3600)  # 600 seconds = 10 minutes
