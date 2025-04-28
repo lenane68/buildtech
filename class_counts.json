@@ -1,6 +1,7 @@
 {
-    "NO-Mask": 2,
+    "Hardhat": 3,
     "Person": 3,
-    "NO-Hardhat": 2,
-    "Safety Vest": 2
+    "Safety Vest": 2,
+    "NO-Mask": 4,
+    "NO-Safety Vest": 1
 }
